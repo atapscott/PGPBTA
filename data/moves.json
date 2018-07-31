@@ -1,0 +1,32 @@
+[
+  {
+    "name": "Read a Person",
+    "prerequisites": ["agent.is_player_character()"]
+  },
+  {
+    "name": "Read a Sitch",
+    "reflexive": "True",
+    "prerequisites": ["agent.is_player_character()"]
+  },
+  {
+    "name": "Open your Brain",
+    "reflexive": "True",
+    "prerequisites": ["agent.is_player_character()"]
+  },
+  {
+    "name": "Seize by Force",
+    "prerequisites": ["agent.is_player_character()"]
+  },
+  {
+    "name": "Go Aggro",
+    "prerequisites": ["agent.is_player_character()"]
+  },
+  {
+    "name": "Seduce of Manipulate",
+    "prerequisites": ["agent.is_player_character()"]
+  },
+  {
+    "name": "Outflank , corner or encircle someone",
+    "prerequisites": ["agent.has_attribute('warlord')"]
+  }
+]
