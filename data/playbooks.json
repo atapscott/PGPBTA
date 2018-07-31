@@ -1,0 +1,151 @@
+[
+  {
+    "name": "Angel",
+    "stats": [
+      {"cool": 1, "hard": 0, "hot": 1, "sharp": 2, "weird": -1},
+      {"cool": 1, "hard": 1, "hot": 0, "sharp": 2, "weird": -1},
+      {"cool": -1, "hard": 1, "hot": 0, "sharp": 2, "weird": 1},
+      {"cool": 2, "hard": 0, "hot": -1, "sharp": 2, "weird": -1}
+    ],
+    "hist": {
+      "self_turn": {
+        "base": 1,
+        "history_links": [
+          {
+            "base": 2,
+            "plot": "hist_angel_helped_save_life"
+          },
+          {
+            "base": 2,
+            "plot": "hist_angel_companion_witness"
+          },
+          {
+            "base": -1,
+            "plot": "hist_angel_opinion_self_destruct"
+          }
+        ]
+      },
+
+      "others_turn": {
+        "base": {"type":"RAND", "values": ["+1","-1"]},
+        "history_links": [
+          {
+            "base": "+0",
+            "plot": "hist_angel_not_willing_involve"
+          }
+        ]
+      }
+
+    }
+
+  },
+
+  {
+    "name": "Artist",
+    "stats": [
+      {"cool": 1, "hard": -1, "hot": 2, "sharp": 1, "weird": 0},
+      {"cool": 0, "hard": 0, "hot": 2, "sharp": 0, "weird": 1},
+      {"cool": -1, "hard": 0, "hot": 2, "sharp": 2, "weird": -1},
+      {"cool": 1, "hard": 1, "hot": 2, "sharp": 1, "weird": -2}
+    ],
+    "hist": {
+      "self_turn": {
+        "base": 0,
+        "history_links": [
+          {
+            "base": 2,
+            "plot": "hist_artist_friend"
+          },
+          {
+            "base": 1,
+            "plot": "hist_artist_lover"
+          },
+          {
+            "base": -1,
+            "plot": "hist_artist_in_love"
+          }
+        ]
+      },
+
+      "others_turn": {
+        "base": {"type":"RAND", "values": ["+1","-1"]},
+        "history_links": []
+      }
+
+    }
+
+  },
+
+  {
+    "name": "Gun Lugger",
+    "stats": [
+      {"cool": 1, "hard": 2, "hot": -1, "sharp": 1, "weird": 0},
+      {"cool": -1, "hard": 2, "hot": -2, "sharp": 1, "weird": 2},
+      {"cool": 1, "hard": 2, "hot": -2, "sharp": 2, "weird": -1},
+      {"cool": 2, "hard": 2, "hot": -2, "sharp": 0, "weird": 0}
+    ],
+    "hist": {
+      "self_turn": {
+        "base": 0,
+        "history_links": [
+          {
+            "base": 2,
+            "plot": "hist_gun_lugger_battle_brother"
+          },
+          {
+            "base": -2,
+            "plot": "hist_gun_lugger_battle_traitor"
+          },
+          {
+            "base": 2,
+            "plot": "hist_gun_lugger_attracted"
+          }
+        ]
+      },
+
+      "others_turn": {
+        "base": "+0",
+        "history_links": [
+          {
+            "base": "+1",
+            "plot": "hist_gun_lugger_smart_companion"
+          }
+        ]
+      }
+
+    }
+
+  },
+
+  {
+    "name": "Driver",
+    "stats": [
+      {"cool": 0, "hard": -1, "hot": 1, "sharp": 2, "weird": 0},
+      {"cool": 1, "hard": 0, "hot": 0, "sharp": 2, "weird": -1},
+      {"cool": 0, "hard": 1, "hot": -1, "sharp": 2, "weird": -1},
+      {"cool": 1, "hard": -2, "hot": 0, "sharp": 2, "weird": 1}
+    ],
+    "hist": {
+      "self_turn": {
+        "base": 0,
+        "history_links": [
+          {
+            "base": 2,
+            "plot": "hist_driver_travel_together"
+          },
+          {
+            "base": 2,
+            "plot": "hist_driver_helped_once"
+          }
+        ]
+      },
+
+      "others_turn": {
+        "base": "-1",
+        "history_links": []
+      }
+
+    }
+
+  }
+]
