@@ -2,10 +2,10 @@ from storyworld.entities import Entity
 from storyworld.moves import Move
 import json
 import random
+from utils import utils
 
 
 class Storyworld:
-
     entities: list = None
     playbooks: list = None
     moves: list = None
@@ -42,7 +42,7 @@ class Storyworld:
         entity: Entity = Entity(**kwargs)
         self.entities.append(entity)
 
-    def get_player_characters(self)->list:
+    def get_player_characters(self) -> list:
         return [e for e in self.entities if 'owner' in e.attributes.keys()]
 
     def get_agent_moves(self) -> dict:
@@ -53,10 +53,10 @@ class Storyworld:
 
         return agent_moves
 
-    def get_playbook_by_name(self, playbook_name: str)->dict:
+    def get_playbook_by_name(self, playbook_name: str) -> dict:
         return {p['name']: p for p in self.playbooks}[playbook_name]
 
-    def get_entity_by_name(self, entity_name: str)->Entity:
+    def get_entity_by_name(self, entity_name: str) -> Entity:
         return {e.name: e for e in self.entities}[entity_name]
 
     def get_generator_data_item(self, generator_name: str):
@@ -64,6 +64,12 @@ class Storyworld:
         value = self.generator_data[generator_name][0]
         del self.generator_data[generator_name][0]
         return value
+
+    def get_performed_agent_actions(self, agent_entity):
+        is_agent_entity_action = \
+            lambda p: True if p[0]['id'].contains('mov_') and 'agent' in p[1].attributes.keys() and p[
+                1].id == agent_entity.id else False
+        return [p for p in self.plot_structure if is_agent_entity_action(p)]
 
     def _get_eligible_agent_moves(self, agent: Entity) -> list:
         eligible_moves: list = []
@@ -87,7 +93,7 @@ class Storyworld:
 
         return eligible
 
-    def _get_eligible_object_entities(self, prerequisites: list, agent: Entity, exclusions: tuple = ())->list:
+    def _get_eligible_object_entities(self, prerequisites: list, agent: Entity, exclusions: tuple = ()) -> list:
         eligible_object_entities: list = []
         for object_candidate in [e for e in self.entities if e.id not in [ex.id for ex in exclusions]]:
 
@@ -96,5 +102,93 @@ class Storyworld:
 
         return eligible_object_entities
 
+    @classmethod
+    def _resolve_hist_value(cls, base_self_turn_hist: int, paired_character_hist_mod) -> int:
+        if isinstance(paired_character_hist_mod, str):
+            return base_self_turn_hist + eval(paired_character_hist_mod)
+        elif isinstance(paired_character_hist_mod, int):
+            return paired_character_hist_mod
+        elif isinstance(paired_character_hist_mod, dict):
+            return cls._resolve_hist_value(base_self_turn_hist, utils.parse_complex_value(paired_character_hist_mod))
 
+    @classmethod
+    def _generate_self_hist_link_list(cls, fellow_player_amount: int, history_links: list, default_value: int) -> list:
+        link_amount = random.randint(0, len(history_links))
 
+        if link_amount > fellow_player_amount:
+            link_amount = fellow_player_amount
+
+        history_link_list: list = random.sample(history_links, link_amount)
+
+        while len(history_link_list) < fellow_player_amount:
+            history_link_list.append({"base": default_value})
+
+        random.shuffle(history_link_list)
+
+        return history_link_list
+
+    @classmethod
+    def _generate_self_hist_link_mod_list(cls, fellow_player_amount: int, history_link_mods: list,
+                                          default_value: int) -> list:
+
+        link_mod_amount = random.randint(0, len(history_link_mods))
+
+        if link_mod_amount > fellow_player_amount:
+            link_mod_amount = fellow_player_amount
+
+        history_link_mod_list: list = random.sample(history_link_mods, link_mod_amount)
+
+        while len(history_link_mod_list) < fellow_player_amount:
+            history_link_mod_list.append({"base": default_value})
+
+        random.shuffle(history_link_mod_list)
+
+        return history_link_mod_list
+
+    def assign_initial_bio(self):
+
+        player_characters: list = [e for e in self.entities if 'owner' in e.attributes.keys()]
+
+        indexed_history_link_mods: dict = {}
+        player_character: Entity
+        for player_character in player_characters:
+            playbook: dict = self.get_playbook_by_name(player_character.attributes['playbook_name'])
+            fellow_characters: list = [e for e in self.entities if
+                                       e.id != player_character.id and e.is_player_character()]
+            indexed_history_link_mods[player_character.__repr__()] = self._generate_self_hist_link_mod_list(
+                len(fellow_characters), playbook['hist']['others_turn']['history_links'],
+                playbook['hist']['others_turn']['base'])
+
+        for player_character in player_characters:
+            playbook: dict = self.get_playbook_by_name(player_character.attributes['playbook_name'])
+
+            fellow_characters: list = [e for e in self.entities if
+                                       e.id != player_character.id and e.is_player_character()]
+
+            history_links: list = self._generate_self_hist_link_list(len(fellow_characters),
+                                                                     playbook['hist']['self_turn']['history_links'],
+                                                                     playbook['hist']['self_turn']['base'])
+
+            paired_character: Entity
+            for paired_character in fellow_characters:
+                history_link: dict = history_links[0]
+                del history_links[0]
+
+                history_link_mods = indexed_history_link_mods[player_character.__repr__()]
+                history_link_mod = history_link_mods[0]
+                del history_link_mods[0]
+
+                paired_character.set_attribute('hist_{}'.format(player_character.name), history_link['base'])
+                if 'plot' in history_link.keys():
+                    self.plot_structure.append(
+                        (player_character, history_link['plot'], paired_character))
+
+                stored_history_link_value = paired_character.get_attribute('hist_{}'.format(player_character.name))
+                history_link_modded_value: int = self._resolve_hist_value(stored_history_link_value,
+                                                                          history_link_mod['base'])
+
+                paired_character.set_attribute('hist_{}'.format(player_character.name),
+                                               history_link_modded_value)
+                if 'plot' in history_link_mod.keys():
+                    self.plot_structure.append(
+                        (player_character, history_link_mod['plot'], paired_character))
