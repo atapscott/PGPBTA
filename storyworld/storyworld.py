@@ -10,13 +10,13 @@ class Storyworld:
     playbooks: list = None
     moves: list = None
     generator_data: dict = None
-    plot_structure: list = None
+    scenes: list = None
 
     def __init__(self, **kwargs):
 
         self.entities = []
         self.moves = []
-        self.plot_structure = []
+        self.scenes = []
         self.generator_data = {}
         self.load_data()
 
@@ -45,11 +45,13 @@ class Storyworld:
     def get_player_characters(self) -> list:
         return [e for e in self.entities if 'owner' in e.attributes.keys()]
 
-    def get_agent_moves(self) -> dict:
+    def get_candidate_agent_moves(self, candidate_entities: list = None) -> dict:
         agent_moves: dict = {}
+        if candidate_entities is None:
+            candidate_entities = self.entities
 
-        for agent_entity in [e for e in self.entities if 'agent' in e.attributes.keys()]:
-            agent_moves[agent_entity.name] = self._get_eligible_agent_moves(agent_entity)
+        for agent_entity in [e for e in self.entities if 'agent' in e.attributes.keys() and e in candidate_entities]:
+            agent_moves[agent_entity.name] = self._get_eligible_agent_moves(agent_entity, candidate_entities)
 
         return agent_moves
 
@@ -65,22 +67,18 @@ class Storyworld:
         del self.generator_data[generator_name][0]
         return value
 
-    def get_performed_agent_actions(self, agent_entity):
-        is_agent_entity_action = \
-            lambda p: True if p[0]['id'].contains('mov_') and 'agent' in p[1].attributes.keys() and p[
-                1].id == agent_entity.id else False
-        return [p for p in self.plot_structure if is_agent_entity_action(p)]
-
-    def _get_eligible_agent_moves(self, agent: Entity) -> list:
+    def _get_eligible_agent_moves(self, agent: Entity, candidate_entities: list = None) -> list:
         eligible_moves: list = []
         for move in self.moves:
 
             if not move.is_reflexive():
-                object_candidates: list = self._get_eligible_object_entities(move.prerequisites, agent, (agent,))
+                candidate_entities = [e for e in candidate_entities if e.id != agent.id]
+                object_candidates: list = self._get_eligible_object_entities(move.prerequisites, agent,
+                                                                             candidate_entities)
                 for object_candidate in object_candidates:
                     eligible_moves.append((move, object_candidate))
             elif move.is_reflexive() and self._is_eligible_agent_object_pairing(move.prerequisites, agent):
-                eligible_moves.append((move))
+                eligible_moves.append((move, ))
 
         return eligible_moves
 
@@ -93,9 +91,9 @@ class Storyworld:
 
         return eligible
 
-    def _get_eligible_object_entities(self, prerequisites: list, agent: Entity, exclusions: tuple = ()) -> list:
+    def _get_eligible_object_entities(self, prerequisites: list, agent: Entity, candidate_entities: list = None) -> list:
         eligible_object_entities: list = []
-        for object_candidate in [e for e in self.entities if e.id not in [ex.id for ex in exclusions]]:
+        for object_candidate in [e for e in self.entities if e in candidate_entities]:
 
             if self._is_eligible_agent_object_pairing(prerequisites, agent, object_candidate):
                 eligible_object_entities.append(object_candidate)
@@ -145,7 +143,9 @@ class Storyworld:
 
         return history_link_mod_list
 
-    def assign_initial_bio(self):
+    def get_initial_history(self) -> list:
+
+        initial_history: list = []
 
         player_characters: list = [e for e in self.entities if 'owner' in e.attributes.keys()]
 
@@ -180,7 +180,7 @@ class Storyworld:
 
                 paired_character.set_attribute('hist_{}'.format(player_character.name), history_link['base'])
                 if 'plot' in history_link.keys():
-                    self.plot_structure.append(
+                    initial_history.append(
                         (player_character, history_link['plot'], paired_character))
 
                 stored_history_link_value = paired_character.get_attribute('hist_{}'.format(player_character.name))
@@ -190,5 +190,17 @@ class Storyworld:
                 paired_character.set_attribute('hist_{}'.format(player_character.name),
                                                history_link_modded_value)
                 if 'plot' in history_link_mod.keys():
-                    self.plot_structure.append(
+                    initial_history.append(
                         (player_character, history_link_mod['plot'], paired_character))
+
+        return initial_history
+
+    def get_npc_entities(self)->list:
+        return [e for e in self.entities if 'owner' not in e.attributes.keys()]
+
+    def get_next_scene_entities(self, next_scene_players: list, previous_scenes: list):
+        next_scene_entities: list = [nsp.character for nsp in next_scene_players]
+        npc_entities: list = self.get_npc_entities()
+        npc_amount: int = random.randint(0, len(npc_entities))
+        next_scene_entities = next_scene_entities + random.sample(npc_entities, npc_amount)
+        return  next_scene_entities
