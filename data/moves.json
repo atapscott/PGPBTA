@@ -1,32 +1,39 @@
 [
   {
     "name": "Read a Person",
+    "id": "mov_read_a_person",
     "prerequisites": ["agent.is_player_character()"]
   },
   {
     "name": "Read a Sitch",
+    "id": "mov_read_a_sitch",
     "reflexive": "True",
     "prerequisites": ["agent.is_player_character()"]
   },
   {
     "name": "Open your Brain",
+    "id": "mov_open_your_brain",
     "reflexive": "True",
     "prerequisites": ["agent.is_player_character()"]
   },
   {
     "name": "Seize by Force",
+    "id": "mov_seize_by_force",
     "prerequisites": ["agent.is_player_character()"]
   },
   {
     "name": "Go Aggro",
+    "id": "mov_go_aggro",
     "prerequisites": ["agent.is_player_character()"]
   },
   {
     "name": "Seduce of Manipulate",
+    "id": "mov_seduce_or_manipulate",
     "prerequisites": ["agent.is_player_character()"]
   },
   {
     "name": "Outflank , corner or encircle someone",
+    "id": "mov_outflank_corner_or_encircle_someone",
     "prerequisites": ["agent.has_attribute('warlord')"]
   }
 ]
