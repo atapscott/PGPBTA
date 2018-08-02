@@ -30,10 +30,6 @@
     "name": "Seduce of Manipulate",
     "id": "mov_seduce_or_manipulate",
     "prerequisites": ["agent.is_player_character()"]
-  },
-  {
-    "name": "Outflank , corner or encircle someone",
-    "id": "mov_outflank_corner_or_encircle_someone",
-    "prerequisites": ["agent.has_attribute('threat_type')"]
   }
+
 ]

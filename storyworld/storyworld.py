@@ -1,4 +1,4 @@
-from storyworld.entities import Entity, PlayerCharacter, Threat
+from storyworld.entities import Entity, Agent, PlayerCharacter, Threat
 from storyworld.moves import Move
 import json
 import random
@@ -11,11 +11,12 @@ class Storyworld:
     moves: list = None
     generator_data: dict = None
     scenes: list = None
+    threat_types: list = None
 
     def __init__(self, **kwargs):
 
         self.entities = []
-        self.moves = []
+        self.player_moves = []
         self.scenes = []
         self.generator_data = {}
         self.load_data()
@@ -27,35 +28,47 @@ class Storyworld:
 
             self.playbooks = serialized_playbook_data_list
 
-        with open('data/moves.json', 'r', encoding='utf8') as infile:
-            serialized_move_data_list: list = json.load(infile)
+        with open('data/player_moves.json', 'r', encoding='utf8') as infile:
+            serialized_player_moves: list = json.load(infile)
 
-            self.moves = [Move(**smd) for smd in serialized_move_data_list]
+            self.player_moves = [Move(**smd) for smd in serialized_player_moves]
 
         with open('data/generators.json', 'r', encoding='utf8') as infile:
             serialized_generator_data: dict = json.load(infile)
 
             self.generator_data = serialized_generator_data
 
+        with open('data/threat_types.json', 'r', encoding='utf8') as infile:
+            serialized_threat_type_data: dict = json.load(infile)
+
+            for td in serialized_threat_type_data:
+                td['moves'] = [Move(**md) for md in td['moves']]
+
+            self.threat_types = serialized_threat_type_data
+
     def create_entity(self, **kwargs) -> Entity:
 
         entity: Entity = Entity(**kwargs)
         self.entities.append(entity)
-        return Entity
+
+        return entity
 
     def create_player_character(self, **kwargs) -> PlayerCharacter:
 
         pc: PlayerCharacter = PlayerCharacter(**kwargs)
         pc.name = self.get_generator_data_item('names')
         pc.attributes = {'agent': 'True', 'person': 'True', 'owner': kwargs['owner']}
+        pc.moves = self.player_moves
         self.entities.append(pc)
         return pc
 
     def create_threat(self, **kwargs) -> Threat:
 
         threat: Threat = Threat(**kwargs)
+        threat_type = self.get_threat_type_by_name(kwargs['threat_type_name'])
         threat.name = self.get_generator_data_item('names')
-        threat.attributes = {'agent': 'True', 'threat_type': kwargs['threat_type']}
+        threat.attributes = {'agent': 'True', 'threat_type_name': kwargs['threat_type_name']}
+        threat.moves = threat_type['moves']
         self.entities.append(threat)
         return threat
 
@@ -75,6 +88,9 @@ class Storyworld:
     def get_playbook_by_name(self, playbook_name: str) -> dict:
         return {p['name']: p for p in self.playbooks}[playbook_name]
 
+    def get_threat_type_by_name(self, threat_type_name: str) -> dict:
+        return {tt['name']: tt for tt in self.threat_types}[threat_type_name]
+
     def get_entity_by_name(self, entity_name: str) -> Entity:
         return {e.name: e for e in self.entities}[entity_name]
 
@@ -84,9 +100,9 @@ class Storyworld:
         del self.generator_data[generator_name][0]
         return value
 
-    def _get_eligible_agent_moves(self, agent: Entity, candidate_entities: list = None) -> list:
+    def _get_eligible_agent_moves(self, agent: Agent, candidate_entities: list = None) -> list:
         eligible_moves: list = []
-        for move in self.moves:
+        for move in agent.moves:
 
             if not move.is_reflexive():
                 candidate_entities = [e for e in candidate_entities if e.id != agent.id]
@@ -100,15 +116,15 @@ class Storyworld:
         return eligible_moves
 
     @staticmethod
-    def _is_eligible_agent_object_pairing(prerequisites: list, agent: Entity, object: Entity = None) -> bool:
-        assert 'agent' in agent.attributes.keys()
+    def _is_eligible_agent_object_pairing(prerequisites: list, agent: Agent, object: Entity = None) -> bool:
+
         eligible: bool = True
         for prerequisite in prerequisites:
             eligible *= eval(prerequisite)
 
         return eligible
 
-    def _get_eligible_object_entities(self, prerequisites: list, agent: Entity, candidate_entities: list = None) -> list:
+    def _get_eligible_object_entities(self, prerequisites: list, agent: Agent, candidate_entities: list = None) -> list:
         eligible_object_entities: list = []
         for object_candidate in [e for e in self.entities if e in candidate_entities]:
 
