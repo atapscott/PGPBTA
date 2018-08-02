@@ -1,10 +1,10 @@
-from storyworld.entities import Entity
+from storyworld.entities import Entity, PlayerCharacter
 from utils import utils
 
 
 class Player:
 
-    character: Entity = None
+    character: PlayerCharacter = None
     name: str = None
     id: str = None
 

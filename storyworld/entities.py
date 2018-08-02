@@ -15,7 +15,7 @@ class Entity:
             self.id = utils.get_id()
 
     def is_player_character(self) -> bool:
-        return 'owner' in self.attributes.keys()
+        return isinstance(self, PlayerCharacter)
 
     def has_attribute(self, attribute_key: str) -> bool:
         return attribute_key in self.attributes.keys()
@@ -40,13 +40,28 @@ class Entity:
         self.attributes[attribute_key] = value
 
     def print_nice_name(self):
-        if 'playbook_name' in self.attributes.keys():
-            return '{} the {}'.format(self.name, self.attributes['playbook_name'])
-        else:
-            return self.name
+        return self.name
 
     def __str__(self):
         return self.print_nice_name()
 
     def __repr__(self):
         return self.print_nice_name()
+
+
+class PlayerCharacter(Entity):
+
+    def __init__(self, **kwargs):
+        super(PlayerCharacter, self).__init__(**kwargs)
+
+    def print_nice_name(self):
+        return '{} the {}'.format(self.name, self.attributes['playbook_name'])
+
+
+class Threat(Entity):
+
+    def __init__(self, **kwargs):
+        super(Threat, self).__init__(**kwargs)
+
+    def print_nice_name(self):
+        return '{} the {}'.format(self.name, self.attributes['threat_type'])

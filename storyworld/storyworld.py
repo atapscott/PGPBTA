@@ -1,4 +1,4 @@
-from storyworld.entities import Entity
+from storyworld.entities import Entity, PlayerCharacter, Threat
 from storyworld.moves import Move
 import json
 import random
@@ -37,10 +37,27 @@ class Storyworld:
 
             self.generator_data = serialized_generator_data
 
-    def create_entity(self, **kwargs):
+    def create_entity(self, **kwargs) -> Entity:
 
         entity: Entity = Entity(**kwargs)
         self.entities.append(entity)
+        return Entity
+
+    def create_player_character(self, **kwargs) -> PlayerCharacter:
+
+        pc: PlayerCharacter = PlayerCharacter(**kwargs)
+        pc.name = self.get_generator_data_item('names')
+        pc.attributes = {'agent': 'True', 'person': 'True', 'owner': kwargs['owner']}
+        self.entities.append(pc)
+        return pc
+
+    def create_threat(self, **kwargs) -> Threat:
+
+        threat: Threat = Threat(**kwargs)
+        threat.name = self.get_generator_data_item('names')
+        threat.attributes = {'agent': 'True', 'threat_type': kwargs['threat_type']}
+        self.entities.append(threat)
+        return threat
 
     def get_player_characters(self) -> list:
         return [e for e in self.entities if 'owner' in e.attributes.keys()]
@@ -147,7 +164,7 @@ class Storyworld:
 
         initial_history: list = []
 
-        player_characters: list = [e for e in self.entities if 'owner' in e.attributes.keys()]
+        player_characters: list = [e for e in self.entities if e.is_player_character()]
 
         indexed_history_link_mods: dict = {}
         player_character: Entity
@@ -196,7 +213,7 @@ class Storyworld:
         return initial_history
 
     def get_npc_entities(self)->list:
-        return [e for e in self.entities if 'owner' not in e.attributes.keys()]
+        return [e for e in self.entities if not e.is_player_character()]
 
     def get_next_scene_entities(self, next_scene_players: list, previous_scenes: list):
         next_scene_entities: list = [nsp.character for nsp in next_scene_players]
