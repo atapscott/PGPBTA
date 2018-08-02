@@ -39,9 +39,14 @@ class Entity:
 
         self.attributes[attribute_key] = value
 
+    def print_nice_name(self):
+        if 'playbook_name' in self.attributes.keys():
+            return '{} the {}'.format(self.name, self.attributes['playbook_name'])
+        else:
+            return self.name
 
     def __str__(self):
-        return self.name
+        return self.print_nice_name()
 
     def __repr__(self):
-        return "{}:{}".format(self.name, self.id)
+        return self.print_nice_name()
