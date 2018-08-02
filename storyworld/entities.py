@@ -49,7 +49,12 @@ class Entity:
         return self.print_nice_name()
 
 
-class PlayerCharacter(Entity):
+class Agent(Entity):
+
+    moves: list = None
+
+
+class PlayerCharacter(Agent):
 
     def __init__(self, **kwargs):
         super(PlayerCharacter, self).__init__(**kwargs)
@@ -58,10 +63,10 @@ class PlayerCharacter(Entity):
         return '{} the {}'.format(self.name, self.attributes['playbook_name'])
 
 
-class Threat(Entity):
+class Threat(Agent):
 
     def __init__(self, **kwargs):
         super(Threat, self).__init__(**kwargs)
 
     def print_nice_name(self):
-        return '{} the {}'.format(self.name, self.attributes['threat_type'])
+        return '{} the {}'.format(self.name, self.attributes['threat_type_name'])

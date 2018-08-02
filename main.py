@@ -52,9 +52,9 @@ class GameManager:
             player.character = cls.storyworld.create_player_character(owner=player.id)
             cls.assign_playbook(player.character)
 
-        cls.storyworld.create_threat(threat_type='warlord')
-        cls.storyworld.create_threat(threat_type='warlord')
-        cls.storyworld.create_threat(threat_type='warlord')
+        cls.storyworld.create_threat(threat_type_name='warlord')
+        cls.storyworld.create_threat(threat_type_name='warlord')
+        cls.storyworld.create_threat(threat_type_name='warlord')
 
         initial_history_scene: Scene = Scene(name='initial_history')
         initial_history_scene.players = cls.playerworld.players
