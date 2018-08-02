@@ -49,20 +49,12 @@ class GameManager:
         for player_name in kwargs['player_names']:
             cls.playerworld.create_player(name=player_name)
             player = cls.playerworld.get_player_by_name(player_name)
-            character_name = cls.storyworld.get_generator_data_item('names')
-            cls.storyworld.create_entity(name='{}'.format(character_name),
-                                     attributes={'owner': player.id, 'agent': 'True', 'person': 'True'})
-            player.character = cls.storyworld.get_entity_by_name('{}'.format(character_name))
+            player.character = cls.storyworld.create_player_character(owner=player.id)
             cls.assign_playbook(player.character)
 
-        cls.storyworld.create_entity(name='{} the warlord'.format(cls.storyworld.get_generator_data_item('names')),
-                                 attributes={'agent': 'True', 'person': 'True', 'warlord': 'True'})
-
-        cls.storyworld.create_entity(name='{} the warlord'.format(cls.storyworld.get_generator_data_item('names')),
-                                 attributes={'agent': 'True', 'person': 'True', 'warlord': 'True'})
-
-        cls.storyworld.create_entity(name='{} the warlord'.format(cls.storyworld.get_generator_data_item('names')),
-                                 attributes={'agent': 'True', 'person': 'True', 'warlord': 'True'})
+        cls.storyworld.create_threat(threat_type='warlord')
+        cls.storyworld.create_threat(threat_type='warlord')
+        cls.storyworld.create_threat(threat_type='warlord')
 
         initial_history_scene: Scene = Scene(name='initial_history')
         initial_history_scene.players = cls.playerworld.players
@@ -101,6 +93,11 @@ class GameManager:
 
 if __name__ == "__main__":
     GameManager.new_game(player_names=['Player 1', 'Player 2', 'Player 3', 'Player 4'])
+    GameManager.run_scene()
+    GameManager.run_scene()
+    GameManager.run_scene()
+    GameManager.run_scene()
+    GameManager.run_scene()
     GameManager.run_scene()
 
     for scene in GameManager.scenes:

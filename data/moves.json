@@ -34,6 +34,6 @@
   {
     "name": "Outflank , corner or encircle someone",
     "id": "mov_outflank_corner_or_encircle_someone",
-    "prerequisites": ["agent.has_attribute('warlord')"]
+    "prerequisites": ["agent.has_attribute('threat_type')"]
   }
 ]
