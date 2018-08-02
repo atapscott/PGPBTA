@@ -1,4 +1,5 @@
 from playerworld.players import Player, MasterOfCeremonies
+import random
 
 
 class Playerworld:
@@ -22,5 +23,6 @@ class Playerworld:
         return [p.character for p in self.players]
 
     def get_next_scene_players(self) -> list:
-        return self.players
+        player_amount: int = random.randint(1, len(self.players))
+        return random.sample(self.players, player_amount)
 
