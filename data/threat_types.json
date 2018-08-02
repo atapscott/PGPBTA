@@ -5,11 +5,43 @@
 			"person": "True"
 		},
 		"moves": [
-		{
-			"name": "Outflank , corner or encircle someone",
-			"id": "mov_outflank_corner_or_encircle_someone",
+			{
+				"name": "Outflank , corner or encircle someone",
+				"id": "threat_mov_outflank_corner_or_encircle_someone",
+				"prerequisites": []
+			},
+
+			{
+			"name": "Attack someone suddenly, directly, and very hard",
+			"id": "threat_mov_attack_suddenly",
 			"prerequisites": []
-		}
+			},
+
+			{
+			"name": "Attack someone cautiously, holding reserves",
+			"id": "threat_mov_attack_cautiously",
+			"prerequisites": []
+			},
+
+			{
+			"name": "• Seize someone or something, for leverage or information",
+			"id": "threat_mov_seize_someone_or_something",
+			"prerequisites": []
+			},
+
+			{
+			"name": "Make a show of force",
+			"id": "threat_mov_show_force",
+			"prerequisites": []
+			},
+
+			{
+			"name": "Make a show of discipline",
+			"id": "threat_mov_show_discipline",
+			"prerequisites": []
+			}
+
 		]
+
 	}
 ]

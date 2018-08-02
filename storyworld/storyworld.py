@@ -80,7 +80,7 @@ class Storyworld:
         if candidate_entities is None:
             candidate_entities = self.entities
 
-        for agent_entity in [e for e in self.entities if 'agent' in e.attributes.keys() and e in candidate_entities]:
+        for agent_entity in [e for e in self.entities if isinstance(e, Agent) and e in candidate_entities]:
             agent_moves[agent_entity.name] = self._get_eligible_agent_moves(agent_entity, candidate_entities)
 
         return agent_moves

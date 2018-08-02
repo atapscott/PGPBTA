@@ -1,5 +1,5 @@
 import random
-from storyworld.entities import Entity
+from storyworld.entities import Entity, Agent
 from storyworld.storyworld import Storyworld
 from playerworld.playerworld import Playerworld
 from playerworld.players import Player
@@ -82,11 +82,16 @@ class GameManager:
 
         indexed_candidate_agent_moves: dict = cls.storyworld.get_candidate_agent_moves(next_scene.entities)
 
-        current_player: Player
-        for current_player in next_scene.players:
-            next_agent_move: tuple = cls.get_next_agent_move(current_player.character, indexed_candidate_agent_moves[
-                current_player.character.name])
+        i: int = 0
+        scene_actions: int = random.randint(1, 10)
+        while i < scene_actions:
+
+            next_agent_actor: Agent = random.choice([e for e in next_scene.entities if isinstance(e, Agent)])
+
+            next_agent_move: tuple = cls.get_next_agent_move(next_agent_actor, indexed_candidate_agent_moves[
+                next_agent_actor.name])
             next_scene.actions.append(next_agent_move)
+            i += 1
 
         cls.scenes.append(next_scene)
 
@@ -101,7 +106,7 @@ if __name__ == "__main__":
     GameManager.run_scene()
 
     for scene in GameManager.scenes:
-        print("SCENE: {} with {}".format(scene.name.upper(), scene.entities if scene.entities is not None else 'the past'))
+        print("\nSCENE: {} with {}".format(scene.name.upper(), scene.entities if scene.entities is not None else 'the past'))
         for action in scene.actions:
             print(action)
 
