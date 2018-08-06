@@ -74,4 +74,4 @@ class Threat(Agent):
         super(Threat, self).__init__(**kwargs)
 
     def print_nice_name(self):
-        return '{} the {}'.format(self.name, self.attributes['threat_type_name'])
+        return '{} the {} {}'.format(self.name, self.attributes['impulse'], self.attributes['threat_type_name'])

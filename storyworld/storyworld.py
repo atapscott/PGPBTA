@@ -67,7 +67,11 @@ class Storyworld:
         threat: Threat = Threat(**kwargs)
         threat_type = self.get_threat_type_by_name(kwargs['threat_type_name'])
         threat.name = self.get_generator_data_item('names')
-        threat.attributes = {'agent': 'True', 'threat_type_name': kwargs['threat_type_name']}
+        threat.attributes = {
+            'agent': 'True',
+            'threat_type_name': kwargs['threat_type_name'],
+            'impulse' : utils.parse_complex_value(threat_type['impulse'])
+        }
         threat.moves = threat_type['moves']
         self.entities.append(threat)
         return threat
