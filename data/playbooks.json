@@ -36,7 +36,7 @@
         "name": "Healing Touch",
         "id": "mov_angel_healing_touch",
         "prerequisites": [
-          "agent.is_playbook_type('Angel')",
+          "agent.has_playbook_type('Angel')",
           "object.has_attribute('person')"
         ]
       }
@@ -113,7 +113,7 @@
         "name": "artful_and_gracious",
         "id": "mov_artist_artful_and_gracious",
         "prerequisites": [
-          "agent.is_playbook_type('Artist')",
+          "agent.has_playbook_type('Artist')",
           "not isinstance(object, PlayerCharacter)",
           "object.has_attribute('person')"
         ]
@@ -122,7 +122,7 @@
         "name": "arresting_skinner",
         "id": "mov_artist_arresting_skinner",
         "prerequisites": [
-          "agent.is_playbook_type('Artist')",
+          "agent.has_playbook_type('Artist')",
           "object.has_attribute('person')"
         ]
       },
@@ -130,7 +130,7 @@
         "name": "hypnotic",
         "id": "mov_artist_hypnotic",
         "prerequisites": [
-          "agent.is_playbook_type('Artist')",
+          "agent.has_playbook_type('Artist')",
           "object.has_attribute('person')"
         ]
       }
@@ -203,7 +203,7 @@
         "id": "mov_gun_lugger_fts",
         "reflexive": "True",
         "prerequisites": [
-          "agent.is_playbook_type('Gun Lugger')"
+          "agent.has_playbook_type('Gun Lugger')"
         ]
       }
     ],
@@ -274,14 +274,14 @@
         "id": "mov_driver_eye_on_the_door",
         "reflexive": "True",
         "prerequisites": [
-          "agent.is_playbook_type('Driver')"
+          "agent.has_playbook_type('Driver')"
         ]
       },
       {
         "name": "Reputation",
         "id": "mov_driver_reputation",
         "prerequisites": [
-          "agent.is_playbook_type('Driver')",
+          "agent.has_playbook_type('Driver')",
           "object.has_attribute('person')"
         ]
       },
@@ -289,7 +289,7 @@
         "name": "Daredevil",
         "id": "mov_driver_daredevil",
         "prerequisites": [
-          "agent.is_playbook_type('Driver')",
+          "agent.has_playbook_type('Driver')",
           "isinstance(object, Threat) or isinstance(object, PlayerCharacter)"
         ]
       }
