@@ -3,11 +3,11 @@ from utils import utils
 
 class Entity:
 
-    name: str = None
-    id: str = None
-    attributes: dict = None
-
     def __init__(self, **kwargs):
+
+        self.name: str = None
+        self.id: str = None
+        self.attributes: dict = None
 
         self.__dict__ = kwargs
 
@@ -16,6 +16,9 @@ class Entity:
 
     def is_player_character(self) -> bool:
         return isinstance(self, PlayerCharacter)
+
+    def has_playbook_type(self, playbook_name: str):
+        return isinstance(self, PlayerCharacter) and self.attributes['playbook_name'] == playbook_name
 
     def has_attribute(self, attribute_key: str) -> bool:
         return attribute_key in self.attributes.keys()
@@ -51,7 +54,9 @@ class Entity:
 
 class Agent(Entity):
 
-    moves: list = None
+    def __init__(self, **kwargs):
+        self.moves: list = []
+        super(Agent, self).__init__(**kwargs)
 
 
 class PlayerCharacter(Agent):

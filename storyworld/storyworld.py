@@ -58,7 +58,7 @@ class Storyworld:
         pc: PlayerCharacter = PlayerCharacter(**kwargs)
         pc.name = self.get_generator_data_item('names')
         pc.attributes = {'agent': 'True', 'person': 'True', 'owner': kwargs['owner']}
-        pc.moves = self.player_moves
+        pc.moves = [pm for pm in self.player_moves]
         self.entities.append(pc)
         return pc
 
@@ -120,7 +120,10 @@ class Storyworld:
 
         eligible: bool = True
         for prerequisite in prerequisites:
-            eligible *= eval(prerequisite)
+            try:
+                eligible *= eval(prerequisite)
+            except (AttributeError, TypeError, SyntaxError):
+                pass
 
         return eligible
 

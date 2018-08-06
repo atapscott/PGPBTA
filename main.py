@@ -1,6 +1,6 @@
 import random
 from storyworld.entities import Entity, Agent
-from storyworld.storyworld import Storyworld
+from storyworld.storyworld import Storyworld, Move
 from playerworld.playerworld import Playerworld
 from playerworld.players import Player
 import itertools
@@ -34,12 +34,14 @@ class GameManager:
         return [p for p in self.plot_structure if is_agent_entity_action(p)]
 
     @classmethod
-    def assign_playbook(cls, entity: Entity):
+    def assign_playbook(cls, player_character: Agent):
         picked_playbooks: list = [e.attributes['playbook_name'] for e in cls.storyworld.entities if
                                   'owner' in e.attributes.keys() and 'playbook_name' in e.attributes.keys()]
         playbook: dict = random.choice([p for p in cls.storyworld.playbooks if p['name'] not in picked_playbooks])
-        entity.attributes['playbook_name'] = playbook['name']
-        entity.attributes['stats'] = random.choice(playbook['stats'])
+        player_character.attributes['playbook_name'] = playbook['name']
+        player_character.attributes['stats'] = random.choice(playbook['stats'])
+        player_character.moves += [Move(**md) for md in playbook['moves']]
+
 
     @classmethod
     def new_game(cls, **kwargs):
@@ -98,12 +100,10 @@ class GameManager:
 
 if __name__ == "__main__":
     GameManager.new_game(player_names=['Player 1', 'Player 2', 'Player 3', 'Player 4'])
-    GameManager.run_scene()
-    GameManager.run_scene()
-    GameManager.run_scene()
-    GameManager.run_scene()
-    GameManager.run_scene()
-    GameManager.run_scene()
+    i:int = 0
+    while i < 100:
+        GameManager.run_scene()
+        i += 1
 
     for scene in GameManager.scenes:
         print("\nSCENE: {} with {}".format(scene.name.upper(), scene.entities if scene.entities is not None else 'the past'))

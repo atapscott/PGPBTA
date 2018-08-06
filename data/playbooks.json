@@ -2,10 +2,44 @@
   {
     "name": "Angel",
     "stats": [
-      {"cool": 1, "hard": 0, "hot": 1, "sharp": 2, "weird": -1},
-      {"cool": 1, "hard": 1, "hot": 0, "sharp": 2, "weird": -1},
-      {"cool": -1, "hard": 1, "hot": 0, "sharp": 2, "weird": 1},
-      {"cool": 2, "hard": 0, "hot": -1, "sharp": 2, "weird": -1}
+      {
+        "cool": 1,
+        "hard": 0,
+        "hot": 1,
+        "sharp": 2,
+        "weird": -1
+      },
+      {
+        "cool": 1,
+        "hard": 1,
+        "hot": 0,
+        "sharp": 2,
+        "weird": -1
+      },
+      {
+        "cool": -1,
+        "hard": 1,
+        "hot": 0,
+        "sharp": 2,
+        "weird": 1
+      },
+      {
+        "cool": 2,
+        "hard": 0,
+        "hot": -1,
+        "sharp": 2,
+        "weird": -1
+      }
+    ],
+    "moves": [
+      {
+        "name": "Healing Touch",
+        "id": "mov_angel_healing_touch",
+        "prerequisites": [
+          "agent.is_playbook_type('Angel')",
+          "object.has_attribute('person')"
+        ]
+      }
     ],
     "hist": {
       "self_turn": {
@@ -25,9 +59,14 @@
           }
         ]
       },
-
       "others_turn": {
-        "base": {"type":"RAND", "values": ["+1","-1"]},
+        "base": {
+          "type": "RAND",
+          "values": [
+            "+1",
+            "-1"
+          ]
+        },
         "history_links": [
           {
             "base": "+0",
@@ -35,18 +74,66 @@
           }
         ]
       }
-
     }
-
   },
-
   {
     "name": "Artist",
     "stats": [
-      {"cool": 1, "hard": -1, "hot": 2, "sharp": 1, "weird": 0},
-      {"cool": 0, "hard": 0, "hot": 2, "sharp": 0, "weird": 1},
-      {"cool": -1, "hard": 0, "hot": 2, "sharp": 2, "weird": -1},
-      {"cool": 1, "hard": 1, "hot": 2, "sharp": 1, "weird": -2}
+      {
+        "cool": 1,
+        "hard": -1,
+        "hot": 2,
+        "sharp": 1,
+        "weird": 0
+      },
+      {
+        "cool": 0,
+        "hard": 0,
+        "hot": 2,
+        "sharp": 0,
+        "weird": 1
+      },
+      {
+        "cool": -1,
+        "hard": 0,
+        "hot": 2,
+        "sharp": 2,
+        "weird": -1
+      },
+      {
+        "cool": 1,
+        "hard": 1,
+        "hot": 2,
+        "sharp": 1,
+        "weird": -2
+      }
+    ],
+    "moves": [
+      {
+        "name": "artful_and_gracious",
+        "id": "mov_artist_artful_and_gracious",
+        "prerequisites": [
+          "agent.is_playbook_type('Artist')",
+          "not isinstance(object, PlayerCharacter)",
+          "object.has_attribute('person')"
+        ]
+      },
+      {
+        "name": "arresting_skinner",
+        "id": "mov_artist_arresting_skinner",
+        "prerequisites": [
+          "agent.is_playbook_type('Artist')",
+          "object.has_attribute('person')"
+        ]
+      },
+      {
+        "name": "hypnotic",
+        "id": "mov_artist_hypnotic",
+        "prerequisites": [
+          "agent.is_playbook_type('Artist')",
+          "object.has_attribute('person')"
+        ]
+      }
     ],
     "hist": {
       "self_turn": {
@@ -66,23 +153,59 @@
           }
         ]
       },
-
       "others_turn": {
-        "base": {"type":"RAND", "values": ["+1","-1"]},
+        "base": {
+          "type": "RAND",
+          "values": [
+            "+1",
+            "-1"
+          ]
+        },
         "history_links": []
       }
-
     }
-
   },
-
   {
     "name": "Gun Lugger",
     "stats": [
-      {"cool": 1, "hard": 2, "hot": -1, "sharp": 1, "weird": 0},
-      {"cool": -1, "hard": 2, "hot": -2, "sharp": 1, "weird": 2},
-      {"cool": 1, "hard": 2, "hot": -2, "sharp": 2, "weird": -1},
-      {"cool": 2, "hard": 2, "hot": -2, "sharp": 0, "weird": 0}
+      {
+        "cool": 1,
+        "hard": 2,
+        "hot": -1,
+        "sharp": 1,
+        "weird": 0
+      },
+      {
+        "cool": -1,
+        "hard": 2,
+        "hot": -2,
+        "sharp": 1,
+        "weird": 2
+      },
+      {
+        "cool": 1,
+        "hard": 2,
+        "hot": -2,
+        "sharp": 2,
+        "weird": -1
+      },
+      {
+        "cool": 2,
+        "hard": 2,
+        "hot": -2,
+        "sharp": 0,
+        "weird": 0
+      }
+    ],
+    "moves": [
+      {
+        "name": "Fuck this Shit",
+        "id": "mov_gun_lugger_fts",
+        "reflexive": "True",
+        "prerequisites": [
+          "agent.is_playbook_type('Gun Lugger')"
+        ]
+      }
     ],
     "hist": {
       "self_turn": {
@@ -102,7 +225,6 @@
           }
         ]
       },
-
       "others_turn": {
         "base": "+0",
         "history_links": [
@@ -112,18 +234,65 @@
           }
         ]
       }
-
     }
-
   },
-
   {
     "name": "Driver",
     "stats": [
-      {"cool": 0, "hard": -1, "hot": 1, "sharp": 2, "weird": 0},
-      {"cool": 1, "hard": 0, "hot": 0, "sharp": 2, "weird": -1},
-      {"cool": 0, "hard": 1, "hot": -1, "sharp": 2, "weird": -1},
-      {"cool": 1, "hard": -2, "hot": 0, "sharp": 2, "weird": 1}
+      {
+        "cool": 0,
+        "hard": -1,
+        "hot": 1,
+        "sharp": 2,
+        "weird": 0
+      },
+      {
+        "cool": 1,
+        "hard": 0,
+        "hot": 0,
+        "sharp": 2,
+        "weird": -1
+      },
+      {
+        "cool": 0,
+        "hard": 1,
+        "hot": -1,
+        "sharp": 2,
+        "weird": -1
+      },
+      {
+        "cool": 1,
+        "hard": -2,
+        "hot": 0,
+        "sharp": 2,
+        "weird": 1
+      }
+    ],
+    "moves": [
+      {
+        "name": "Eye on the Door",
+        "id": "mov_driver_eye_on_the_door",
+        "reflexive": "True",
+        "prerequisites": [
+          "agent.is_playbook_type('Driver')"
+        ]
+      },
+      {
+        "name": "Reputation",
+        "id": "mov_driver_reputation",
+        "prerequisites": [
+          "agent.is_playbook_type('Driver')",
+          "object.has_attribute('person')"
+        ]
+      },
+      {
+        "name": "Daredevil",
+        "id": "mov_driver_daredevil",
+        "prerequisites": [
+          "agent.is_playbook_type('Driver')",
+          "isinstance(object, Threat) or isinstance(object, PlayerCharacter)"
+        ]
+      }
     ],
     "hist": {
       "self_turn": {
@@ -139,13 +308,10 @@
           }
         ]
       },
-
       "others_turn": {
         "base": "-1",
         "history_links": []
       }
-
     }
-
   }
 ]
