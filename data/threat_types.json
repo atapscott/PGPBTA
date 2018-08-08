@@ -19,32 +19,38 @@
       {
         "name": "Outflank , corner or encircle someone",
         "id": "mov_threat_warlord_outflank_corner_or_encircle_someone",
-        "prerequisites": []
+        "prerequisites": [],
+        "tags": ["initiator", "follow_up", "reply", "interference"]
       },
       {
         "name": "Attack someone suddenly, directly, and very hard",
         "id": "mov_threat_warlord_attack_suddenly",
-        "prerequisites": []
+        "prerequisites": [],
+        "tags": ["initiator", "follow_up", "reply", "interference"]
       },
       {
         "name": "Attack someone cautiously, holding reserves",
         "id": "mov_threat_warlord_attack_cautiously",
-        "prerequisites": []
+        "prerequisites": [],
+        "tags": ["initiator", "follow_up", "reply", "interference"]
       },
       {
-        "name": "• Seize someone or something, for leverage or information",
+        "name": "Seize someone or something, for leverage or information",
         "id": "mov_threat_warlord_seize_someone_or_something",
-        "prerequisites": []
+        "prerequisites": [],
+        "tags": ["initiator", "follow_up", "reply", "interference"]
       },
       {
         "name": "Make a show of force",
         "id": "mov_threat_warlord_show_force",
-        "prerequisites": []
+        "prerequisites": [],
+        "tags": ["initiator", "follow_up", "reply", "interference"]
       },
       {
         "name": "Make a show of discipline",
         "id": "mov_threat_warlord_show_discipline",
-        "prerequisites": []
+        "prerequisites": [],
+        "tags": ["initiator", "follow_up", "reply", "interference"]
       }
     ]
   }

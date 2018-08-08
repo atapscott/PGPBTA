@@ -70,8 +70,12 @@ class Storyworld:
         threat.attributes = {
             'agent': 'True',
             'threat_type_name': kwargs['threat_type_name'],
-            'impulse' : utils.parse_complex_value(threat_type['impulse'])
+            'impulse': utils.parse_complex_value(threat_type['impulse'])
         }
+
+        for k, v in threat_type['attributes'].items():
+            threat.attributes[k] = v
+
         threat.moves = threat_type['moves']
         self.entities.append(threat)
         return threat
@@ -124,10 +128,7 @@ class Storyworld:
 
         eligible: bool = True
         for prerequisite in prerequisites:
-            try:
-                eligible *= eval(prerequisite)
-            except (AttributeError, TypeError, SyntaxError):
-                pass
+            eligible *= eval(prerequisite)
 
         return eligible
 
@@ -241,6 +242,6 @@ class Storyworld:
     def get_next_scene_entities(self, next_scene_players: list, previous_scenes: list):
         next_scene_entities: list = [nsp.character for nsp in next_scene_players]
         npc_entities: list = self.get_npc_entities()
-        npc_amount: int = random.randint(0, len(npc_entities))
+        npc_amount: int = random.randint(0 if len(next_scene_players) > 1 else 1, len(npc_entities))
         next_scene_entities = next_scene_entities + random.sample(npc_entities, npc_amount)
         return  next_scene_entities

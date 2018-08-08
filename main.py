@@ -2,8 +2,7 @@ import random
 from storyworld.entities import Entity, Agent
 from storyworld.storyworld import Storyworld, Move
 from playerworld.playerworld import Playerworld
-from playerworld.players import Player
-import itertools
+from storyworld.behavior import BehaviorModel
 
 
 class Scene:
@@ -24,14 +23,7 @@ class GameManager:
     scenes: list = []
     playerworld: Playerworld = None
     storyworld: Storyworld = None
-
-    @classmethod
-    def get_performed_agent_actions(cls, agent_entity):
-        is_agent_entity_action = \
-            lambda p: True if 'mov_' in p[1] and 'agent' in p[0].attributes.keys() and p[
-                0].id == agent_entity.id else False
-        actions: list = list(itertools.chain([s.actions for s in self.scenes]))
-        return [p for p in self.plot_structure if is_agent_entity_action(p)]
+    BehaviorModel.test_sanity()
 
     @classmethod
     def assign_playbook(cls, player_character: Agent):
@@ -41,7 +33,6 @@ class GameManager:
         player_character.attributes['playbook_name'] = playbook['name']
         player_character.attributes['stats'] = random.choice(playbook['stats'])
         player_character.moves += [Move(**md) for md in playbook['moves']]
-
 
     @classmethod
     def new_game(cls, **kwargs):
@@ -65,14 +56,69 @@ class GameManager:
         cls.scenes.append(initial_history_scene)
 
     @classmethod
-    def get_next_agent_move(cls, agent: Entity, candidate_agent_moves: dict) -> tuple:
+    def move_has_tags(cls, move: Move, tag_list: list) -> bool:
+        eligible: bool = True
+        for tag in tag_list:
+            eligible *= tag in move.tags
 
-        player_move_match = random.choice(candidate_agent_moves)
+        return eligible
+
+    @classmethod
+    def get_next_agent_move(cls, scene: Scene, indexed_candidate_agent_moves: dict) -> tuple:
+
+        if len(scene.actions) == 0:
+            next_behavior_tag = 'initiator'
+
+        else:
+            last_action: tuple = scene.actions[-1]
+            last_move: Move = last_action[1]
+            last_behavior_tag: str = last_action[3]
+            next_behavior_tag = BehaviorModel.get_next_behavior_tag(last_behavior_tag, len(scene.actions))
+
+            if len(scene.entities) < 3 and next_behavior_tag in ('interference'):
+                next_behavior_tag = 'follow_up'
+
+        agent_candidates: list = []
+        object_candidates: list = []
+
+        if next_behavior_tag == 'end':
+            return None, None, None, 'end'
+
+        elif next_behavior_tag in ('initiator', 'follow_up'):
+            agent_candidates = [e for e in scene.entities if isinstance(e, Agent)]
+            object_candidates = scene.entities
+
+        elif next_behavior_tag == 'reply':
+            agent_candidates = [last_action[2]] if last_action[2] is not None else [scene.actions[-2][0]]
+            object_candidates = [last_action[0]]
+
+        elif next_behavior_tag == 'interference':
+            interrupted_entity_names = [last_action[0], last_action[2]]
+            agent_candidates = [e for e in scene.entities if isinstance(e, Agent) and e not in interrupted_entity_names]
+            object_candidates = interrupted_entity_names
+
+        filtered_indexed_candidate_agent_moves: dict = {}
+        for agent_candidate in agent_candidates:
+            candidate_agent_moves: list = indexed_candidate_agent_moves[agent_candidate.name]
+            candidate_agent_moves = [cam for cam in candidate_agent_moves if
+                                                          cls.move_has_tags(cam[0], [next_behavior_tag])]
+
+            candidate_agent_moves = [cam for cam in candidate_agent_moves if
+                                                 len(cam) == 1 or cam[1] in object_candidates]
+
+            filtered_indexed_candidate_agent_moves[agent_candidate.name] = candidate_agent_moves
+
+        try:
+            agent = random.choice([ac for ac in agent_candidates if ac in agent_candidates])
+        except:
+            pass
+
+        player_move_match = random.choice(filtered_indexed_candidate_agent_moves[agent.name])
 
         if player_move_match[0].is_reflexive():
-            return agent, player_move_match[0]
+            return agent, player_move_match[0], None, next_behavior_tag
         else:
-            return agent, player_move_match[0], player_move_match[1]
+            return agent, player_move_match[0], player_move_match[1], next_behavior_tag
 
     @classmethod
     def run_scene(cls):
@@ -84,29 +130,27 @@ class GameManager:
 
         indexed_candidate_agent_moves: dict = cls.storyworld.get_candidate_agent_moves(next_scene.entities)
 
-        i: int = 0
-        scene_actions: int = random.randint(1, 10)
-        while i < scene_actions:
+        while True:
+            next_agent_action: tuple = cls.get_next_agent_move(next_scene, indexed_candidate_agent_moves)
 
-            next_agent_actor: Agent = random.choice([e for e in next_scene.entities if isinstance(e, Agent)])
+            if next_agent_action[3] == 'end':
+                break
 
-            next_agent_move: tuple = cls.get_next_agent_move(next_agent_actor, indexed_candidate_agent_moves[
-                next_agent_actor.name])
-            next_scene.actions.append(next_agent_move)
-            i += 1
+            next_scene.actions.append(next_agent_action)
 
         cls.scenes.append(next_scene)
 
 
 if __name__ == "__main__":
     GameManager.new_game(player_names=['Player 1', 'Player 2', 'Player 3', 'Player 4'])
-    i:int = 0
-    while i < 100:
+    i: int = 0
+    while i < 1000:
         GameManager.run_scene()
         i += 1
 
     for scene in GameManager.scenes:
-        print("\nSCENE: {} with {}".format(scene.name.upper(), scene.entities if scene.entities is not None else 'the past'))
+        print("\nSCENE: {} with {}".format(scene.name.upper(),
+                                           scene.entities if scene.entities is not None else 'the past'))
         for action in scene.actions:
             print(action)
 

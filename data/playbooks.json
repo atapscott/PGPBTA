@@ -38,7 +38,8 @@
         "prerequisites": [
           "agent.has_playbook_type('Angel')",
           "object.has_attribute('person')"
-        ]
+        ],
+        "tags": ["initiator", "follow_up", "reply"]
       }
     ],
     "hist": {
@@ -116,7 +117,8 @@
           "agent.has_playbook_type('Artist')",
           "not isinstance(object, PlayerCharacter)",
           "object.has_attribute('person')"
-        ]
+        ],
+        "tags": ["initiator", "follow_up", "reply"]
       },
       {
         "name": "arresting_skinner",
@@ -124,7 +126,8 @@
         "prerequisites": [
           "agent.has_playbook_type('Artist')",
           "object.has_attribute('person')"
-        ]
+        ],
+        "tags": ["initiator", "follow_up", "reply", "interference"]
       },
       {
         "name": "hypnotic",
@@ -132,7 +135,8 @@
         "prerequisites": [
           "agent.has_playbook_type('Artist')",
           "object.has_attribute('person')"
-        ]
+        ],
+        "tags": ["initiator", "follow_up", "reply"]
       }
     ],
     "hist": {
@@ -204,7 +208,8 @@
         "reflexive": "True",
         "prerequisites": [
           "agent.has_playbook_type('Gun Lugger')"
-        ]
+        ],
+        "tags": ["follow_up", "reply", "interference"]
       }
     ],
     "hist": {
@@ -275,7 +280,8 @@
         "reflexive": "True",
         "prerequisites": [
           "agent.has_playbook_type('Driver')"
-        ]
+        ],
+        "tags": ["follow_up", "reply", "interference"]
       },
       {
         "name": "Reputation",
@@ -283,7 +289,8 @@
         "prerequisites": [
           "agent.has_playbook_type('Driver')",
           "object.has_attribute('person')"
-        ]
+        ],
+        "tags": ["initiator", "follow_up", "reply"]
       },
       {
         "name": "Daredevil",
