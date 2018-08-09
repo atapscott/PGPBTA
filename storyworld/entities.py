@@ -15,6 +15,9 @@ class Entity:
         if 'id' not in self.__dict__:
             self.id = utils.get_id()
 
+        if 'gender' not in self.__dict__:
+            self.gender = 'm'
+
     def is_player_character(self) -> bool:
         return isinstance(self, PlayerCharacter)
 
