@@ -1,4 +1,5 @@
 from utils import utils
+from storyworld.nl_renderer import NLRenderer
 
 
 class Entity:
@@ -65,7 +66,9 @@ class PlayerCharacter(Agent):
         super(PlayerCharacter, self).__init__(**kwargs)
 
     def print_nice_name(self):
-        return '{} the {}'.format(self.name, self.attributes['playbook_name'])
+        return NLRenderer.get_rendered_nl('long_name',
+                                          render_data={'entity_type': 'pc', 'name': self.name,
+                                                       'playbook_name': self.attributes['playbook_name']})
 
 
 class Threat(Agent):
@@ -74,4 +77,7 @@ class Threat(Agent):
         super(Threat, self).__init__(**kwargs)
 
     def print_nice_name(self):
-        return '{} the {} {}'.format(self.name, self.attributes['impulse'], self.attributes['threat_type_name'])
+        return NLRenderer.get_rendered_nl('long_name',
+                                          render_data={'entity_type': 'threat', 'name': self.name,
+                                                       'impulse': self.attributes['impulse'],
+                                                       'threat_type_name': self.attributes['threat_type_name']})

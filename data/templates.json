@@ -1,0 +1,15 @@
+{
+  "mov_read_a_sitch": [
+    "{{agent}} cala la situación.",
+    "{{agent}} observa detenidamente su alrededor buscando respuestas."
+  ],
+
+  "mov_read_a_person": [
+    "{{agent}} cala a {{object}}.",
+    "{{agent}} observa detenidamente a {{object}}."
+  ],
+
+  "long_name": [
+    "{%  if entity_type == 'pc'  %}{{name}} el {{playbook_name|localize}}{%  endif %}{%  if entity_type == 'threat'%}{{name}} el {{threat_type_name|localize}} {{impulse|localize}}{%  endif %}"
+  ],
+}

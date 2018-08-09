@@ -1,13 +1,11 @@
 class Move:
 
-    name: str = None
     reflexive: bool = False
     prerequisites: list = None
     tags: list = None
     id: str = None
 
     def __init__(self, **kwargs):
-        self.name = 'Unnamed'
         self.prerequisites = []
         self.reflexive = False
 
@@ -20,7 +18,7 @@ class Move:
         return self.reflexive
 
     def __str__(self):
-        return self.name
+        return self.id
 
     def __repr__(self):
         return self.id
