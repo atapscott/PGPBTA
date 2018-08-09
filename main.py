@@ -3,6 +3,7 @@ from storyworld.entities import Entity, Agent
 from storyworld.storyworld import Storyworld, Move
 from playerworld.playerworld import Playerworld
 from storyworld.behavior import BehaviorModel
+from storyworld.nl_renderer import NLRenderer
 
 
 class Scene:
@@ -144,7 +145,7 @@ class GameManager:
 if __name__ == "__main__":
     GameManager.new_game(player_names=['Player 1', 'Player 2', 'Player 3', 'Player 4'])
     i: int = 0
-    while i < 1000:
+    while i < 100:
         GameManager.run_scene()
         i += 1
 
@@ -152,6 +153,11 @@ if __name__ == "__main__":
         print("\nSCENE: {} with {}".format(scene.name.upper(),
                                            scene.entities if scene.entities is not None else 'the past'))
         for action in scene.actions:
-            print(action)
+            render_data: dict = {'agent': action[0], 'object': action[2]}
+            template_id: str = action[1].id if isinstance(action[1], Move) else action[1]
+            try:
+                print(NLRenderer.get_rendered_nl(template_id, render_data))
+            except KeyError:
+                print(action)
 
     pass

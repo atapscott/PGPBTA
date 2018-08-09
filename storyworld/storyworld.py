@@ -1,5 +1,6 @@
 from storyworld.entities import Entity, Agent, PlayerCharacter, Threat
 from storyworld.moves import Move
+from storyworld.nl_renderer import NLRenderer
 import json
 import random
 from utils import utils
@@ -45,6 +46,8 @@ class Storyworld:
                 td['moves'] = [Move(**md) for md in td['moves']]
 
             self.threat_types = serialized_threat_type_data
+
+        NLRenderer.initialize()
 
     def create_entity(self, **kwargs) -> Entity:
 
