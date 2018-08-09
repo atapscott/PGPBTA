@@ -16,7 +16,7 @@ class Entity:
             self.id = utils.get_id()
 
         if 'gender' not in self.__dict__:
-            self.gender = 'm'
+            self.gender = 'f'
 
     def is_player_character(self) -> bool:
         return isinstance(self, PlayerCharacter)
@@ -70,8 +70,8 @@ class PlayerCharacter(Agent):
 
     def print_nice_name(self):
         return NLRenderer.get_rendered_nl('long_name',
-                                          render_data={'entity_type': 'pc', 'name': self.name,
-                                                       'playbook_name': self.attributes['playbook_name']})
+                                          render_data={'entity_type': 'pc', 'name': self.name, 'gender': self.gender,
+                                                    'playbook_name': self.attributes['playbook_name']})
 
 
 class Threat(Agent):
@@ -82,5 +82,6 @@ class Threat(Agent):
     def print_nice_name(self):
         return NLRenderer.get_rendered_nl('long_name',
                                           render_data={'entity_type': 'threat', 'name': self.name,
+                                                       'gender': self.gender,
                                                        'impulse': self.attributes['impulse'],
                                                        'threat_type_name': self.attributes['threat_type_name']})
