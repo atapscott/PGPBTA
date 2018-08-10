@@ -58,7 +58,6 @@ class NLRenderer:
     @classmethod
     def _render_template(cls, template_string: str, render_data: dict)->str:
         rendered_template = cls._env.from_string(template_string)
-        render_data['localizations'] = cls._localization_data
 
         return rendered_template.render(**render_data)
 

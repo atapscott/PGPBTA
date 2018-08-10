@@ -20,7 +20,7 @@
   ],
 
   "mov_go_aggro": [
-    "{{agent}} se pone {{'agresivo'|gender_flex(gender)}} con {{object}}.",
+    "{{agent}} se pone {{'agresivo'|gender_flex(agent.gender)}} con {{object}}.",
     "{{agent}} desata su violencia contra {{object}}."
   ],
 
@@ -30,7 +30,7 @@
   ],
 
   "mov_seduce_or_manipulate": [
-    "{{agent}} usa su encanto con {{object}}, {{'poniéndoselo'|gender_flex(gender)}} en el bolsillo.",
+    "{{agent}} usa su encanto con {{object}}, {{'poniéndoselo'|gender_flex(agent.gender)}} en el bolsillo.",
     "{{agent}} manipula cuidadosamente a {{object}}."
   ],
 
