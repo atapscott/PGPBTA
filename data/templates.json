@@ -9,8 +9,8 @@
   ],
 
   "mov_read_a_person": [
-    "{{agent}} cala a {{object}}.",
-    "{{agent}} observa detenidamente a {{object}}."
+    "{{agent}} cala a {{object}}, es {{'adjectives_person_personality'|generate|gender_flex(object.gender)}}.",
+    "{{agent}} observa detenidamente a {{object}} y encuentra su carácter {{'adjectives_person_personality'|generate}}."
   ],
 
   "mov_open_your_brain": [
@@ -34,7 +34,7 @@
   ],
 
   "mov_seduce_or_manipulate": [
-    "{{agent}} usa su encanto con {{object}}, {{'poniéndoselo'|gender_flex(agent.gender)}} en el bolsillo.",
+    "{{agent}} usa su encanto con {{object}}, {{'poniéndoselo'|gender_flex(object.gender)}} en el bolsillo.",
     "{{agent}} manipula cuidadosamente a {{object}}."
   ],
 
@@ -50,7 +50,7 @@
 
   "mov_angel_healing_touch": [
     "{{agent}} posa cura a {{object}} con sus conocimientos de medicina ancestrales.",
-    "{{agent}} posa sus manos curativas sobre {{object}}, {{'curándolo'|gender_flex(agent.gender)}}."
+    "{{agent}} posa sus manos curativas sobre {{object}}, {{'curándolo'|gender_flex(object.gender)}}."
   ],
 
   "mov_artist_artful_and_gracious": [

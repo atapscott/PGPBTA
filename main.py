@@ -39,6 +39,7 @@ class GameManager:
     def new_game(cls, **kwargs):
         cls.playerworld: Playerworld = Playerworld()
         cls.storyworld: Storyworld = Storyworld()
+        NLRenderer.initialize(storyworld=cls.storyworld)
 
         for player_name in kwargs['player_names']:
             cls.playerworld.create_player(name=player_name)
@@ -102,17 +103,14 @@ class GameManager:
         for agent_candidate in agent_candidates:
             candidate_agent_moves: list = indexed_candidate_agent_moves[agent_candidate.name]
             candidate_agent_moves = [cam for cam in candidate_agent_moves if
-                                                          cls.move_has_tags(cam[0], [next_behavior_tag])]
+                                     cls.move_has_tags(cam[0], [next_behavior_tag])]
 
             candidate_agent_moves = [cam for cam in candidate_agent_moves if
-                                                 len(cam) == 1 or cam[1] in object_candidates]
+                                     len(cam) == 1 or cam[1] in object_candidates]
 
             filtered_indexed_candidate_agent_moves[agent_candidate.name] = candidate_agent_moves
 
-        try:
-            agent = random.choice([ac for ac in agent_candidates if ac in agent_candidates])
-        except:
-            pass
+        agent = random.choice([ac for ac in agent_candidates if ac in agent_candidates])
 
         player_move_match = random.choice(filtered_indexed_candidate_agent_moves[agent.name])
 
@@ -150,8 +148,8 @@ if __name__ == "__main__":
         i += 1
 
     for scene in GameManager.scenes:
-        print("\nSCENE: {} with {}".format(scene.name.upper(),
-                                           scene.entities if scene.entities is not None else 'the past'))
+        print("\n{} with {}".format(scene.name, [e.print_nice_name() for e in
+                                                 scene.entities] if scene.entities is not None else 'the past'))
         for action in scene.actions:
             render_data: dict = {'agent': action[0], 'object': action[2]}
             template_id: str = action[1].id if isinstance(action[1], Move) else action[1]
