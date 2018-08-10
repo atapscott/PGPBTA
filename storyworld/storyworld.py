@@ -60,6 +60,8 @@ class Storyworld:
 
         pc: PlayerCharacter = PlayerCharacter(**kwargs)
         pc.name, pc.gender = self.get_generator_data_item('names')
+        if pc.gender == 'mf':
+            pc.gender = random.choice(('m', 'f'))
         pc.attributes = {'agent': 'True', 'person': 'True', 'owner': kwargs['owner']}
         pc.moves = [pm for pm in self.player_moves]
         self.entities.append(pc)
@@ -70,6 +72,8 @@ class Storyworld:
         threat: Threat = Threat(**kwargs)
         threat_type = self.get_threat_type_by_name(kwargs['threat_type_name'])
         threat.name, threat.gender = self.get_generator_data_item('names')
+        if threat.gender == 'mf':
+            threat.gender = random.choice(('m', 'f'))
         threat.attributes = {
             'agent': 'True',
             'threat_type_name': kwargs['threat_type_name'],
