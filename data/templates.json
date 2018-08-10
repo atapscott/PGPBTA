@@ -1,4 +1,8 @@
 {
+   "long_name": [
+    "{%if entity_type=='pc'%}{{name}} {{'_sda'|gender_flex(gender)}} {{playbook_name|localize|gender_flex(gender)}}{%elif entity_type=='threat'%}{{name}} {{'_sda'|gender_flex(gender)}} {{threat_type_name|localize|gender_flex(gender)}} {{impulse|localize|gender_flex(gender)}}{%  endif %}"
+  ],
+
   "mov_read_a_sitch": [
     "{{agent}} cala la situación.",
     "{{agent}} observa detenidamente su alrededor buscando respuestas."
@@ -44,7 +48,73 @@
     "{{agent}} mantiene la calma bajo presión."
   ],
 
-  "long_name": [
-    "{%if entity_type=='pc'%}{{name}} {{'_sa'|gender_flex(gender)}} {{playbook_name|localize|gender_flex(gender)}}{%elif entity_type=='threat'%}{{name}} {{'_sa'|gender_flex(gender)}} {{threat_type_name|localize|gender_flex(gender)}} {{impulse|localize|gender_flex(gender)}}{%  endif %}"
+  "mov_angel_healing_touch": [
+    "{{agent}} posa cura a {{object}} con sus conocimientos de medicina ancestrales.",
+    "{{agent}} posa sus manos curativas sobre {{object}}, {{'curándolo'|gender_flex(agent.gender)}}."
+  ],
+
+  "mov_artist_artful_and_gracious": [
+    "{{agent}} interpreta su arte mientras {{object}} mira, {{'ensimismado'|gender_flex(object.gender)}}",
+    "{{agent}} se entrega a su arte, interpretándolo, mientras {{object}}, en el público, observa atentamente."
+  ],
+
+  "mov_artist_arresting_skinner": [
+    "{{agent}} se muestra {{'ligero'|gender_flex(agent.gender)}} de ropa ante {{'_sia'|gender_flex(object.gender)}} {{'sorprendido'|gender_flex(object.gender)}} {{object}}",
+    "{{agent}} pasea casualmente en paños menores frente a {{object}}."
+  ],
+
+  "mov_artist_hypnotic": [
+    "{{agent}} comparte unos momentos de intimidad con {{object}}",
+    "{{agent}} charla a solas con {{object}}, sincerándose."
+  ],
+
+  "mov_gun_lugger_fts": [
+    "{{agent}} lo manda todo al cuerno y se larga con las armas por delante.",
+    "{{agent}} abandona, buscando una salida rápida pisando a todo el que lo impida."
+  ],
+
+  "mov_driver_eye_on_the_door": [
+    "{{agent}} se esfuma sin dejar rastro. Al parecer tenía una ruta de escape preparada para su vehículo.",
+    "{{agent}} pisa a fondo en su vehículo, dejando una densa humareda tras de si mientras se desvanece en el horizonte."
+  ],
+
+  "mov_driver_reputation": [
+    "{{agent}} revela a {{object}} que es {{'_sda'|gender_flex(agent.gender)}} {{'autentico'|gender_flex(agent.gender)}}, {{'_sda'|gender_flex(agent.gender)}} de verdad.",
+    "{{agent}} prueba a {{object}} que es {{'_sda'|gender_flex(agent.gender)}} {{'autor'|gender_flex(agent.gender)}} de diversas gestas legendarias, tratando de {{'impresionarlo'|gender_flex(object.gender)}}."
+  ],
+
+  "mov_driver_daredevil": [
+    "{{agent}} se lanza como {{'_sia'|gender_flex(agent.gender)}} {{'diablo'|gender_flex(agent.gender)}} sobre {{object}} ignorando el riesgo mientras su vehículo acelera.",
+    "{{agent}} apuesta todo cargando contra {{object}} en su vehículo."
+  ],
+
+  "mov_threat_warlord_outflank_corner_or_encircle_someone": [
+    "{{agent}} acorrala a {{object}}, {{'dejándolo'|gender_flex(object.gender)}} sin escapatoria.",
+    "{{agent}} usa a sus secuaces para rodear a {{object}}, {{'encerrándolo'|gender_flex(object.gender)}}."
+  ],
+
+  "mov_threat_warlord_attack_suddenly": [
+    "{{agent}} ataca sin aviso a {{object}}.",
+    "{{agent}} sale de la nada y ataca a {{object}}."
+  ],
+
+  "mov_threat_warlord_attack_cautiously": [
+    "{{agent}} ataca con precaución a {{object}}, tratando de minimizar el daño de sus secuaces.",
+    "{{agent}} inicia una breve escaramuza con {{object}} que no va a más."
+  ],
+
+  "mov_threat_warlord_seize_someone_or_something": [
+    "{{agent}} toma una cosa de {{object}} gracias a la fuerza bruta de sus esbirros.",
+    "{{agent}} hace a {{object}} su {{'prisionero'|gender_flex(object.gender)}} por la fuerza."
+  ],
+
+  "mov_threat_warlord_show_force": [
+    "{{agent}} somete a {{object}} con una brutal demostración de fuerza.",
+    "{{agent}} demuestra a {{object}} de lo que es capaz, tomando una de sus cosas."
+  ],
+
+  "mov_threat_warlord_show_discipline": [
+    "{{agent}} demuestra su disciplina a {{object}}, ejecutando a uno de sus hombres sin miramientos.",
+    "{{agent}} se sobrepone a las inclemencias del tiempo para demostrar su disciplina a {{object}}."
   ]
 }

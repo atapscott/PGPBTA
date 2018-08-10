@@ -24,7 +24,7 @@
       {
         "id": "mov_threat_warlord_attack_suddenly",
         "prerequisites": [],
-        "tags": ["initiator", "follow_up", "reply", "interference"]
+        "tags": ["initiator", "interference"]
       },
       {
         "id": "mov_threat_warlord_attack_cautiously",
