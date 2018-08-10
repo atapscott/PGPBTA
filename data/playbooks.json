@@ -298,7 +298,8 @@
         "prerequisites": [
           "agent.has_playbook_type('Driver')",
           "isinstance(object, Threat) or isinstance(object, PlayerCharacter)"
-        ]
+        ],
+        "tags": ["initiator", "follow_up", "reply", "interference"]
       }
     ],
     "hist": {

@@ -1,8 +1,21 @@
 {
-  "_sa": ["el", "la"],
+  "_sda": ["el", "la"],
+  "_sia": ["un", "una"],
 
   "agresivo": ["agresivo", "agresiva"],
   "poniéndoselo": ["poniéndoselo", "poniéndosela"],
+  "curándolo": ["curándolo", "curándola"],
+  "ensimismado": ["ensimismado", "ensimismada"],
+  "ligero": ["ligero", "ligera"],
+  "sorprendido": ["sorprendido", "sorprendida"],
+  "autentico": ["autentico", "autentica"],
+  "autor": ["autor", "autora"],
+  "impresionarlo": ["impresionarlo", "impresionarla"],
+  "diablo": ["diablo", "valquiria"],
+  "dejándolo": ["dejándolo", "dejándola"],
+  "encerrándolo": ["encerrándolo", "encerrándola"],
+  "llevándoselo": ["llevándoselo", "llevándosela"],
+  "prisionero": ["prisionero", "prisionera"],
 
   "conductor": ["conductor", "conductora"],
   "angel": ["angel", "santa"],
