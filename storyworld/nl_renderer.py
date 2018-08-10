@@ -9,25 +9,46 @@ class NLRenderer:
     _localization_data: dict = None
     _gender_flex_data: dict = None
     _env: Environment = None
+    storyworld = None
 
     @classmethod
     def gender_flex(cls, base, gender):
         index = 0 if gender == 'm' else 1
-        flexed_string = cls._gender_flex_data[base][index]
-        return flexed_string
+        if base in cls._gender_flex_data.keys():
+            return cls._gender_flex_data[base][index]
+
+        elif base[-1] == 'o':
+            return base[:-1]+'a' if gender == 'f' else base
+
+        elif base[-2:] == 'ón':
+            return base[:-2]+'ona' if gender == 'f' else base
+
+        elif base[-1] == 'r':
+            return base+'a' if gender == 'f' else base
+
+        else:
+            return base
 
     @classmethod
-    def initialize(cls):
+    def localize(cls, input):
+        return cls._localization_data[input.lower()]
+
+    @classmethod
+    def generate(cls, generator_key):
+        generated_item = cls.storyworld.get_generator_data_item(generator_key)
+        return generated_item
+
+    @classmethod
+    def initialize(cls, **kwargs):
         cls._load_template_data()
         cls._load_localization_data()
         cls._load_gender_flex_data()
         cls._env = Environment(loader=BaseLoader())
+        cls.storyworld = kwargs['storyworld']
 
-        def localize(input):
-            return cls._localization_data[input.lower()]
-
-        cls._env.filters['localize'] = localize
+        cls._env.filters['localize'] = cls.localize
         cls._env.filters['gender_flex'] = cls.gender_flex
+        cls._env.filters['generate'] = cls.generate
 
     @classmethod
     def get_rendered_nl(cls, template_id: str, render_data: dict=None)->str:

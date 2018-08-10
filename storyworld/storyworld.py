@@ -47,8 +47,6 @@ class Storyworld:
 
             self.threat_types = serialized_threat_type_data
 
-        NLRenderer.initialize()
-
     def create_entity(self, **kwargs) -> Entity:
 
         entity: Entity = Entity(**kwargs)
@@ -110,10 +108,22 @@ class Storyworld:
         return {e.name: e for e in self.entities}[entity_name]
 
     def get_generator_data_item(self, generator_name: str):
-        random.shuffle(self.generator_data[generator_name])
-        value, gender = self.generator_data[generator_name][0]
-        del self.generator_data[generator_name][0]
-        return value, gender
+
+        generator_dict: dict = self.generator_data
+
+        if '_' in generator_name:
+            split_index = generator_name.split('_')
+
+            while len(split_index) > 1:
+                generator_dict = generator_dict[split_index[0]]
+                split_index = split_index[1:]
+
+            generator_name = split_index[0]
+
+        random.shuffle(generator_dict[generator_name])
+        result = generator_dict[generator_name][0]
+        del generator_dict[generator_name][0]
+        return result
 
     def _get_eligible_agent_moves(self, agent: Agent, candidate_entities: list = None) -> list:
         eligible_moves: list = []
