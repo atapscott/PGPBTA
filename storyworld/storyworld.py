@@ -59,7 +59,7 @@ class Storyworld:
     def create_player_character(self, **kwargs) -> PlayerCharacter:
 
         pc: PlayerCharacter = PlayerCharacter(**kwargs)
-        pc.name = self.get_generator_data_item('names')
+        pc.name, pc.gender = self.get_generator_data_item('names')
         pc.attributes = {'agent': 'True', 'person': 'True', 'owner': kwargs['owner']}
         pc.moves = [pm for pm in self.player_moves]
         self.entities.append(pc)
@@ -69,7 +69,7 @@ class Storyworld:
 
         threat: Threat = Threat(**kwargs)
         threat_type = self.get_threat_type_by_name(kwargs['threat_type_name'])
-        threat.name = self.get_generator_data_item('names')
+        threat.name, threat.gender = self.get_generator_data_item('names')
         threat.attributes = {
             'agent': 'True',
             'threat_type_name': kwargs['threat_type_name'],
@@ -107,9 +107,9 @@ class Storyworld:
 
     def get_generator_data_item(self, generator_name: str):
         random.shuffle(self.generator_data[generator_name])
-        value = self.generator_data[generator_name][0]
+        value, gender = self.generator_data[generator_name][0]
         del self.generator_data[generator_name][0]
-        return value
+        return value, gender
 
     def _get_eligible_agent_moves(self, agent: Agent, candidate_entities: list = None) -> list:
         eligible_moves: list = []

@@ -1,5 +1,9 @@
 {
   "_sa": ["el", "la"],
+
+  "agresivo": ["agresivo", "agresiva"],
+  "poniéndoselo": ["poniéndoselo", "poniéndosela"],
+
   "conductor": ["conductor", "conductora"],
   "angel": ["angel", "santa"],
   "artista": ["artista", "artista"],
