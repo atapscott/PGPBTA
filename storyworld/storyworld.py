@@ -107,7 +107,7 @@ class Storyworld:
     def get_entity_by_name(self, entity_name: str) -> Entity:
         return {e.name: e for e in self.entities}[entity_name]
 
-    def get_generator_data_item(self, generator_name: str):
+    def get_generator_data_item(self, generator_name: str, delete_result_from_seeder: bool=True):
 
         generator_dict: dict = self.generator_data
 
@@ -122,7 +122,8 @@ class Storyworld:
 
         random.shuffle(generator_dict[generator_name])
         result = generator_dict[generator_name][0]
-        del generator_dict[generator_name][0]
+        if delete_result_from_seeder:
+            del generator_dict[generator_name][0]
         return result
 
     def _get_eligible_agent_moves(self, agent: Agent, candidate_entities: list = None) -> list:
@@ -262,3 +263,18 @@ class Storyworld:
         npc_amount: int = random.randint(0 if len(next_scene_players) > 1 else 1, len(npc_entities))
         next_scene_entities = next_scene_entities + random.sample(npc_entities, npc_amount)
         return  next_scene_entities
+
+    def get_location_name(self)->str:
+        [base, gender] = self.get_generator_data_item('locations', False)
+
+        if random.randint(1, 5) < 3:
+            pre_adjective: str = self.get_generator_data_item('adjectives_general', False)
+            pre_adjective = NLRenderer.gender_flex(pre_adjective, gender)
+            base = "{} {}".format(pre_adjective, base)
+
+        post_adjective: str = self.get_generator_data_item('adjectives_general', False)
+        post_adjective = NLRenderer.gender_flex(post_adjective, gender)
+        base = "{} {}".format(base, post_adjective)
+
+        return base
+
