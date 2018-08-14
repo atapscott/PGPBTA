@@ -262,9 +262,9 @@ class Storyworld:
         npc_entities: list = self.get_npc_entities()
         npc_amount: int = random.randint(0 if len(next_scene_players) > 1 else 1, len(npc_entities))
         next_scene_entities = next_scene_entities + random.sample(npc_entities, npc_amount)
-        return  next_scene_entities
+        return next_scene_entities
 
-    def get_location_name(self)->str:
+    def _generate_location(self)->tuple:
         [base, gender] = self.get_generator_data_item('locations', False)
 
         if random.randint(1, 5) < 3:
@@ -276,5 +276,17 @@ class Storyworld:
         post_adjective = NLRenderer.gender_flex(post_adjective, gender)
         base = "{} {}".format(base, post_adjective)
 
-        return base
+        return base, gender
+
+    def get_scene_configuration(self, scene)->str:
+        location_name, location_gender = self._generate_location()
+        pcs: list = [e.print_nice_name() for e in scene.entities if e.is_player_character()]
+        npcs: list = [e.print_nice_name() for e in scene.entities if not e.is_player_character()]
+
+        return NLRenderer.get_rendered_nl('scene_configuration', {
+            "location_name": location_name,
+            "location_gender": location_gender,
+            "pcs": pcs,
+            "npcs": npcs
+        })
 
