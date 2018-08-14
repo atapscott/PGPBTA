@@ -148,14 +148,18 @@ if __name__ == "__main__":
         i += 1
 
     for scene in GameManager.scenes:
-        print("\n{} with {}".format(scene.name, [e.print_nice_name() for e in
-                                                 scene.entities] if scene.entities is not None else 'the past'))
-        for action in scene.actions:
-            render_data: dict = {'agent': action[0], 'object': action[2]}
-            template_id: str = action[1].id if isinstance(action[1], Move) else action[1]
-            try:
-                print(NLRenderer.get_rendered_nl(template_id, render_data))
-            except KeyError:
-                print(action)
+
+        if scene.entities is None:
+            print(scene.actions)
+        else:
+            print("\n{} en {} con {}".format(scene.name, GameManager.storyworld.get_location_name(),
+                                             [e.print_nice_name() for e in scene.entities]))
+            for action in scene.actions:
+                render_data: dict = {'agent': action[0], 'object': action[2]}
+                template_id: str = action[1].id if isinstance(action[1], Move) else action[1]
+                try:
+                    print(NLRenderer.get_rendered_nl(template_id, render_data))
+                except KeyError:
+                    print(action)
 
     pass
