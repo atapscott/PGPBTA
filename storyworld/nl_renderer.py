@@ -1,7 +1,7 @@
 from jinja2 import Environment, BaseLoader
 import json
 import random
-
+from utils import utils
 
 class NLRenderer:
 
@@ -39,6 +39,11 @@ class NLRenderer:
         return generated_item
 
     @classmethod
+    def utils_filter(cls, input):
+        input = utils.pprint_list(input)
+        return input
+
+    @classmethod
     def initialize(cls, **kwargs):
         cls._load_template_data()
         cls._load_localization_data()
@@ -49,6 +54,7 @@ class NLRenderer:
         cls._env.filters['localize'] = cls.localize
         cls._env.filters['gender_flex'] = cls.gender_flex
         cls._env.filters['generate'] = cls.generate
+        cls._env.filters['utils_filter'] = cls.utils_filter
 
     @classmethod
     def get_rendered_nl(cls, template_id: str, render_data: dict=None)->str:

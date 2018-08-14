@@ -13,3 +13,15 @@ def parse_complex_value(complex_value: dict):
         return random.choice(complex_value['values'])
     else:
         raise ValueError('Unknown complex value type {}'.format(type))
+
+
+def pprint_list(input_list: list):
+    s: str = ''
+    for i, element in enumerate(input_list):
+        if i == 0:
+            s += element
+        elif i == len(input_list)-1:
+            s += ' y ' + element
+        else:
+            s += ', ' + element
+    return s

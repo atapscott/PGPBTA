@@ -141,19 +141,21 @@ class GameManager:
 
 
 if __name__ == "__main__":
+
     GameManager.new_game(player_names=['Player 1', 'Player 2', 'Player 3', 'Player 4'])
     i: int = 0
     while i < 100:
         GameManager.run_scene()
         i += 1
 
-    for scene in GameManager.scenes:
+    for i, scene in enumerate(GameManager.scenes):
+
+        print('\nESCENA {}'.format(i))
 
         if scene.entities is None:
             print(scene.actions)
         else:
-            print("\n{} en {} con {}".format(scene.name, GameManager.storyworld.get_location_name(),
-                                             [e.print_nice_name() for e in scene.entities]))
+            print(GameManager.storyworld.get_scene_configuration(scene))
             for action in scene.actions:
                 render_data: dict = {'agent': action[0], 'object': action[2]}
                 template_id: str = action[1].id if isinstance(action[1], Move) else action[1]
