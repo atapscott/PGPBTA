@@ -3,7 +3,7 @@
     "{%if entity_type=='pc'%}{{name}} {{'_sda'|gender_flex(gender)}} {{playbook_name|localize|gender_flex(gender)}}{%elif entity_type=='threat'%}{{name}} {{'_sda'|gender_flex(gender)}} {{threat_type_name|localize|gender_flex(gender)}} {{impulse|localize|gender_flex(gender)}}{% endif%}"
   ],
 
-  "scene_configuration": [
+  "mc_scene_conf": [
     "{{pcs|utils_filter}} {%if pcs|length > 1%}llegan{%else%}llega{%endif%} a {{'_sda'|gender_flex(location_gender)}} {{location_name}}.{%if npcs|length > 0%} Allí {%if npcs|length == 1%}está{%else%}están{%endif%} {{npcs|utils_filter}}.{%endif%}"
   ],
 

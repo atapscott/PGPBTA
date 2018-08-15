@@ -2,7 +2,7 @@ import random
 from storyworld.entities import Entity, Agent
 from storyworld.storyworld import Storyworld, Move
 from playerworld.playerworld import Playerworld
-from storyworld.behavior import BehaviorModel
+from storyworld.behavior import PlayerBehaviorModel, MCBehaviorModel
 from storyworld.nl_renderer import NLRenderer
 
 
@@ -24,7 +24,8 @@ class GameManager:
     scenes: list = []
     playerworld: Playerworld = None
     storyworld: Storyworld = None
-    BehaviorModel.test_sanity()
+    assert PlayerBehaviorModel.test_sanity()
+    assert MCBehaviorModel.test_sanity()
 
     @classmethod
     def assign_playbook(cls, player_character: Agent):
@@ -66,7 +67,7 @@ class GameManager:
         return eligible
 
     @classmethod
-    def get_next_player_move(cls, scene: Scene, start_chain: bool=False) -> tuple:
+    def get_next_player_move(cls, scene: Scene, start_chain: bool = False) -> tuple:
 
         player_characters: list = [e for e in scene.entities if e.is_player_character()]
 
@@ -74,35 +75,35 @@ class GameManager:
             [e for e in scene.entities if e.is_player_character()], scene.entities)
 
         if start_chain:
-            next_behavior_tag = 'initiator'
+            next_behavior_tag = 'pc_initiator'
 
         else:
             last_action: tuple = scene.actions[-1]
             last_move: Move = last_action[1]
             last_behavior_tag: str = last_action[3]
-            next_behavior_tag = BehaviorModel.get_next_behavior_tag(last_behavior_tag, len(scene.actions))
+            next_behavior_tag = PlayerBehaviorModel.get_next_behavior_tag(last_behavior_tag, len(scene.actions))
 
-            # Disable interferences if there are less than 3 potential agents
-            if len(player_characters) < 3 and next_behavior_tag in ('interference'):
-                next_behavior_tag = 'follow_up'
-            elif next_behavior_tag == 'reply' and last_action[2] and not last_action[2].is_player_character():
-                next_behavior_tag = 'end'
+            # Disable pc_interferences if there are less than 3 potential agents
+            if len(player_characters) < 3 and next_behavior_tag in ('pc_interference'):
+                next_behavior_tag = 'pc_follow_up'
+            elif next_behavior_tag == 'pc_reply' and last_action[2] and not last_action[2].is_player_character():
+                next_behavior_tag = 'pc_end'
 
         agent_candidates: list = []
         object_candidates: list = []
 
-        if next_behavior_tag == 'end':
-            return None, None, None, 'end'
+        if next_behavior_tag == 'pc_end':
+            return None, None, None, 'pc_end'
 
-        elif next_behavior_tag in ('initiator', 'follow_up'):
+        elif next_behavior_tag in ('pc_initiator', 'pc_follow_up'):
             agent_candidates = player_characters
             object_candidates = scene.entities
 
-        elif next_behavior_tag == 'reply':
+        elif next_behavior_tag == 'pc_reply':
             agent_candidates = [last_action[2]] if last_action[2] is not None else [scene.actions[-2][0]]
             object_candidates = [last_action[0]]
 
-        elif next_behavior_tag == 'interference':
+        elif next_behavior_tag == 'pc_interference':
             interrupted_entities = [last_action[0], last_action[2]]
             agent_candidates = [e for e in scene.entities if
                                 e.is_player_character() and e not in interrupted_entities]
@@ -129,10 +130,24 @@ class GameManager:
             return agent, player_move_match[0], player_move_match[1], next_behavior_tag
 
     @classmethod
-    def get_next_mc_move(cls, scene: Scene) -> tuple:
+    def get_next_mc_move(cls, scene: Scene, configure_scene: bool = False) -> tuple:
 
-        candidate_moves: list = []
-        candidate_moves.append((None, None, None, 'end'))
+        indexed_mc_moves: dict = {m.id: m for m in GameManager.storyworld.mc_moves}
+
+        if configure_scene:
+            next_move: Move = indexed_mc_moves['mc_scene_conf']
+            return None, next_move, None, 'mc_scene_conf'
+
+
+        else:
+            last_action: tuple = scene.actions[-1]
+            last_move: Move = last_action[1]
+            last_behavior_tag: str = last_action[3]
+            next_behavior_tag: str = MCBehaviorModel.get_next_behavior_tag(last_behavior_tag, len(
+                scene.actions))
+
+        '''
+        candidate_actions: list = list([])
 
         npcs: list = [e for e in scene.entities if not e.is_player_character()]
         pcs: list = [e for e in scene.entities if e.is_player_character()]
@@ -142,9 +157,12 @@ class GameManager:
                 npcs, pcs)
             candidate_npc = random.choice(npcs)
             npc_move_match = random.choice(indexed_candidate_npc_moves[candidate_npc.name])
-            candidate_moves.append((candidate_npc, npc_move_match[0], npc_move_match[1], 'mc_move'))
+            candidate_actions.append((candidate_npc, npc_move_match[0], npc_move_match[1], 'mc_move'))
 
-        return random.choice(candidate_moves)
+        return random.choice(candidate_actions)
+        '''
+
+        return None, None, None, next_behavior_tag
 
     @classmethod
     def run_scene(cls):
@@ -154,18 +172,21 @@ class GameManager:
         next_scene.players = cls.playerworld.get_next_scene_players()
         next_scene.entities = cls.storyworld.get_next_scene_entities(next_scene.players, cls.scenes)
 
-        n: int = random.randint(1,3)
+        next_scene.actions.append(cls.get_next_mc_move(next_scene, True))
+
+        n: int = random.randint(1, 3)
         while n > 0:
 
+            next_mc_action: tuple = cls.get_next_mc_move(next_scene)
+            while next_mc_action[3] != 'mc_end':
+                next_scene.actions.append(next_mc_action)
+                next_mc_action = cls.get_next_mc_move(next_scene)
+
             next_pc_action: tuple = cls.get_next_player_move(next_scene, True)
-            while next_pc_action[3] != 'end':
+            while next_pc_action[3] != 'pc_end':
                 next_scene.actions.append(next_pc_action)
                 next_pc_action = cls.get_next_player_move(next_scene)
 
-            next_mc_action: tuple = cls.get_next_mc_move(next_scene)
-            while next_mc_action[3] != 'end':
-                next_scene.actions.append(next_mc_action)
-                next_mc_action = cls.get_next_mc_move(next_scene)
             n -= 1
 
         cls.scenes.append(next_scene)
@@ -186,14 +207,15 @@ if __name__ == "__main__":
         if scene.entities is None:
             print(scene.actions)
         else:
-            print(GameManager.storyworld.get_scene_configuration(scene))
             for action in scene.actions:
-                render_data: dict = {'agent': action[0], 'object': action[2]}
-                template_id: str = action[1].id if isinstance(action[1], Move) else action[1]
-                try:
-                    print(action)
+
+                print(action)
+                if action[1] and NLRenderer.has_template(action[1].id):
+                    render_data: dict = {'agent': action[0], 'object': action[2]}
+                    template_id: str = action[1].id if isinstance(action[1], Move) else action[1]
+                    if template_id == 'mc_scene_conf':
+                        render_data = {**render_data,
+                                       **GameManager.storyworld.get_scene_configuration_render_data(scene)}
                     print(NLRenderer.get_rendered_nl(template_id, render_data))
-                except KeyError:
-                    print(action)
 
     pass

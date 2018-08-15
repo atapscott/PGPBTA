@@ -3,57 +3,57 @@
     "name": "Read a Person",
     "id": "mov_read_a_person",
     "prerequisites": ["agent.is_player_character()"],
-    "tags": ["initiator", "follow_up", "reply"]
+    "tags": ["pc_initiator", "pc_follow_up", "pc_reply"]
   },
   {
     "name": "Read a Sitch",
     "id": "mov_read_a_sitch",
     "reflexive": "True",
     "prerequisites": ["agent.is_player_character()"],
-    "tags": ["initiator", "follow_up", "reply"]
+    "tags": ["pc_initiator", "pc_follow_up", "pc_reply"]
   },
   {
     "name": "Open your Brain",
     "id": "mov_open_your_brain",
     "reflexive": "True",
     "prerequisites": ["agent.is_player_character()"],
-    "tags": ["initiator", "follow_up", "reply"]
+    "tags": ["pc_initiator", "pc_follow_up", "pc_reply"]
   },
   {
     "name": "Sucker Someone",
     "id": "mov_sucker_someone",
     "prerequisites": ["agent.is_player_character()"],
-    "tags": ["initiator", "follow_up", "reply", "interference"]
+    "tags": ["pc_initiator", "pc_follow_up", "pc_reply", "pc_interference"]
   },
   {
     "name": "Go Aggro",
     "id": "mov_go_aggro",
     "prerequisites": ["agent.is_player_character()"],
-    "tags": ["initiator", "follow_up", "reply", "interference"]
+    "tags": ["pc_initiator", "pc_follow_up", "pc_reply", "pc_interference"]
   },
   {
     "name": "Do Battle",
     "id": "mov_do_battle",
     "prerequisites": ["agent.is_player_character()"],
-    "tags": ["initiator", "follow_up", "reply", "interference"]
+    "tags": ["pc_initiator", "pc_follow_up", "pc_reply", "pc_interference"]
   },
   {
     "name": "Seduce of Manipulate",
     "id": "mov_seduce_or_manipulate",
     "prerequisites": ["agent.is_player_character()"],
-    "tags": ["initiator", "follow_up", "reply", "interference"]
+    "tags": ["pc_initiator", "pc_follow_up", "pc_reply", "pc_interference"]
   },
   {
     "name": "Help or Interfere with Someone",
     "id": "mov_help_or_interfere_with_someone",
     "prerequisites": ["agent.is_player_character()"],
-    "tags": ["interference"]
+    "tags": ["pc_interference"]
   },
   {
     "name": "Do Something under Fire",
     "id": "mov_do_something_under_fire",
     "prerequisites": ["agent.is_player_character()"],
-    "tags": ["reply"]
+    "tags": ["pc_reply"]
   }
 
 ]
