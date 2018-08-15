@@ -19,32 +19,32 @@
       {
         "id": "mov_threat_warlord_outflank_corner_or_encircle_someone",
         "prerequisites": [],
-        "tags": ["initiator", "follow_up", "reply", "interference"]
+        "tags": ["pc_initiator", "pc_follow_up", "pc_reply", "pc_interference"]
       },
       {
         "id": "mov_threat_warlord_attack_suddenly",
         "prerequisites": [],
-        "tags": ["initiator", "interference"]
+        "tags": ["pc_initiator", "pc_interference"]
       },
       {
         "id": "mov_threat_warlord_attack_cautiously",
         "prerequisites": [],
-        "tags": ["initiator", "follow_up", "reply", "interference"]
+        "tags": ["pc_initiator", "pc_follow_up", "pc_reply", "pc_interference"]
       },
       {
         "id": "mov_threat_warlord_seize_someone_or_something",
         "prerequisites": [],
-        "tags": ["initiator", "follow_up", "reply", "interference"]
+        "tags": ["pc_initiator", "pc_follow_up", "pc_reply", "pc_interference"]
       },
       {
         "id": "mov_threat_warlord_show_force",
         "prerequisites": [],
-        "tags": ["initiator", "follow_up", "reply", "interference"]
+        "tags": ["pc_initiator", "pc_follow_up", "pc_reply", "pc_interference"]
       },
       {
         "id": "mov_threat_warlord_show_discipline",
         "prerequisites": [],
-        "tags": ["initiator", "follow_up", "reply", "interference"]
+        "tags": ["pc_initiator", "pc_follow_up", "pc_reply", "pc_interference"]
       }
     ]
   }

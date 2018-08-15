@@ -18,6 +18,7 @@ class Storyworld:
 
         self.entities = []
         self.player_moves = []
+        self.mc_moves = []
         self.scenes = []
         self.generator_data = {}
         self.load_data()
@@ -33,6 +34,11 @@ class Storyworld:
             serialized_player_moves: list = json.load(infile)
 
             self.player_moves = [Move(**smd) for smd in serialized_player_moves]
+
+        with open('data/mc_moves.json', 'r', encoding='utf8') as infile:
+            serialized_mc_moves: list = json.load(infile)
+
+            self.mc_moves = [Move(**smd) for smd in serialized_mc_moves]
 
         with open('data/generators.json', 'r', encoding='utf8') as infile:
             serialized_generator_data: dict = json.load(infile)
@@ -283,14 +289,14 @@ class Storyworld:
 
         return base, gender
 
-    def get_scene_configuration(self, scene) -> str:
+    def get_scene_configuration_render_data(self, scene) -> dict:
         location_name, location_gender = self._generate_location()
         pcs: list = [e.print_nice_name() for e in scene.entities if e.is_player_character()]
         npcs: list = [e.print_nice_name() for e in scene.entities if not e.is_player_character()]
 
-        return NLRenderer.get_rendered_nl('scene_configuration', {
+        return {
             "location_name": location_name,
             "location_gender": location_gender,
             "pcs": pcs,
             "npcs": npcs
-        })
+        }

@@ -1,0 +1,10 @@
+[
+  {
+    "name": "Configure the scene",
+    "id": "mc_scene_conf",
+    "prerequisites": [],
+    "reflexive": "True",
+    "tags": ["mc_scene_conf"]
+  }
+
+]

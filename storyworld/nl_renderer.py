@@ -68,6 +68,10 @@ class NLRenderer:
         return rendered_template
 
     @classmethod
+    def has_template(cls, template_id: str)->bool:
+        return template_id in cls._template_data.keys()
+
+    @classmethod
     def _load_template_data(cls):
         with open('data/templates.json', 'r', encoding='utf8') as infile:
             cls._template_data = json.load(infile)
