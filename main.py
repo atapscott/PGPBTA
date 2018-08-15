@@ -66,9 +66,14 @@ class GameManager:
         return eligible
 
     @classmethod
-    def get_next_agent_move(cls, scene: Scene, indexed_candidate_agent_moves: dict) -> tuple:
+    def get_next_player_move(cls, scene: Scene, start_chain: bool=False) -> tuple:
 
-        if len(scene.actions) == 0:
+        player_characters: list = [e for e in scene.entities if e.is_player_character()]
+
+        indexed_candidate_player_moves: dict = cls.storyworld.get_candidate_moves(
+            [e for e in scene.entities if e.is_player_character()], scene.entities)
+
+        if start_chain:
             next_behavior_tag = 'initiator'
 
         else:
@@ -77,8 +82,11 @@ class GameManager:
             last_behavior_tag: str = last_action[3]
             next_behavior_tag = BehaviorModel.get_next_behavior_tag(last_behavior_tag, len(scene.actions))
 
-            if len(scene.entities) < 3 and next_behavior_tag in ('interference'):
+            # Disable interferences if there are less than 3 potential agents
+            if len(player_characters) < 3 and next_behavior_tag in ('interference'):
                 next_behavior_tag = 'follow_up'
+            elif next_behavior_tag == 'reply' and last_action[2] and not last_action[2].is_player_character():
+                next_behavior_tag = 'end'
 
         agent_candidates: list = []
         object_candidates: list = []
@@ -87,7 +95,7 @@ class GameManager:
             return None, None, None, 'end'
 
         elif next_behavior_tag in ('initiator', 'follow_up'):
-            agent_candidates = [e for e in scene.entities if isinstance(e, Agent)]
+            agent_candidates = player_characters
             object_candidates = scene.entities
 
         elif next_behavior_tag == 'reply':
@@ -95,13 +103,14 @@ class GameManager:
             object_candidates = [last_action[0]]
 
         elif next_behavior_tag == 'interference':
-            interrupted_entity_names = [last_action[0], last_action[2]]
-            agent_candidates = [e for e in scene.entities if isinstance(e, Agent) and e not in interrupted_entity_names]
-            object_candidates = interrupted_entity_names
+            interrupted_entities = [last_action[0], last_action[2]]
+            agent_candidates = [e for e in scene.entities if
+                                e.is_player_character() and e not in interrupted_entities]
+            object_candidates = interrupted_entities
 
         filtered_indexed_candidate_agent_moves: dict = {}
         for agent_candidate in agent_candidates:
-            candidate_agent_moves: list = indexed_candidate_agent_moves[agent_candidate.name]
+            candidate_agent_moves: list = indexed_candidate_player_moves[agent_candidate.name]
             candidate_agent_moves = [cam for cam in candidate_agent_moves if
                                      cls.move_has_tags(cam[0], [next_behavior_tag])]
 
@@ -120,6 +129,24 @@ class GameManager:
             return agent, player_move_match[0], player_move_match[1], next_behavior_tag
 
     @classmethod
+    def get_next_mc_move(cls, scene: Scene) -> tuple:
+
+        candidate_moves: list = []
+        candidate_moves.append((None, None, None, 'end'))
+
+        npcs: list = [e for e in scene.entities if not e.is_player_character()]
+        pcs: list = [e for e in scene.entities if e.is_player_character()]
+
+        if len(npcs) > 0:
+            indexed_candidate_npc_moves: dict = cls.storyworld.get_candidate_moves(
+                npcs, pcs)
+            candidate_npc = random.choice(npcs)
+            npc_move_match = random.choice(indexed_candidate_npc_moves[candidate_npc.name])
+            candidate_moves.append((candidate_npc, npc_move_match[0], npc_move_match[1], 'mc_move'))
+
+        return random.choice(candidate_moves)
+
+    @classmethod
     def run_scene(cls):
 
         next_scene: Scene = Scene()
@@ -127,15 +154,19 @@ class GameManager:
         next_scene.players = cls.playerworld.get_next_scene_players()
         next_scene.entities = cls.storyworld.get_next_scene_entities(next_scene.players, cls.scenes)
 
-        indexed_candidate_agent_moves: dict = cls.storyworld.get_candidate_agent_moves(next_scene.entities)
+        n: int = random.randint(1,3)
+        while n > 0:
 
-        while True:
-            next_agent_action: tuple = cls.get_next_agent_move(next_scene, indexed_candidate_agent_moves)
+            next_pc_action: tuple = cls.get_next_player_move(next_scene, True)
+            while next_pc_action[3] != 'end':
+                next_scene.actions.append(next_pc_action)
+                next_pc_action = cls.get_next_player_move(next_scene)
 
-            if next_agent_action[3] == 'end':
-                break
-
-            next_scene.actions.append(next_agent_action)
+            next_mc_action: tuple = cls.get_next_mc_move(next_scene)
+            while next_mc_action[3] != 'end':
+                next_scene.actions.append(next_mc_action)
+                next_mc_action = cls.get_next_mc_move(next_scene)
+            n -= 1
 
         cls.scenes.append(next_scene)
 
@@ -160,6 +191,7 @@ if __name__ == "__main__":
                 render_data: dict = {'agent': action[0], 'object': action[2]}
                 template_id: str = action[1].id if isinstance(action[1], Move) else action[1]
                 try:
+                    print(action)
                     print(NLRenderer.get_rendered_nl(template_id, render_data))
                 except KeyError:
                     print(action)
