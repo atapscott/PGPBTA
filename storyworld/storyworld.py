@@ -88,15 +88,20 @@ class Storyworld:
     def get_player_characters(self) -> list:
         return [e for e in self.entities if 'owner' in e.attributes.keys()]
 
-    def get_candidate_agent_moves(self, candidate_entities: list = None) -> dict:
-        agent_moves: dict = {}
-        if candidate_entities is None:
-            candidate_entities = self.entities
+    def get_candidate_moves(self, candidate_agent_entities: list = None,
+                            candidate_object_entities: list = None) -> dict:
+        candidate_agent_moves: dict = {}
+        if candidate_agent_entities is None:
+            candidate_agent_entities = [e for e in self.entities if e.is_player_character()]
 
-        for agent_entity in [e for e in self.entities if isinstance(e, Agent) and e in candidate_entities]:
-            agent_moves[agent_entity.name] = self._get_eligible_agent_moves(agent_entity, candidate_entities)
+        if candidate_object_entities is None:
+            candidate_object_entities = self.entities
 
-        return agent_moves
+        for candidate_agent_entity in candidate_agent_entities:
+            candidate_agent_moves[candidate_agent_entity.name] = \
+                self._get_eligible_agent_moves(candidate_agent_entity, candidate_object_entities)
+
+        return candidate_agent_moves
 
     def get_playbook_by_name(self, playbook_name: str) -> dict:
         return {p['name']: p for p in self.playbooks}[playbook_name]
@@ -107,7 +112,7 @@ class Storyworld:
     def get_entity_by_name(self, entity_name: str) -> Entity:
         return {e.name: e for e in self.entities}[entity_name]
 
-    def get_generator_data_item(self, generator_name: str, delete_result_from_seeder: bool=True):
+    def get_generator_data_item(self, generator_name: str, delete_result_from_seeder: bool = True):
 
         generator_dict: dict = self.generator_data
 
@@ -137,7 +142,7 @@ class Storyworld:
                 for object_candidate in object_candidates:
                     eligible_moves.append((move, object_candidate))
             elif move.is_reflexive() and self._is_eligible_agent_object_pairing(move.prerequisites, agent):
-                eligible_moves.append((move, ))
+                eligible_moves.append((move,))
 
         return eligible_moves
 
@@ -254,7 +259,7 @@ class Storyworld:
 
         return initial_history
 
-    def get_npc_entities(self)->list:
+    def get_npc_entities(self) -> list:
         return [e for e in self.entities if not e.is_player_character()]
 
     def get_next_scene_entities(self, next_scene_players: list, previous_scenes: list):
@@ -264,7 +269,7 @@ class Storyworld:
         next_scene_entities = next_scene_entities + random.sample(npc_entities, npc_amount)
         return next_scene_entities
 
-    def _generate_location(self)->tuple:
+    def _generate_location(self) -> tuple:
         [base, gender] = self.get_generator_data_item('locations', False)
 
         if random.randint(1, 5) < 3:
@@ -278,7 +283,7 @@ class Storyworld:
 
         return base, gender
 
-    def get_scene_configuration(self, scene)->str:
+    def get_scene_configuration(self, scene) -> str:
         location_name, location_gender = self._generate_location()
         pcs: list = [e.print_nice_name() for e in scene.entities if e.is_player_character()]
         npcs: list = [e.print_nice_name() for e in scene.entities if not e.is_player_character()]
@@ -289,4 +294,3 @@ class Storyworld:
             "pcs": pcs,
             "npcs": npcs
         })
-

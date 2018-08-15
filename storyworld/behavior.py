@@ -19,7 +19,7 @@ class BehaviorModel:
 
         current_index: int = cls.state_model_row_names.index(current_behavior_tag)
         current_transitions: list = cls.state_map[current_index]
-        rand_index: int = random.randint(1, 100) + accumulated_actions * 2
+        rand_index: int = random.randint(1, 100) + accumulated_actions * 30
         if rand_index > 100:
             rand_index = 100
         discarded_probabilities: int = 0
