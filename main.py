@@ -1,5 +1,5 @@
 import random
-from storyworld.entities import Entity, Agent, Threat
+from storyworld.entities import Entity, Agent, Threat, Location
 from storyworld.storyworld import Storyworld, Move
 from playerworld.playerworld import Playerworld
 from storyworld.behavior import PlayerBehaviorModel, MCBehaviorModel
@@ -18,6 +18,10 @@ class Scene:
 
     def get_entity_actions(self, entity: Entity) -> list:
         return [a for a in self.actions if a[1].id == entity.id]
+
+    def get_location(self) -> Location:
+        [location] = [e for e in self.entities if 'location' in e.attributes.keys()]
+        return location
 
 
 class GameManager:
@@ -147,7 +151,7 @@ class GameManager:
         next_behavior_tag: str = MCBehaviorModel.get_next_behavior_tag(last_behavior_tag, len(
             scene.actions))
 
-        if next_behavior_tag =='mc_threat':
+        if next_behavior_tag == 'mc_threat':
             candidate_actions: list = list([])
 
             pcs: list = [e for e in scene.entities if e.is_player_character()]
@@ -162,6 +166,14 @@ class GameManager:
 
                 return random.choice(candidate_actions)
 
+        elif next_behavior_tag == 'mc_descriptive':
+
+            npcs: list = [e for e in scene.entities if not e.is_player_character() and 'person' in e.attributes.keys()]
+            [location] = [e for e in scene.entities if isinstance(e, Location)]
+            next_move = indexed_mc_moves['mc_descriptive']
+
+            return None, next_move, location, next_behavior_tag
+
         return None, next_move, None, next_behavior_tag
 
     @classmethod
@@ -171,6 +183,7 @@ class GameManager:
         next_scene.name = 'Scene {}'.format(len(cls.scenes))
         next_scene.players = cls.playerworld.get_next_scene_players()
         next_scene.entities = cls.storyworld.get_next_scene_entities(next_scene.players, cls.scenes)
+        next_scene.entities.append(cls.storyworld.create_location())
 
         next_scene.actions.append(cls.get_next_mc_action(next_scene, True))
 
@@ -207,15 +220,18 @@ if __name__ == "__main__":
         if scene.entities is None:
             print(scene.actions)
         else:
+            pcs: list = [e.print_nice_name() for e in scene.entities if e.is_player_character()]
+            npcs: list = [e.print_nice_name() for e in scene.entities if
+                          not e.is_player_character() and 'person' in e.attributes.keys()]
             for action in scene.actions:
 
                 print(action)
                 if action[1] and NLRenderer.has_template(action[1].id):
-                    render_data: dict = {'agent': action[0], 'object': action[2]}
+
+                    render_data: dict = {'agent': action[0], 'object': action[2], 'scene': scene, 'pcs': pcs,
+                                         'npcs': npcs}
                     template_id: str = action[1].id if isinstance(action[1], Move) else action[1]
-                    if template_id == 'mc_scene_conf':
-                        render_data = {**render_data,
-                                       **GameManager.storyworld.get_scene_configuration_render_data(scene)}
+
                     print(NLRenderer.get_rendered_nl(template_id, render_data))
 
     pass

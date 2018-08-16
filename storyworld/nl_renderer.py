@@ -39,9 +39,9 @@ class NLRenderer:
         return generated_item
 
     @classmethod
-    def utils_filter(cls, input):
-        input = utils.pprint_list(input)
-        return input
+    def utils_filter(cls, input, filter):
+        func = getattr(utils, filter)
+        return func(input)
 
     @classmethod
     def initialize(cls, **kwargs):

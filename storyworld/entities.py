@@ -56,6 +56,20 @@ class Entity:
         return self.name
 
 
+class Location(Entity):
+
+    def __init__(self, **kwargs):
+        kwargs['attributes'] = {'location': 'True'}
+        super(Location, self).__init__(**kwargs)
+
+    def get_elements(self):
+        return self.attributes['elements']
+
+    def add_element(self, element: str):
+        self.attributes['elements'].append(element)
+
+
+
 class Agent(Entity):
 
     def __init__(self, **kwargs):

@@ -1,4 +1,4 @@
-from storyworld.entities import Entity, Agent, PlayerCharacter, Threat
+from storyworld.entities import Entity, Agent, PlayerCharacter, Threat, Location
 from storyworld.moves import Move
 from storyworld.nl_renderer import NLRenderer
 import json
@@ -275,8 +275,18 @@ class Storyworld:
         next_scene_entities = next_scene_entities + random.sample(npc_entities, npc_amount)
         return next_scene_entities
 
-    def _generate_location(self) -> tuple:
-        [base, gender] = self.get_generator_data_item('locations', False)
+    def create_location(self) -> Location:
+        new_location: Location = Location()
+        [base, gender] = self.get_generator_data_item('location_names', False)
+        new_location.attributes['base_location'] = base
+        new_location.attributes['elements'] = []
+
+        element_amount: int = random.randint(1, 3)
+        while element_amount > 0:
+            element: str = self.get_generator_data_item('location_elements', False)
+            if element not in new_location.get_elements():
+                new_location.add_element(element)
+                element_amount -= 1
 
         if random.randint(1, 5) < 3:
             pre_adjective: str = self.get_generator_data_item('adjectives_general', False)
@@ -287,16 +297,8 @@ class Storyworld:
         post_adjective = NLRenderer.gender_flex(post_adjective, gender)
         base = "{} {}".format(base, post_adjective)
 
-        return base, gender
+        new_location.name = base
+        new_location.gender = gender
 
-    def get_scene_configuration_render_data(self, scene) -> dict:
-        location_name, location_gender = self._generate_location()
-        pcs: list = [e.print_nice_name() for e in scene.entities if e.is_player_character()]
-        npcs: list = [e.print_nice_name() for e in scene.entities if not e.is_player_character()]
+        return new_location
 
-        return {
-            "location_name": location_name,
-            "location_gender": location_gender,
-            "pcs": pcs,
-            "npcs": npcs
-        }
