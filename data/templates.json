@@ -3,8 +3,12 @@
     "{%if entity_type=='pc'%}{{name}} {{'_sda'|gender_flex(gender)}} {{playbook_name|localize|gender_flex(gender)}}{%elif entity_type=='threat'%}{{name}} {{'_sda'|gender_flex(gender)}} {{threat_type_name|localize|gender_flex(gender)}} {{impulse|localize|gender_flex(gender)}}{% endif%}"
   ],
 
+  "mc_descriptive": [
+    "En {{'_sda'|gender_flex(object.gender)}} {{object.attributes['base_location'].lower()}} hay {{object.get_elements()|utils_filter('pprint_list')}}."
+  ],
+
   "mc_scene_conf": [
-    "{{pcs|utils_filter}} {%if pcs|length > 1%}llegan{%else%}llega{%endif%} a {{'_sda'|gender_flex(location_gender)}} {{location_name}}.{%if npcs|length > 0%} Allí {%if npcs|length == 1%}está{%else%}están{%endif%} {{npcs|utils_filter}}.{%endif%}"
+    "{{pcs|utils_filter('pprint_list')}} {%if pcs|length > 1%}llegan{%else%}llega{%endif%} a {{'_sda'|gender_flex(scene.get_location().gender)}} {{scene.get_location().name}}.{%if npcs|length > 0%} Allí {%if npcs|length == 1%}está{%else%}están{%endif%} {{npcs|utils_filter('pprint_list')}}.{%endif%}"
   ],
 
   "mov_read_a_sitch": [
@@ -14,7 +18,7 @@
 
   "mov_read_a_person": [
     "{{agent}} cala a {{object}}, es {{'adjectives_person_personality'|generate|gender_flex(object.gender)}}.",
-    "{{agent}} observa detenidamente a {{object}} y encuentra su carácter {{'adjectives_person_personality'|generate}}."
+    "{{agent}} observa detenidamente a {{object}}."
   ],
 
   "mov_open_your_brain": [

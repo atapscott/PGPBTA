@@ -2,9 +2,17 @@
   {
     "name": "Configure the scene",
     "id": "mc_scene_conf",
-    "prerequisites": [],
+    "prerequisites": ["False"],
     "reflexive": "True",
     "tags": ["mc_scene_conf"]
+  },
+
+  {
+    "name": "Describe entity",
+    "id": "mc_descriptive",
+    "prerequisites": ["not agent.is_player_character()"],
+    "reflexive": "True",
+    "tags": ["mc_descriptive"]
   }
 
 ]
