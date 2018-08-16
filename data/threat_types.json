@@ -47,5 +47,85 @@
         "tags": ["pc_initiator", "pc_follow_up", "pc_reply", "pc_interference"]
       }
     ]
+  },
+
+  {
+    "name": "grotesque",
+    "impulse": {
+      "type": "RAND",
+      "values": [
+        "Cannibal",
+        "Mutant",
+        "Pain addict",
+        "Disease vector",
+        "Mindfucker",
+        "Perversion of birth"
+      ]
+    },
+    "attributes": {
+      "person": "True"
+    },
+    "moves": [
+      {
+        "id": "mov_threat_grotesque_push_reading_a_person",
+        "prerequisites": [],
+        "tags": ["pc_initiator", "pc_follow_up", "pc_reply", "pc_interference"]
+      },
+      {
+        "id": "mov_threat_grotesque_display_nature_of_the_world",
+        "prerequisites": [],
+        "tags": ["pc_initiator", "pc_follow_up", "pc_reply", "pc_interference"]
+      },
+      {
+        "id": "mov_threat_grotesque_display_the_contents_of_its_heart",
+        "prerequisites": [],
+        "tags": ["pc_initiator", "pc_follow_up", "pc_reply", "pc_interference"]
+      },
+      {
+        "id": "mov_threat_grotesque_attack_someone_from_behind_or_stealth",
+        "prerequisites": [],
+        "tags": ["pc_initiator", "pc_follow_up", "pc_reply", "pc_interference"]
+      },
+      {
+        "id": "mov_threat_grotesque_attack_someone_face_on",
+        "prerequisites": [],
+        "tags": ["pc_initiator", "pc_follow_up", "pc_reply", "pc_interference"]
+      },
+      {
+        "id": "mov_threat_grotesque_attack_someone_head_on_without_threat_or_warning",
+        "prerequisites": [],
+        "tags": ["pc_initiator", "pc_follow_up", "pc_reply", "pc_interference"]
+      },
+      {
+        "id": "mov_threat_grotesque_insult_affront_offend_or_provoke_someone",
+        "prerequisites": [],
+        "tags": ["pc_initiator", "pc_follow_up", "pc_reply", "pc_interference"]
+      },
+      {
+        "id": "mov_threat_grotesque_offer_or_do_something_for_someone_with_strings",
+        "prerequisites": [],
+        "tags": ["pc_initiator", "pc_follow_up", "pc_reply", "pc_interference"]
+      },
+      {
+        "id": "mov_threat_grotesque_threaten_someone",
+        "prerequisites": [],
+        "tags": ["pc_initiator", "pc_follow_up", "pc_reply", "pc_interference"]
+      },
+      {
+        "id": "mov_threat_grotesque_steal_something_from_someone",
+        "prerequisites": [],
+        "tags": ["pc_initiator", "pc_follow_up", "pc_reply", "pc_interference"]
+      },
+      {
+        "id": "mov_threat_grotesque_seize_and_hold_someone",
+        "prerequisites": [],
+        "tags": ["pc_initiator", "pc_follow_up", "pc_reply", "pc_interference"]
+      },
+      {
+        "id": "mov_threat_grotesque_ruin_something",
+        "prerequisites": [],
+        "tags": ["pc_initiator", "pc_follow_up", "pc_reply", "pc_interference"]
+      }
+    ]
   }
 ]

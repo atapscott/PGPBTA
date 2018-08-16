@@ -50,7 +50,8 @@ class GameManager:
 
         cls.storyworld.create_threat(threat_type_name='warlord')
         cls.storyworld.create_threat(threat_type_name='warlord')
-        cls.storyworld.create_threat(threat_type_name='warlord')
+        cls.storyworld.create_threat(threat_type_name='grotesque')
+        cls.storyworld.create_threat(threat_type_name='grotesque')
 
         initial_history_scene: Scene = Scene(name='initial_history')
         initial_history_scene.players = cls.playerworld.players
