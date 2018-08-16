@@ -1,5 +1,5 @@
 import random
-from storyworld.entities import Entity, Agent
+from storyworld.entities import Entity, Agent, Threat
 from storyworld.storyworld import Storyworld, Move
 from playerworld.playerworld import Playerworld
 from storyworld.behavior import PlayerBehaviorModel, MCBehaviorModel
@@ -68,7 +68,7 @@ class GameManager:
         return eligible
 
     @classmethod
-    def get_next_player_move(cls, scene: Scene, start_chain: bool = False) -> tuple:
+    def get_next_player_action(cls, scene: Scene, start_chain: bool = False) -> tuple:
 
         player_characters: list = [e for e in scene.entities if e.is_player_character()]
 
@@ -131,39 +131,38 @@ class GameManager:
             return agent, player_move_match[0], player_move_match[1], next_behavior_tag
 
     @classmethod
-    def get_next_mc_move(cls, scene: Scene, configure_scene: bool = False) -> tuple:
+    def get_next_mc_action(cls, scene: Scene, configure_scene: bool = False) -> tuple:
+
+        next_move: Move = None
 
         indexed_mc_moves: dict = {m.id: m for m in GameManager.storyworld.mc_moves}
 
         if configure_scene:
-            next_move: Move = indexed_mc_moves['mc_scene_conf']
+            next_move = indexed_mc_moves['mc_scene_conf']
             return None, next_move, None, 'mc_scene_conf'
 
+        last_action: tuple = scene.actions[-1]
+        last_move: Move = last_action[1]
+        last_behavior_tag: str = last_action[3]
+        next_behavior_tag: str = MCBehaviorModel.get_next_behavior_tag(last_behavior_tag, len(
+            scene.actions))
 
-        else:
-            last_action: tuple = scene.actions[-1]
-            last_move: Move = last_action[1]
-            last_behavior_tag: str = last_action[3]
-            next_behavior_tag: str = MCBehaviorModel.get_next_behavior_tag(last_behavior_tag, len(
-                scene.actions))
+        if next_behavior_tag =='mc_threat':
+            candidate_actions: list = list([])
 
-        '''
-        candidate_actions: list = list([])
+            pcs: list = [e for e in scene.entities if e.is_player_character()]
+            threats: list = [e for e in scene.entities if isinstance(e, Threat)]
 
-        npcs: list = [e for e in scene.entities if not e.is_player_character()]
-        pcs: list = [e for e in scene.entities if e.is_player_character()]
+            if len(threats) > 0:
+                indexed_candidate_threat_moves: dict = cls.storyworld.get_candidate_moves(
+                    threats, pcs)
+                candidate_threat = random.choice(threats)
+                threat_move_match = random.choice(indexed_candidate_threat_moves[candidate_threat.name])
+                candidate_actions.append((candidate_threat, threat_move_match[0], threat_move_match[1], 'mc_threat'))
 
-        if len(npcs) > 0:
-            indexed_candidate_npc_moves: dict = cls.storyworld.get_candidate_moves(
-                npcs, pcs)
-            candidate_npc = random.choice(npcs)
-            npc_move_match = random.choice(indexed_candidate_npc_moves[candidate_npc.name])
-            candidate_actions.append((candidate_npc, npc_move_match[0], npc_move_match[1], 'mc_move'))
+                return random.choice(candidate_actions)
 
-        return random.choice(candidate_actions)
-        '''
-
-        return None, None, None, next_behavior_tag
+        return None, next_move, None, next_behavior_tag
 
     @classmethod
     def run_scene(cls):
@@ -173,20 +172,20 @@ class GameManager:
         next_scene.players = cls.playerworld.get_next_scene_players()
         next_scene.entities = cls.storyworld.get_next_scene_entities(next_scene.players, cls.scenes)
 
-        next_scene.actions.append(cls.get_next_mc_move(next_scene, True))
+        next_scene.actions.append(cls.get_next_mc_action(next_scene, True))
 
         n: int = random.randint(1, 3)
         while n > 0:
 
-            next_mc_action: tuple = cls.get_next_mc_move(next_scene)
+            next_mc_action: tuple = cls.get_next_mc_action(next_scene)
             while next_mc_action[3] != 'mc_end':
                 next_scene.actions.append(next_mc_action)
-                next_mc_action = cls.get_next_mc_move(next_scene)
+                next_mc_action = cls.get_next_mc_action(next_scene)
 
-            next_pc_action: tuple = cls.get_next_player_move(next_scene, True)
+            next_pc_action: tuple = cls.get_next_player_action(next_scene, True)
             while next_pc_action[3] != 'pc_end':
                 next_scene.actions.append(next_pc_action)
-                next_pc_action = cls.get_next_player_move(next_scene)
+                next_pc_action = cls.get_next_player_action(next_scene)
 
             n -= 1
 
