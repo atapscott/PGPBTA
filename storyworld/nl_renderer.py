@@ -74,7 +74,10 @@ class NLRenderer:
 
         template_string: str = random.choice(cls._template_data[template_id])
 
-        rendered_template = cls._render_template(template_string, render_data)
+        try:
+            rendered_template = cls._render_template(template_string, render_data)
+        except ValueError:
+            pass
 
         return rendered_template
 

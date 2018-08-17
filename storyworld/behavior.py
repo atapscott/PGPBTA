@@ -46,7 +46,7 @@ class MCBehaviorModel:
     mc_state_model_row_names = ('mc_scene_conf', 'mc_descriptive', 'mc_ominous', 'mc_threat', 'mc_end')
 
     mc_state_map = [
-        [0, 3 / 4, 1 / 4, 0, 0],
+        [0, 1 / 3, 1 / 3, 1 / 3, 0],
         [0, 0, 0, 3 / 7, 4 / 7],
         [0, 2 / 7, 0, 3 / 7, 2 / 7],
         [0, 0, 0, 0, 1],
@@ -57,7 +57,7 @@ class MCBehaviorModel:
     def get_next_behavior_tag(cls, current_behavior_tag: str, accumulated_actions: int = None)->str:
 
         if 'mc_' not in current_behavior_tag:
-            return random.choice(['mc_descriptive', 'mc_ominous'])
+            return random.choice(['mc_descriptive', 'mc_ominous', 'mc_threat', 'mc_end'])
 
         current_index: int = cls.mc_state_model_row_names.index(current_behavior_tag)
         current_transitions: list = cls.mc_state_map[current_index]
