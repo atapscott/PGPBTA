@@ -24,6 +24,7 @@
     "name": "Sucker Someone",
     "id": "mov_sucker_someone",
     "prerequisites": ["agent.is_player_character()",
+          "not isinstance(object, PlayerCharacter)",
           "not isinstance(object, Location)"],
     "tags": ["pc_initiator", "pc_follow_up", "pc_reply", "pc_interference"]
   },
@@ -38,6 +39,7 @@
     "name": "Do Battle",
     "id": "mov_do_battle",
     "prerequisites": ["agent.is_player_character()",
+          "not isinstance(object, PlayerCharacter)",
           "not isinstance(object, Location)"],
     "tags": ["pc_initiator", "pc_follow_up", "pc_reply", "pc_interference"]
   },
