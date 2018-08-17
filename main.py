@@ -175,11 +175,23 @@ class GameManager:
 
                 return random.choice(candidate_actions)
 
+
         elif next_behavior_tag == 'mc_descriptive':
 
             npcs: list = [e for e in scene.entities if not e.is_player_character() and 'person' in e.attributes.keys()]
+
             [location] = [e for e in scene.entities if isinstance(e, Location)]
+
             next_move = indexed_mc_moves['mc_descriptive']
+
+            return None, next_move, location, next_behavior_tag
+
+        elif next_behavior_tag == 'mc_ominous':
+
+            foreign_locations: list = [e for e in cls.storyworld.entities if e not in scene.entities and
+                                       isinstance(e, Location)]
+            location: Location = random.choice(foreign_locations)
+            next_move = indexed_mc_moves['mc_ominous']
 
             return None, next_move, location, next_behavior_tag
 

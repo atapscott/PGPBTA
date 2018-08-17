@@ -13,6 +13,14 @@
     "prerequisites": ["not agent.is_player_character()"],
     "reflexive": "True",
     "tags": ["mc_descriptive"]
+  },
+
+  {
+    "name": "Give omens",
+    "id": "mc_ominous",
+    "prerequisites": ["not agent.is_player_character()"],
+    "reflexive": "True",
+    "tags": ["mc_ominous"]
   }
 
 ]
