@@ -266,7 +266,7 @@ class Storyworld:
         return initial_history
 
     def get_npc_entities(self) -> list:
-        return [e for e in self.entities if not e.is_player_character()]
+        return [e for e in self.entities if e.is_non_player_character()]
 
     def get_next_scene_entities(self, next_scene_players: list, previous_scenes: list):
         next_scene_entities: list = [nsp.character for nsp in next_scene_players]
@@ -277,11 +277,11 @@ class Storyworld:
 
     def create_location(self) -> Location:
         new_location: Location = Location()
-        [base, gender] = self.get_generator_data_item('location_names', False)
+        [base, gender] = self.get_generator_data_item('location_names', True)
         new_location.attributes['base_location'] = base
         new_location.attributes['elements'] = []
 
-        element_amount: int = random.randint(1, 3)
+        element_amount: int = random.randint(3, 6)
         while element_amount > 0:
             element: str = self.get_generator_data_item('location_elements', False)
             if element not in new_location.get_elements():

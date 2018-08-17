@@ -52,6 +52,11 @@ class GameManager:
             player.character = cls.storyworld.create_player_character(owner=player.id)
             cls.assign_playbook(player.character)
 
+        n: int = 6
+        while n > 0:
+            cls.storyworld.entities.append(cls.storyworld.create_location())
+            n -= 1
+
         cls.storyworld.create_threat(threat_type_name='warlord')
         cls.storyworld.create_threat(threat_type_name='warlord')
         cls.storyworld.create_threat(threat_type_name='grotesque')
@@ -183,7 +188,8 @@ class GameManager:
         next_scene.name = 'Scene {}'.format(len(cls.scenes))
         next_scene.players = cls.playerworld.get_next_scene_players()
         next_scene.entities = cls.storyworld.get_next_scene_entities(next_scene.players, cls.scenes)
-        next_scene.entities.append(cls.storyworld.create_location())
+        next_scene.entities.append(
+            random.choice([e for e in cls.storyworld.entities if isinstance(e, Location)]))
 
         next_scene.actions.append(cls.get_next_mc_action(next_scene, True))
 
@@ -227,7 +233,6 @@ if __name__ == "__main__":
 
                 print(action)
                 if action[1] and NLRenderer.has_template(action[1].id):
-
                     render_data: dict = {'agent': action[0], 'object': action[2], 'scene': scene, 'pcs': pcs,
                                          'npcs': npcs}
                     template_id: str = action[1].id if isinstance(action[1], Move) else action[1]
