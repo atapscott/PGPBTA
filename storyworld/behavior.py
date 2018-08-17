@@ -46,10 +46,10 @@ class MCBehaviorModel:
     mc_state_model_row_names = ('mc_scene_conf', 'mc_descriptive', 'mc_ominous', 'mc_threat', 'mc_end')
 
     mc_state_map = [
-        [0, 3 / 7, 3 / 7, 1 / 7, 0],
-        [0, 2 / 7, 2 / 7, 1 / 7, 2 / 7],
-        [0, 2 / 7, 2 / 7, 1 / 7, 2 / 7],
-        [0, 1 / 3, 1 / 3, 0, 1 / 3],
+        [0, 3 / 4, 1 / 4, 0, 0],
+        [0, 0, 0, 3 / 7, 4 / 7],
+        [0, 2 / 7, 0, 3 / 7, 2 / 7],
+        [0, 0, 0, 0, 1],
         [0, 0, 0, 0, 1]
     ]
 

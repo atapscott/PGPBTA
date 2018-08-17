@@ -160,6 +160,10 @@ class GameManager:
         next_behavior_tag: str = MCBehaviorModel.get_next_behavior_tag(last_behavior_tag, len(
             scene.actions))
 
+        while next_behavior_tag == 'mc_threat' and len([e for e in scene.entities if isinstance(e, Threat)]) < 1:
+            next_behavior_tag: str = MCBehaviorModel.get_next_behavior_tag(last_behavior_tag, len(
+                scene.actions))
+
         if next_behavior_tag == 'mc_threat':
             candidate_actions: list = list([])
 
@@ -174,7 +178,6 @@ class GameManager:
                 candidate_actions.append((candidate_threat, threat_move_match[0], threat_move_match[1], 'mc_threat'))
 
                 return random.choice(candidate_actions)
-
 
         elif next_behavior_tag == 'mc_descriptive':
 
@@ -237,7 +240,8 @@ if __name__ == "__main__":
 
     for i, scene in enumerate(GameManager.scenes):
 
-        print('\nESCENA {}'.format(i))
+        rendered_sentences: dict = {}
+        print('\n')
 
         if scene.entities is None:
             print(scene.actions)
@@ -252,7 +256,12 @@ if __name__ == "__main__":
                                          'npcs': npcs}
                     template_id: str = action[1].id if isinstance(action[1], Move) else action[1]
 
-                    print(NLRenderer.get_rendered_nl(template_id, render_data))
+                    rendered_sentence = NLRenderer.get_rendered_nl(template_id, render_data)
+                    '''
+                    if rendered_sentence not in rendered_sentences.keys():
+                        rendered_sentences[rendered_sentence] = rendered_sentence
+                    '''
+                    print(rendered_sentence)
                 else:
                     print(action)
 
