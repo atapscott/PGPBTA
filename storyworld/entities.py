@@ -1,4 +1,5 @@
 from utils import utils
+import random
 from storyworld.nl_renderer import NLRenderer
 
 
@@ -68,9 +69,24 @@ class Location(Entity):
     def get_elements(self):
         return self.attributes['elements']
 
-    def add_element(self, element: str):
-        self.attributes['elements'].append(element)
+    def generate_elements(self):
+        from storyworld.storyworld import Storyworld
+        new_elements: list = []
+        n = random.randint(1, 3)
+        while n > 0:
+            element: str = Storyworld.get_generator_data_item('location_elements', False)
+            if element in self.get_elements():
+                element = Storyworld.get_generator_data_item('location_elements', False)
+            new_elements.append(element)
+            n -= 1
 
+        for new_element in new_elements:
+            self.add_element(new_element)
+
+        return new_elements
+
+    def add_element(self, element):
+        self.attributes['elements'].append(element)
 
 
 class Agent(Entity):

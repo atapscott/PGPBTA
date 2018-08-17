@@ -10,7 +10,7 @@ class Storyworld:
     entities: list = None
     playbooks: list = None
     moves: list = None
-    generator_data: dict = None
+    generator_data: dict = {}
     scenes: list = None
     threat_types: list = None
 
@@ -20,7 +20,6 @@ class Storyworld:
         self.player_moves = []
         self.mc_moves = []
         self.scenes = []
-        self.generator_data = {}
         self.load_data()
 
     def load_data(self):
@@ -43,7 +42,7 @@ class Storyworld:
         with open('data/generators.json', 'r', encoding='utf8') as infile:
             serialized_generator_data: dict = json.load(infile)
 
-            self.generator_data = serialized_generator_data
+            Storyworld.generator_data = serialized_generator_data
 
         with open('data/threat_types.json', 'r', encoding='utf8') as infile:
             serialized_threat_type_data: dict = json.load(infile)
@@ -118,9 +117,10 @@ class Storyworld:
     def get_entity_by_name(self, entity_name: str) -> Entity:
         return {e.name: e for e in self.entities}[entity_name]
 
-    def get_generator_data_item(self, generator_name: str, delete_result_from_seeder: bool = True):
+    @classmethod
+    def get_generator_data_item(cls, generator_name: str, delete_result_from_seeder: bool = True):
 
-        generator_dict: dict = self.generator_data
+        generator_dict: dict = cls.generator_data
 
         if '_' in generator_name:
             split_index = generator_name.split('_')
