@@ -7,6 +7,11 @@
     "{%set random=import('random')%}En {{'_sda'|gender_flex(object.gender)}} {{object.attributes['base_location'].lower()}} hay {{object.get_elements()|map('first')|list|utils_filter('pprint_list')}}."
   ],
 
+  "mc_ominous": [
+    "{%set random=import('random')%}Mas allá del horizonte, en {{'_sda'|gender_flex(object.gender)}} {{object.attributes['base_location'].lower()}} hay {{object.get_elements()|map('first')|list|utils_filter('pprint_list')}}.",
+    "{%set random=import('random')%}En algún lugar perdido en el yermo, hay {{'_sia'|gender_flex(object.gender)}} {{object.name}} con {{object.get_elements()|map('first')|list|utils_filter('pprint_list')}}."
+  ],
+
   "mc_scene_conf": [
     "{{pcs|utils_filter('pprint_list')}} {%if pcs|length > 1%}llegan{%else%}llega{%endif%} a {{'_sda'|gender_flex(scene.get_location().gender)}} {{scene.get_location().name}}.{%if npcs|length > 0%} Allí {%if npcs|length == 1%}está{%else%}están{%endif%} {{npcs|utils_filter('pprint_list')}}.{%endif%}"
   ],
