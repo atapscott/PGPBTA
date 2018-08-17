@@ -23,6 +23,12 @@ class Scene:
         [location] = [e for e in self.entities if 'location' in e.attributes.keys()]
         return location
 
+    def __str__(self):
+        return self.name
+
+    def __repr__(self):
+        return self.__str__()
+
 
 class GameManager:
     scenes: list = []
@@ -59,8 +65,6 @@ class GameManager:
 
         cls.storyworld.create_threat(threat_type_name='warlord')
         cls.storyworld.create_threat(threat_type_name='warlord')
-        cls.storyworld.create_threat(threat_type_name='grotesque')
-        cls.storyworld.create_threat(threat_type_name='grotesque')
 
         initial_history_scene: Scene = Scene(name='initial_history')
         initial_history_scene.players = cls.playerworld.players
@@ -135,7 +139,7 @@ class GameManager:
         player_move_match = random.choice(filtered_indexed_candidate_agent_moves[agent.name])
 
         if player_move_match[0].is_reflexive():
-            return agent, player_move_match[0], None, next_behavior_tag
+            return agent, player_move_match[0], scene, next_behavior_tag
         else:
             return agent, player_move_match[0], player_move_match[1], next_behavior_tag
 
@@ -231,12 +235,13 @@ if __name__ == "__main__":
                           not e.is_player_character() and 'person' in e.attributes.keys()]
             for action in scene.actions:
 
-                print(action)
                 if action[1] and NLRenderer.has_template(action[1].id):
                     render_data: dict = {'agent': action[0], 'object': action[2], 'scene': scene, 'pcs': pcs,
                                          'npcs': npcs}
                     template_id: str = action[1].id if isinstance(action[1], Move) else action[1]
 
                     print(NLRenderer.get_rendered_nl(template_id, render_data))
+                else:
+                    print(action)
 
     pass

@@ -14,7 +14,17 @@ class NLRenderer:
 
     @classmethod
     def gender_flex(cls, base, gender):
-        index = 0 if gender == 'm' else 1
+        if gender == 'm':
+            index = 0
+        elif gender == 'f':
+            index = 1
+        elif gender == 'mp':
+            index = 2
+        elif gender == 'fp':
+            index = 3
+        else:
+            raise ValueError('Unkown gender {}'.format(gender))
+
         if base in cls._gender_flex_data.keys():
             return cls._gender_flex_data[base][index]
 
@@ -40,9 +50,9 @@ class NLRenderer:
         return generated_item
 
     @classmethod
-    def utils_filter(cls, input, filter):
+    def utils_filter(cls, input, filter, *args):
         func = getattr(utils, filter)
-        return func(input)
+        return func(input, *args)
 
     @classmethod
     def initialize(cls, **kwargs):

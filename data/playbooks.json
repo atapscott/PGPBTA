@@ -37,7 +37,7 @@
         "id": "mov_angel_healing_touch",
         "prerequisites": [
           "agent.has_playbook_type('Angel')",
-          "object.has_attribute('person')"
+          "not isinstance(object, Location)"
         ],
         "tags": ["pc_initiator", "pc_follow_up", "pc_reply"]
       }
@@ -297,7 +297,7 @@
         "id": "mov_driver_daredevil",
         "prerequisites": [
           "agent.has_playbook_type('Driver')",
-          "isinstance(object, Threat) or isinstance(object, PlayerCharacter)"
+          "not isinstance(object, Location)"
         ],
         "tags": ["pc_initiator", "pc_follow_up", "pc_reply", "pc_interference"]
       }
