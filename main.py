@@ -1,5 +1,5 @@
 import random
-from storyworld.entities import Entity, Agent, Threat, Location
+from storyworld.entities import Entity, Agent, Threat, Location, PlayerCharacter
 from storyworld.storyworld import Storyworld, Move
 from playerworld.playerworld import Playerworld
 from storyworld.behavior import PlayerBehaviorModel, MCBehaviorModel
@@ -23,6 +23,13 @@ class Scene:
         [location] = [e for e in self.entities if 'location' in e.attributes.keys()]
         return location
 
+    def has_action(self, candidate_action) -> bool:
+        # print(candidate_action.__repr__())
+        # print([a.__repr__() for a in self.actions])
+        b = candidate_action.__repr__() in [a.__repr__() for a in self.actions]
+        # print(b)
+        return b
+
     def __str__(self):
         return self.name
 
@@ -36,6 +43,15 @@ class GameManager:
     storyworld: Storyworld = None
     assert PlayerBehaviorModel.test_sanity()
     assert MCBehaviorModel.test_sanity()
+
+    @classmethod
+    def get_entity_agent_scenes(cls, agent_entity: Agent) -> int:
+        featured_scenes: int = 0
+        for s in [s for s in cls.scenes if s.entities]:
+            if agent_entity.name in [e.name for e in s.entities if isinstance(e, PlayerCharacter)]:
+                featured_scenes += 1
+
+        return featured_scenes
 
     @classmethod
     def assign_playbook(cls, player_character: Agent):
@@ -205,7 +221,9 @@ class GameManager:
 
         next_scene: Scene = Scene()
         next_scene.name = 'Scene {}'.format(len(cls.scenes))
-        next_scene.players = cls.playerworld.get_next_scene_players()
+        indexed_pc_spotlight: dict = {pc.name: cls.get_entity_agent_scenes(pc) for pc in
+                                      cls.storyworld.get_player_characters()}
+        next_scene.players = cls.playerworld.get_next_scene_players(indexed_pc_spotlight)
         next_scene.entities = cls.storyworld.get_next_scene_entities(next_scene.players, cls.scenes)
         next_scene.entities.append(
             random.choice([e for e in cls.storyworld.entities if isinstance(e, Location)]))
@@ -219,11 +237,15 @@ class GameManager:
             while next_mc_action[3] != 'mc_end':
                 next_scene.actions.append(next_mc_action)
                 next_mc_action = cls.get_next_mc_action(next_scene)
+                while next_scene.has_action(next_mc_action):
+                    next_mc_action = cls.get_next_mc_action(next_scene)
 
             next_pc_action: tuple = cls.get_next_player_action(next_scene, True)
             while next_pc_action[3] != 'pc_end':
                 next_scene.actions.append(next_pc_action)
                 next_pc_action = cls.get_next_player_action(next_scene)
+                while next_scene.has_action(next_pc_action):
+                    next_pc_action = cls.get_next_player_action(next_scene)
 
             n -= 1
 
@@ -257,10 +279,6 @@ if __name__ == "__main__":
                     template_id: str = action[1].id if isinstance(action[1], Move) else action[1]
 
                     rendered_sentence = NLRenderer.get_rendered_nl(template_id, render_data)
-                    '''
-                    if rendered_sentence not in rendered_sentences.keys():
-                        rendered_sentences[rendered_sentence] = rendered_sentence
-                    '''
                     print(rendered_sentence)
                 else:
                     print(action)
