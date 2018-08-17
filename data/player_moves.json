@@ -2,7 +2,8 @@
   {
     "name": "Read a Person",
     "id": "mov_read_a_person",
-    "prerequisites": ["agent.is_player_character()"],
+    "prerequisites": ["agent.is_player_character()",
+          "object.has_attribute('person')"],
     "tags": ["pc_initiator", "pc_follow_up", "pc_reply"]
   },
   {
@@ -22,31 +23,36 @@
   {
     "name": "Sucker Someone",
     "id": "mov_sucker_someone",
-    "prerequisites": ["agent.is_player_character()"],
+    "prerequisites": ["agent.is_player_character()",
+          "not isinstance(object, Location)"],
     "tags": ["pc_initiator", "pc_follow_up", "pc_reply", "pc_interference"]
   },
   {
     "name": "Go Aggro",
     "id": "mov_go_aggro",
-    "prerequisites": ["agent.is_player_character()"],
+    "prerequisites": ["agent.is_player_character()",
+          "not isinstance(object, Location)"],
     "tags": ["pc_initiator", "pc_follow_up", "pc_reply", "pc_interference"]
   },
   {
     "name": "Do Battle",
     "id": "mov_do_battle",
-    "prerequisites": ["agent.is_player_character()"],
+    "prerequisites": ["agent.is_player_character()",
+          "not isinstance(object, Location)"],
     "tags": ["pc_initiator", "pc_follow_up", "pc_reply", "pc_interference"]
   },
   {
     "name": "Seduce of Manipulate",
     "id": "mov_seduce_or_manipulate",
-    "prerequisites": ["agent.is_player_character()"],
+    "prerequisites": ["agent.is_player_character()",
+          "object.has_attribute('person')"],
     "tags": ["pc_initiator", "pc_follow_up", "pc_reply", "pc_interference"]
   },
   {
     "name": "Help or Interfere with Someone",
     "id": "mov_help_or_interfere_with_someone",
-    "prerequisites": ["agent.is_player_character()"],
+    "prerequisites": ["agent.is_player_character()",
+          "object.has_attribute('person')"],
     "tags": ["pc_interference"]
   },
   {

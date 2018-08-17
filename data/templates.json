@@ -4,7 +4,7 @@
   ],
 
   "mc_descriptive": [
-    "{%set random=import('random')%}En {{'_sda'|gender_flex(object.gender)}} {{object.attributes['base_location'].lower()}} hay {{random.sample(object.get_elements(), random.randint(1, 3))|utils_filter('pprint_list')}}."
+    "{%set random=import('random')%}En {{'_sda'|gender_flex(object.gender)}} {{object.attributes['base_location'].lower()}} hay {{object.get_elements()|map('first')|list|utils_filter('pprint_list')}}."
   ],
 
   "mc_scene_conf": [
@@ -12,8 +12,8 @@
   ],
 
   "mov_read_a_sitch": [
-    "{{agent}} cala la situación.",
-    "{{agent}} observa detenidamente su alrededor buscando respuestas."
+    "{%set random=import('random')%}{{agent}} cala la situación en {{'_sda'|gender_flex(object.get_location().gender)}} {{object.get_location().attributes['base_location'].lower()}}. Se fija detenidamente en {{random.sample(object.get_location().get_elements(), random.randint(1,object.get_location().get_elements()|length))|utils_filter('pprint_list', 'article')}}.",
+    "{%set random=import('random')%}{{agent}} observa los alrededores de {{'_sda'|gender_flex(object.get_location().gender)}} {{object.get_location().attributes['base_location'].lower()}} buscando respuestas, reparando en {{random.sample(object.get_location().get_elements(), random.randint(1,object.get_location().get_elements()|length))|utils_filter('pprint_list', 'article')}}."
   ],
 
   "mov_read_a_person": [
