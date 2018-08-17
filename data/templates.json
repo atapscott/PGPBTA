@@ -17,8 +17,8 @@
   ],
 
   "mov_read_a_sitch": [
-    "{%set random=import('random')%}{{agent}} cala la situación en {{'_sda'|gender_flex(object.get_location().gender)}} {{object.get_location().attributes['base_location'].lower()}}. Se fija detenidamente en {{random.sample(object.get_location().get_elements(), random.randint(1,object.get_location().get_elements()|length))|utils_filter('pprint_list', 'article')}}.",
-    "{%set random=import('random')%}{{agent}} observa los alrededores de {{'_sda'|gender_flex(object.get_location().gender)}} {{object.get_location().attributes['base_location'].lower()}} buscando respuestas, reparando en {{random.sample(object.get_location().get_elements(), random.randint(1,object.get_location().get_elements()|length))|utils_filter('pprint_list', 'article')}}."
+    "{%set random=import('random')%}{{agent}} cala la situación en {{'_sda'|gender_flex(object.get_location().gender)}} {{object.get_location().attributes['base_location'].lower()}}. Se fija detenidamente en {{random.sample(object.get_location().get_elements(), random.randint(1,object.get_location().get_elements()|length%5+1))|utils_filter('pprint_list', 'article')}}.",
+    "{%set random=import('random')%}{{agent}} observa los alrededores de {{'_sda'|gender_flex(object.get_location().gender)}} {{object.get_location().attributes['base_location'].lower()}} buscando respuestas, reparando en {{random.sample(object.get_location().get_elements(), random.randint(1,object.get_location().get_elements()|length%5+1))|utils_filter('pprint_list', 'article')}}."
   ],
 
   "mov_read_a_person": [
