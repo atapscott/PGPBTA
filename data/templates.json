@@ -4,7 +4,7 @@
   ],
 
   "mc_descriptive": [
-    "En {{'_sda'|gender_flex(object.gender)}} {{object.attributes['base_location'].lower()}} hay {{object.get_elements()|utils_filter('pprint_list')}}."
+    "{%set random=import('random')%}En {{'_sda'|gender_flex(object.gender)}} {{object.attributes['base_location'].lower()}} hay {{random.sample(object.get_elements(), random.randint(1, 3))|utils_filter('pprint_list')}}."
   ],
 
   "mc_scene_conf": [

@@ -18,6 +18,9 @@ class Entity:
         if 'gender' not in self.__dict__:
             self.gender = 'f'
 
+    def is_non_player_character(self) -> bool:
+        return not isinstance(self, PlayerCharacter) and not isinstance(self, Location)
+
     def is_player_character(self) -> bool:
         return isinstance(self, PlayerCharacter)
 
