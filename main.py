@@ -48,7 +48,7 @@ class GameManager:
     def get_entity_agent_scenes(cls, agent_entity: Agent) -> int:
         featured_scenes: int = 0
         for s in [s for s in cls.scenes if s.entities]:
-            if agent_entity.name in [e.name for e in s.entities if isinstance(e, PlayerCharacter)]:
+            if agent_entity.name in [e.name for e in s.entities if isinstance(e, Agent)]:
                 featured_scenes += 1
 
         return featured_scenes
@@ -79,6 +79,8 @@ class GameManager:
             cls.storyworld.entities.append(cls.storyworld.create_location())
             n -= 1
 
+        cls.storyworld.create_threat(threat_type_name='grotesque')
+        cls.storyworld.create_threat(threat_type_name='warlord')
         cls.storyworld.create_threat(threat_type_name='grotesque')
         cls.storyworld.create_threat(threat_type_name='warlord')
 
@@ -224,7 +226,11 @@ class GameManager:
         indexed_pc_spotlight: dict = {pc.name: cls.get_entity_agent_scenes(pc) for pc in
                                       cls.storyworld.get_player_characters()}
         next_scene.players = cls.playerworld.get_next_scene_players(indexed_pc_spotlight)
-        next_scene.entities = cls.storyworld.get_next_scene_entities(next_scene.players, cls.scenes)
+
+        indexed_threat_spotlight: dict = {e.name: cls.get_entity_agent_scenes(e) for e in
+                                          cls.storyworld.get_npc_entities() if isinstance(e, Threat)}
+
+        next_scene.entities = cls.storyworld.get_next_scene_entities(next_scene.players, indexed_threat_spotlight)
         next_scene.entities.append(
             random.choice([e for e in cls.storyworld.entities if isinstance(e, Location)]))
 
@@ -254,7 +260,7 @@ class GameManager:
 
 if __name__ == "__main__":
 
-    GameManager.new_game(player_names=['Player 1'])
+    GameManager.new_game(player_names=['Player 1', 'Player 2', 'Player 3', 'Player 4'])
     i: int = 0
     while i < 100:
         GameManager.run_scene()

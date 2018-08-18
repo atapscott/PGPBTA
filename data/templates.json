@@ -163,7 +163,7 @@
 
   "mov_threat_grotesque_offer_or_do_something_for_someone_with_strings": [
     "{%set random=import('random')%}{%set motivation=('threats_motivation_'+agent.attributes['impulse'].lower())|generate(False)%}{{agent}} ofrece {{random.sample(scene.get_location().get_elements(), random.randint(1,scene.get_location().get_elements()|length%5+1))|map('first')|list|utils_filter('pprint_list')}} a {{object}} en un trato {{motivation}}.",
-    "{%set motivation=('threats_motivation_'+agent.attributes['impulse'].lower())|generate(False)%}{{agent}} buscando {{motivation}} trata de llegar a un acuerdo con {{object}}"
+    "{%set motivation=('threats_motivation_'+agent.attributes['impulse'].lower())|generate(False)%}{{agent}} {{motivation}} trata de llegar a un acuerdo con {{object}}"
   ],
 
   "mov_threat_grotesque_threaten_someone": [
