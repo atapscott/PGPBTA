@@ -129,5 +129,60 @@
   "mov_threat_warlord_show_discipline": [
     "{{agent}} demuestra su disciplina a {{object}}, ejecutando a uno de sus hombres sin miramientos.",
     "{{agent}} se sobrepone a las inclemencias del tiempo para demostrar su disciplina a {{object}}."
+  ],
+
+  "mov_threat_grotesque_push_reading_a_person": [
+    "{{agent}} lee a {{object}} con un violento vistazo de pies a cabeza.",
+    "{{agent}} escrutina sin demasiada sutileza a {{object}}."
+  ],
+
+  "mov_threat_grotesque_display_nature_of_the_world": [
+    "{%set elements=scene.get_location().get_random_elements(1)%}{{agent}} guia a {{object}} a través de {{'_sda'|gender_flex(scene.get_location().gender)}} {{scene.get_location().attributes['base_location'].lower()}} hasta {{elements|utils_filter('pprint_list', 'article')}}.",
+    "{%set elements=scene.get_location().get_random_elements(1)%}{{agent}} encuentra a {{object}} en {{'_sda'|gender_flex(scene.get_location().gender)}} {{scene.get_location().attributes['base_location'].lower()}} y le sigue hasta {{elements|utils_filter('pprint_list', 'article')}}."
+  ],
+
+  "mov_threat_grotesque_display_the_contents_of_its_heart": [
+    "{%set personality='adjectives_person_personality'|generate|gender_flex(agent.gender)%}{{agent}} y {{object}} se cruzan brevemente. {{agent}} es {{personality}}.",
+    "{%set personality='adjectives_person_personality'|generate|gender_flex(agent.gender)%}{{agent}} cruza {{'_sda'|gender_flex(scene.get_location().gender)}} {{scene.get_location().attributes['base_location'].lower()}} mientras {{object}} le sigue a escondidas, decubriendo que es {{personality}}."
+  ],
+
+  "mov_threat_grotesque_attack_someone_from_behind_or_stealth": [
+    "{%set elements=scene.get_location().get_random_elements(1)%}{{agent}} emerge de entre {{elements|utils_filter('pprint_list', 'article')}} y ataca a {{object}} por sorpresa.",
+    "{%set motivation=('threats_motivation_'+agent.attributes['impulse'].lower())|generate(False)%}{{agent}} se esconde en {{'_sda'|gender_flex(scene.get_location().gender)}} {{scene.get_location().attributes['base_location'].lower()}} para emboscar a {{object}}, a quien coge por sorpresa {{motivation}}."
+  ],
+
+  "mov_threat_grotesque_attack_someone_head_on_without_threat_or_warning": [
+    "{%set motivation=('threats_motivation_'+agent.attributes['impulse'].lower())|generate(False)%}{{agent}} ataca a {{object}} frontalmente {{motivation}}.",
+    "{{agent}} se esconde en {{'_sda'|gender_flex(scene.get_location().gender)}} {{scene.get_location().attributes['base_location'].lower()}} para emboscar a {{object}}, a quien coge por sorpresa."
+  ],
+
+  "mov_threat_grotesque_insult_affront_offend_or_provoke_someone": [
+    "{{agent}} se burla de {{object}} llamándole {{'adjectives_person_personality'|generate|gender_flex(object.gender)}}.",
+    "{{agent}} ofende a {{object}} por ser {{'adjectives_person_personality'|generate|gender_flex(object.gender)}}."
+  ],
+
+  "mov_threat_grotesque_offer_or_do_something_for_someone_with_strings": [
+    "{%set random=import('random')%}{%set motivation=('threats_motivation_'+agent.attributes['impulse'].lower())|generate(False)%}{{agent}} ofrece {{random.sample(scene.get_location().get_elements(), random.randint(1,scene.get_location().get_elements()|length%5+1))|map('first')|list|utils_filter('pprint_list')}} a {{object}} en un trato {{motivation}}.",
+    "{%set motivation=('threats_motivation_'+agent.attributes['impulse'].lower())|generate(False)%}{{agent}} buscando {{motivation}} trata de llegar a un acuerdo con {{object}}"
+  ],
+
+  "mov_threat_grotesque_threaten_someone": [
+    "{{agent}} hostiga a {{object}} amenazadoramente.",
+    "{%set motivation=('threats_motivation_'+agent.attributes['impulse'].lower())|generate(False)%}{{agent}} cerca a {{object}} {{motivation}}"
+  ],
+
+  "mov_threat_grotesque_steal_something_from_someone": [
+    "{%set elements=scene.get_location().get_random_elements(1)%}{{agent}} se lleva las cosas de {{object}} y las esconde entre {{elements|utils_filter('pprint_list', 'article')}}.",
+    "{{agent}} esconde las pertenencias de {{object}} en {{'_sda'|gender_flex(object.gender)}} {{scene.get_location().attributes['base_location'].lower()}}"
+  ],
+
+  "mov_threat_grotesque_seize_and_hold_someone": [
+    "{%set elements=scene.get_location().get_random_elements(1)%}{{agent}} captura a {{object}} y le mantiene cautivo entre {{elements|utils_filter('pprint_list', 'article')}}.",
+    "{{agent}} se lleva a {{object}} por la fuerza a su guarida en {{'_sda'|gender_flex(scene.get_location().gender)}} {{scene.get_location().attributes['base_location'].lower()}}"
+  ],
+
+  "mov_threat_grotesque_ruin_something": [
+    "{%set elements=scene.get_location().get_random_elements(1)%}{{agent}} se ensaña con {{elements|utils_filter('pprint_list', 'article')}} mientras {{object}} le observa {{'oculto'|gender_flex(scene.get_location().gender)}}.",
+    "{%set elements=scene.get_location().get_random_elements(1)%}{{agent}} destroza {{elements|utils_filter('pprint_list', 'article')}} sin importarle la presencia de {{object}}."
   ]
 }

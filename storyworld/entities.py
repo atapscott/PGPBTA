@@ -69,6 +69,9 @@ class Location(Entity):
     def get_elements(self):
         return self.attributes['elements']
 
+    def get_random_elements(self, amount: int):
+        return random.sample(self.get_elements(), amount)
+
     def generate_elements(self):
         from storyworld.storyworld import Storyworld
         new_elements: list = []

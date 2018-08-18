@@ -45,8 +45,8 @@ class NLRenderer:
         return cls._localization_data[input.lower()]
 
     @classmethod
-    def generate(cls, generator_key):
-        generated_item = cls.storyworld.get_generator_data_item(generator_key)
+    def generate(cls, generator_key, delete_result_from_seeder: bool=True):
+        generated_item = cls.storyworld.get_generator_data_item(generator_key, delete_result_from_seeder)
         return generated_item
 
     @classmethod
