@@ -692,5 +692,34 @@
         "extrovertido"
       ]
     }
-  }
+  },
+  "threats": {
+      "motivation": {
+        "cannibal": [
+          "para alimentarse",
+          "porque tiene hambre"
+
+        ],
+        "mutant": [
+          "por su temperamento inestable",
+          "tratando de no dejar rastro ni testigos"
+        ],
+        "pain addict": [
+          "buscando el tormento del dolor",
+          "extendiendo la agonía que ama"
+        ],
+        "disease vector": [
+          "extendiendo su enfermedad",
+          "tratando de calmar los síntomas de su aflicción"
+        ],
+        "mindfucker": [
+          "para acallar las voces de su cabeza",
+          "buscando mentes que violar"
+        ],
+        "perversion of birth": [
+          "para saciar su retorcido corazón",
+          "con ánimo perverso"
+        ]
+      }
+    }
 }

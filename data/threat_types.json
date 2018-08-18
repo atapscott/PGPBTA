@@ -87,11 +87,6 @@
         "tags": ["mc_threat"]
       },
       {
-        "id": "mov_threat_grotesque_attack_someone_face_on",
-        "prerequisites": [],
-        "tags": ["mc_threat"]
-      },
-      {
         "id": "mov_threat_grotesque_attack_someone_head_on_without_threat_or_warning",
         "prerequisites": [],
         "tags": ["mc_threat"]

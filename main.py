@@ -79,7 +79,7 @@ class GameManager:
             cls.storyworld.entities.append(cls.storyworld.create_location())
             n -= 1
 
-        cls.storyworld.create_threat(threat_type_name='warlord')
+        cls.storyworld.create_threat(threat_type_name='grotesque')
         cls.storyworld.create_threat(threat_type_name='warlord')
 
         initial_history_scene: Scene = Scene(name='initial_history')

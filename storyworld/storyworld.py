@@ -127,11 +127,14 @@ class Storyworld:
 
             while len(split_index) > 1:
                 generator_dict = generator_dict[split_index[0]]
+
                 split_index = split_index[1:]
 
             generator_name = split_index[0]
-
-        random.shuffle(generator_dict[generator_name])
+        try:
+            random.shuffle(generator_dict[generator_name])
+        except:
+            pass
         result = generator_dict[generator_name][0]
         if delete_result_from_seeder:
             del generator_dict[generator_name][0]
