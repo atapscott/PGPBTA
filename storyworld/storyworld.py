@@ -281,7 +281,7 @@ class Storyworld:
         new_location.attributes['base_location'] = base
         new_location.attributes['elements'] = []
 
-        element_amount: int = random.randint(1, 3)
+        element_amount: int = 6
         while element_amount > 0:
             element: str = self.get_generator_data_item('location_elements', False)
             if element not in new_location.get_elements():

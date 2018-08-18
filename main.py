@@ -254,7 +254,7 @@ class GameManager:
 
 if __name__ == "__main__":
 
-    GameManager.new_game(player_names=['Player 1', 'Player 2', 'Player 3', 'Player 4'])
+    GameManager.new_game(player_names=['Player 1'])
     i: int = 0
     while i < 100:
         GameManager.run_scene()
