@@ -276,7 +276,7 @@ class Storyworld:
 
         sorted_npc_names = sorted(indexed_threat_spotlight, key=indexed_threat_spotlight.get)
 
-        npc_amount: int = random.randint(0 if len(next_scene_players) > 1 else 1, len(sorted_npc_names))
+        npc_amount: int = random.randint(0 if len(next_scene_players) > 1 else 1, len(sorted_npc_names) % 3)
 
         next_scene_entities = next_scene_entities + [self.get_entity_by_name(e) for e in
                                                      sorted_npc_names[:npc_amount]]

@@ -694,7 +694,8 @@
     }
   },
   "threats": {
-      "motivation": {
+      "motivation":
+      {
         "cannibal": [
           "para alimentarse",
           "porque tiene hambre"
@@ -719,7 +720,32 @@
         "perversion of birth": [
           "para saciar su retorcido corazón",
           "con ánimo perverso"
+        ],
+        "slaver":[
+          "para aumentar su botín de esclavos",
+          "de cara a la próxima venta en el mercado de esclavos"
+        ],
+        "hive queen": [
+          "pensando en aumentar la colmena",
+          "por el bien de la colmena"
+        ],
+        "prophet": [
+          "guiado por la voz de su diosa",
+          "honrando las escrituras"
+        ],
+        "dictator": [
+          "para imponer su autoridad",
+          "tratando de mostrarse como un lider a respetar"
+        ],
+        "collector": [
+          "para aumentar su colección",
+          "buscando una nueva incorporación para llevar a su guarida"
+        ],
+        "alpha wolf": [
+          "para mostrar quien es el que manda",
+          "tratando de eliminar competidores"
         ]
       }
+
     }
 }

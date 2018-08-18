@@ -80,8 +80,9 @@ class GameManager:
             n -= 1
 
         cls.storyworld.create_threat(threat_type_name='grotesque')
-        cls.storyworld.create_threat(threat_type_name='warlord')
         cls.storyworld.create_threat(threat_type_name='grotesque')
+        cls.storyworld.create_threat(threat_type_name='grotesque')
+        cls.storyworld.create_threat(threat_type_name='warlord')
         cls.storyworld.create_threat(threat_type_name='warlord')
 
         initial_history_scene: Scene = Scene(name='initial_history')
@@ -236,7 +237,7 @@ class GameManager:
 
         next_scene.actions.append(cls.get_next_mc_action(next_scene, True))
 
-        n: int = random.randint(1, 3)
+        n: int = random.randint(2, 4)
         while n > 0:
 
             next_mc_action: tuple = cls.get_next_mc_action(next_scene)
