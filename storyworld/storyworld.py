@@ -271,11 +271,15 @@ class Storyworld:
     def get_npc_entities(self) -> list:
         return [e for e in self.entities if e.is_non_player_character()]
 
-    def get_next_scene_entities(self, next_scene_players: list, previous_scenes: list):
+    def get_next_scene_entities(self, next_scene_players: list, indexed_threat_spotlight: dict):
         next_scene_entities: list = [nsp.character for nsp in next_scene_players]
-        npc_entities: list = self.get_npc_entities()
-        npc_amount: int = random.randint(0 if len(next_scene_players) > 1 else 1, len(npc_entities))
-        next_scene_entities = next_scene_entities + random.sample(npc_entities, npc_amount)
+
+        sorted_npc_names = sorted(indexed_threat_spotlight, key=indexed_threat_spotlight.get)
+
+        npc_amount: int = random.randint(0 if len(next_scene_players) > 1 else 1, len(sorted_npc_names))
+
+        next_scene_entities = next_scene_entities + [self.get_entity_by_name(e) for e in
+                                                     sorted_npc_names[:npc_amount]]
         return next_scene_entities
 
     def create_location(self) -> Location:
@@ -304,4 +308,3 @@ class Storyworld:
         new_location.gender = gender
 
         return new_location
-
