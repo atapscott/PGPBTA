@@ -22,8 +22,8 @@
   ],
 
   "mov_read_a_person": [
-    "{{agent}} cala a {{object}}, es {{'adjectives_person_personality'|generate|gender_flex(object.gender)}}.",
-    "{{agent}} observa detenidamente a {{object}}, descubriéndole {{'adjectives_person_personality'|generate|gender_flex(object.gender)}}."
+    "{{agent}} cala a {{object}}, es {{'adjectives_person_personality'|generate(False)|gender_flex(object.gender)}}.",
+    "{{agent}} observa detenidamente a {{object}}, descubriéndole {{'adjectives_person_personality'|generate(False)|gender_flex(object.gender)}}."
   ],
 
   "mov_open_your_brain": [
@@ -118,7 +118,7 @@
 
   "mov_threat_warlord_show_force": [
     "{%set motivation=('threats_motivation_'+agent.attributes['impulse'].lower())|generate(False)%}{{agent}} somete a {{object}} con una brutal demostración de fuerza {{motivation}}.",
-    "{%set personality='adjectives_person_personality'|generate|gender_flex(agent.gender)%}{%set elements=scene.get_location().get_random_elements(1)%}{{agent}} demuestra a {{object}} de lo que es capaz, rompiendo {{elements|utils_filter('pprint_list', 'article')}}."
+    "{%set personality='adjectives_person_personality'|generate(False)|gender_flex(agent.gender)%}{%set elements=scene.get_location().get_random_elements(1)%}{{agent}} demuestra a {{object}} de lo que es capaz, rompiendo {{elements|utils_filter('pprint_list', 'article')}}."
   ],
 
   "mov_threat_warlord_show_discipline": [
@@ -127,7 +127,7 @@
   ],
 
   "mov_threat_grotesque_push_reading_a_person": [
-    "{{agent}} lee a {{object}} con un violento vistazo de pies a cabeza y le encuentra {{'adjectives_person_personality'|generate|gender_flex(object.gender)}}.",
+    "{{agent}} lee a {{object}} con un violento vistazo de pies a cabeza y le encuentra {{'adjectives_person_personality'|generate(False)|gender_flex(object.gender)}}.",
     "{%set motivation=('threats_motivation_'+agent.attributes['impulse'].lower())|generate(False)%}{{agent}}{%set elements=scene.get_location().get_random_elements(1)%}{{agent}} escrutina sin demasiada sutileza a {{object}} {{motivation}}."
   ],
 
@@ -137,8 +137,8 @@
   ],
 
   "mov_threat_grotesque_display_the_contents_of_its_heart": [
-    "{%set personality='adjectives_person_personality'|generate|gender_flex(agent.gender)%}{{agent}} y {{object}} se cruzan brevemente. {{agent}} es {{personality}}.",
-    "{%set personality='adjectives_person_personality'|generate|gender_flex(agent.gender)%}{{agent}} cruza {{'_sda'|gender_flex(scene.get_location().gender)}} {{scene.get_location().attributes['base_location'].lower()}} mientras {{object}} le sigue a escondidas, decubriendo que es {{personality|gender_flex(agent.gender)}}."
+    "{%set personality='adjectives_person_personality'|generate(False)|gender_flex(agent.gender)%}{{agent}} y {{object}} se cruzan brevemente. {{agent}} es {{personality}}.",
+    "{%set personality='adjectives_person_personality'|generate(False)|gender_flex(agent.gender)%}{{agent}} cruza {{'_sda'|gender_flex(scene.get_location().gender)}} {{scene.get_location().attributes['base_location'].lower()}} mientras {{object}} le sigue a escondidas, decubriendo que es {{personality|gender_flex(agent.gender)}}."
   ],
 
   "mov_threat_grotesque_attack_someone_from_behind_or_stealth": [
@@ -152,8 +152,8 @@
   ],
 
   "mov_threat_grotesque_insult_affront_offend_or_provoke_someone": [
-    "{{agent}} se burla de {{object}} llamándole {{'adjectives_person_personality'|generate|gender_flex(object.gender)}}.",
-    "{{agent}} ofende a {{object}} por ser {{'adjectives_person_personality'|generate|gender_flex(object.gender)}}."
+    "{{agent}} se burla de {{object}} llamándole {{'adjectives_person_personality'|generate(False)|gender_flex(object.gender)}}.",
+    "{{agent}} ofende a {{object}} por ser {{'adjectives_person_personality'|generate(False)|gender_flex(object.gender)}}."
   ],
 
   "mov_threat_grotesque_offer_or_do_something_for_someone_with_strings": [
