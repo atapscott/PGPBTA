@@ -17,7 +17,10 @@ class PlayerBehaviorModel:
     @classmethod
     def get_next_behavior_tag(cls, current_behavior_tag: str, accumulated_actions: int = None)->str:
 
-        current_index: int = cls.player_state_model_row_names.index(current_behavior_tag)
+        try:
+            current_index: int = cls.player_state_model_row_names.index(current_behavior_tag)
+        except Exception:
+            pass
         current_transitions: list = cls.player_state_map[current_index]
         rand_index: int = random.randint(1, 100) + accumulated_actions * 30
         if rand_index > 100:
