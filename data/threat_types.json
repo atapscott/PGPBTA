@@ -27,11 +27,6 @@
         "tags": ["mc_threat"]
       },
       {
-        "id": "mov_threat_warlord_attack_cautiously",
-        "prerequisites": [],
-        "tags": ["mc_threat"]
-      },
-      {
         "id": "mov_threat_warlord_seize_someone_or_something",
         "prerequisites": [],
         "tags": ["mc_threat"]

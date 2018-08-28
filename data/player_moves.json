@@ -15,6 +15,7 @@
   },
   {
     "name": "Open your Brain",
+
     "id": "mov_open_your_brain",
     "reflexive": "True",
     "prerequisites": ["agent.is_player_character()", "False"],
