@@ -53,7 +53,7 @@
 
   "mov_help_or_interfere_with_someone": [
     "{{agent}} se une a {{object}} para ayudar.",
-    "{{agent}} interfiere, poniéndose en el camino de {{object}}."
+    "{{agent}} detiene a {{object}} en seco."
   ],
 
   "mov_do_something_under_fire": [
@@ -128,7 +128,7 @@
 
   "mov_threat_grotesque_push_reading_a_person": [
     "{{agent}} lee a {{object}} con un violento vistazo de pies a cabeza y le encuentra {{'adjectives_person_personality'|generate(False)|gender_flex(object.gender)}}.",
-    "{%set motivation=('threats_motivation_'+agent.attributes['impulse'].lower())|generate(False)%}{{agent}}{%set elements=scene.get_location().get_random_elements(1)%}{{agent}} escrutina sin demasiada sutileza a {{object}} {{motivation}}."
+    "{%set motivation=('threats_motivation_'+agent.attributes['impulse'].lower())|generate(False)%}{{agent}} escrutina sin demasiada sutileza a {{object}} {{motivation}}."
   ],
 
   "mov_threat_grotesque_display_nature_of_the_world": [
@@ -158,12 +158,12 @@
 
   "mov_threat_grotesque_offer_or_do_something_for_someone_with_strings": [
     "{%set random=import('random')%}{%set motivation=('threats_motivation_'+agent.attributes['impulse'].lower())|generate(False)%}{{agent}} ofrece {{random.sample(scene.get_location().get_elements(), random.randint(1,scene.get_location().get_elements()|length%5+1))|map('first')|list|utils_filter('pprint_list')}} a {{object}} en un trato {{motivation}}.",
-    "{%set motivation=('threats_motivation_'+agent.attributes['impulse'].lower())|generate(False)%}{{agent}} {{motivation}} trata de llegar a un acuerdo con {{object}}"
+    "{%set motivation=('threats_motivation_'+agent.attributes['impulse'].lower())|generate(False)%}{{agent}} {{motivation}} trata de llegar a un acuerdo con {{object}}."
   ],
 
   "mov_threat_grotesque_threaten_someone": [
     "{{agent}} hostiga a {{object}} amenazadoramente.",
-    "{%set motivation=('threats_motivation_'+agent.attributes['impulse'].lower())|generate(False)%}{{agent}} cerca a {{object}} {{motivation}}"
+    "{%set motivation=('threats_motivation_'+agent.attributes['impulse'].lower())|generate(False)%}{{agent}} cerca a {{object}} {{motivation}}."
   ],
 
   "mov_threat_grotesque_steal_something_from_someone": [

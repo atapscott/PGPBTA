@@ -24,11 +24,12 @@ class Scene:
         return location
 
     def has_action(self, candidate_action) -> bool:
-        # print(candidate_action.__repr__())
-        # print([a.__repr__() for a in self.actions])
-        b = candidate_action.__repr__() in [a.__repr__() for a in self.actions]
+        # b = candidate_action.__repr__() in [a.__repr__() for a in self.actions]
+        # print("{} in {}?".format((candidate_action[0], candidate_action[1]), [(a[0], a[1]) for a in self.actions]))
+        b1 = (candidate_action[0], candidate_action[1]) in [(a[0], a[1]) for a in self.actions]
+        b2 = (candidate_action[1], candidate_action[2]) in [(a[1], a[2]) for a in self.actions if a[2]]
         # print(b)
-        return b
+        return b1 and b2
 
     def __str__(self):
         return self.name
@@ -137,7 +138,7 @@ class GameManager:
             object_candidates = [last_action[0]]
 
         elif next_behavior_tag == 'pc_interference':
-            interrupted_entities = [last_action[0], last_action[2]]
+            interrupted_entities = [last_action[0]]
             agent_candidates = [e for e in scene.entities if
                                 e.is_player_character() and e not in interrupted_entities]
             object_candidates = interrupted_entities
@@ -238,21 +239,31 @@ class GameManager:
         next_scene.actions.append(cls.get_next_mc_action(next_scene, True))
 
         n: int = random.randint(2, 4)
+
         while n > 0:
 
-            next_mc_action: tuple = cls.get_next_mc_action(next_scene)
-            while next_mc_action[3] != 'mc_end':
-                next_scene.actions.append(next_mc_action)
-                next_mc_action = cls.get_next_mc_action(next_scene)
-                while next_scene.has_action(next_mc_action):
-                    next_mc_action = cls.get_next_mc_action(next_scene)
+            while True:
+                next_mc_action: tuple = cls.get_next_mc_action(next_scene)
+                if next_mc_action[3] == 'mc_end':
+                    break
 
-            next_pc_action: tuple = cls.get_next_player_action(next_scene, True)
-            while next_pc_action[3] != 'pc_end':
+                if next_scene.has_action(next_mc_action):
+                    break
+
+                next_scene.actions.append(next_mc_action)
+
+            initial_pc_scene: bool = True
+            while True:
+                next_pc_action: tuple = cls.get_next_player_action(next_scene, initial_pc_scene)
+                if next_pc_action[3] == 'pc_end':
+                    break
+
+                if next_scene.has_action(next_pc_action):
+                    break
+
                 next_scene.actions.append(next_pc_action)
-                next_pc_action = cls.get_next_player_action(next_scene)
-                while next_scene.has_action(next_pc_action):
-                    next_pc_action = cls.get_next_player_action(next_scene)
+                if initial_pc_scene:
+                    initial_pc_scene = False
 
             n -= 1
 
