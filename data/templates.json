@@ -16,6 +16,58 @@
     "{{pcs|utils_filter('pprint_list')}} {%if pcs|length > 1%}llegan{%else%}llega{%endif%} a {{'_sda'|gender_flex(scene.get_location().gender)}} {{scene.get_location().name}}.{%if npcs|length > 0%} Allí {%if npcs|length == 1%}está{%else%}están{%endif%} {{npcs|utils_filter('pprint_list')}}.{%endif%}"
   ],
 
+  "hist_artist_friend": [
+    "{{agent}} y {{object}} son amigos desde hace años."
+  ],
+
+  "hist_artist_in_love": [
+    "{{object}} está {{'enamorado'|gender_flex(object.gender)}} de {{agent}}."
+  ],
+
+  "hist_artist_lover": [
+    "{{agent}} y {{object}} son amantes."
+  ],
+
+  "hist_gun_lugger_attracted": [
+    "{{agent}} se siente {{'atraído'|gender_flex(agent.gender)}} por {{object}}."
+  ],
+
+  "hist_gun_lugger_battle_brother": [
+    "{{agent}} y {{object}} han luchado hombro con hombro."
+  ],
+
+  "hist_gun_lugger_smart_companion": [
+    "{{agent}} cree que {{object}} es {{'_sda'|gender_flex(object.gender)}} más {{'listo'|gender_flex(object.gender)}}."
+  ],
+
+  "hist_gun_lugger_battle_traitor": [
+    "{{object}} dejó {{'tirado'|gender_flex(agent.gender)}} a {{agent}} desangrándose."
+  ],
+
+  "hist_angel_helped_save_life": [
+    "{{object}} echó una mano a {{agent}} para salvar una vida."
+  ],
+
+  "hist_angel_companion_witness": [
+    "{{object}} estado siempre al lado de {{agent}}, viendo lo mismo que {{'_prn3'|gender_flex(agent.gender)}}."
+  ],
+
+  "hist_angel_opinion_self_destruct": [
+    "{{agent}} cree que {{object}} está {{'condenado'|gender_flex(object.gender)}} a autodestruirse."
+  ],
+
+  "hist_angel_not_willing_involve": [
+    "{{agent}} intenta no involucrarse demasiado en la vida de {{object}}."
+  ],
+
+  "hist_driver_helped_once": [
+    "{{object}} sacó a {{agent}} una vez de un marrón muy serio."
+  ],
+
+  "hist_driver_travel_together": [
+    "{{agent}} y {{object}} estuvieron juntos en la carretera durante días una vez."
+  ],
+
   "mov_read_a_sitch": [
     "{%set random=import('random')%}{{agent}} cala la situación en {{'_sda'|gender_flex(object.get_location().gender)}} {{object.get_location().attributes['base_location'].lower()}}. Se fija detenidamente en {{random.sample(object.get_location().get_elements(), random.randint(1,object.get_location().get_elements()|length%5+1))|utils_filter('pprint_list', 'article')}}.",
     "{%set random=import('random')%}{{agent}} observa los alrededores de {{'_sda'|gender_flex(object.get_location().gender)}} {{object.get_location().attributes['base_location'].lower()}} buscando respuestas, reparando en {{random.sample(object.get_location().get_elements(), random.randint(1,object.get_location().get_elements()|length%5+1))|utils_filter('pprint_list', 'article')}}."
@@ -119,7 +171,7 @@
   ],
 
   "mov_threat_warlord_show_discipline": [
-    "{%set motivation=('threats_motivation_'+agent.attributes['impulse'].lower())|generate(False)%}{{agent}}{%set elements=scene.get_location().get_random_elements(1)%}{{agent}} demuestra su disciplina a {{object}}, ejecutando a uno de sus hombres sin miramientos en {{elements|utils_filter('pprint_list', 'article')}} {{motivation}}.",
+    "{%set motivation=('threats_motivation_'+agent.attributes['impulse'].lower())|generate(False)%}{%set elements=scene.get_location().get_random_elements(1)%}{{agent}} demuestra su disciplina a {{object}}, ejecutando a uno de sus hombres sin miramientos en {{elements|utils_filter('pprint_list', 'article')}} {{motivation}}.",
     "{{agent}} se sobrepone a las inclemencias del tiempo de {{'_sda'|gender_flex(scene.get_location().gender)}} {{scene.get_location().attributes['base_location'].lower()}}, impresionando a {{object}}."
   ],
 
