@@ -1,10 +1,11 @@
 {
   "_sda": ["el", "la", "los", "las"],
   "_sia": ["un", "una", "unos", "unas"],
+  "_prn3": ["él", "ella", "ellos", "ellas"],
 
   "diablo": ["diablo", "valquiria"],
 
-  "angel": ["angel", "santa"],
+  "ángel": ["ángel", "santa"],
 
   "señor de la guerra": ["señor de la guerra", "señora de la guerra"],
   "de la colmena": ["de la colmena", "abeja reina"],

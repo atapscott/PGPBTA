@@ -83,12 +83,12 @@ class GameManager:
 
         cls.storyworld.create_threat(threat_type_name='grotesque')
         cls.storyworld.create_threat(threat_type_name='grotesque')
-        cls.storyworld.create_threat(threat_type_name='grotesque')
         cls.storyworld.create_threat(threat_type_name='warlord')
         cls.storyworld.create_threat(threat_type_name='warlord')
 
         initial_history_scene: Scene = Scene(name='initial_history')
         initial_history_scene.players = cls.playerworld.players
+        initial_history_scene.entities = [e for e in cls.storyworld.entities if e.is_player_character()]
         initial_history_scene.actions = cls.storyworld.get_initial_history()
 
         cls.scenes.append(initial_history_scene)
@@ -109,20 +109,23 @@ class GameManager:
         indexed_candidate_player_moves: dict = cls.storyworld.get_candidate_moves(
             [e for e in scene.entities if e.is_player_character()], scene.entities)
 
+        last_action: tuple = scene.actions[-1]
+        last_move: Move = last_action[1]
+        last_behavior_tag: str = last_action[3]
+
         if start_chain:
-            next_behavior_tag = 'pc_initiator'
+
+            if last_behavior_tag in ('mc_threat'):
+                next_behavior_tag = random.choice(['pc_reply', 'pc_interference'])
+            else:
+                next_behavior_tag = 'pc_initiator'
 
         else:
-            last_action: tuple = scene.actions[-1]
-            last_move: Move = last_action[1]
-            last_behavior_tag: str = last_action[3]
             next_behavior_tag = PlayerBehaviorModel.get_next_behavior_tag(last_behavior_tag, len(scene.actions))
 
             # Disable pc_interferences if there are less than 3 potential agents
             if len(player_characters) < 3 and next_behavior_tag in ('pc_interference'):
                 next_behavior_tag = 'pc_follow_up'
-            elif next_behavior_tag == 'pc_reply' and last_action[2] and not last_action[2].is_player_character():
-                next_behavior_tag = 'pc_end'
 
         agent_candidates: list = []
         object_candidates: list = []
@@ -272,23 +275,21 @@ class GameManager:
 
         rendered_scene: str = ''
 
-        if scene.entities is None:
-            rendered_scene += scene.actions.__str__() + '\n'
-        else:
-            pcs: list = [e.print_nice_name() for e in scene.entities if e.is_player_character()]
-            npcs: list = [e.print_nice_name() for e in scene.entities if
-                          not e.is_player_character() and 'person' in e.attributes.keys()]
-            for action in scene.actions:
+        pcs: list = [e.print_nice_name() for e in scene.entities if e.is_player_character()]
+        npcs: list = [e.print_nice_name() for e in scene.entities if
+                      not e.is_player_character() and 'person' in e.attributes.keys()]
+        for action in scene.actions:
 
-                if action[1] and NLRenderer.has_template(action[1].id):
-                    render_data: dict = {'agent': action[0], 'object': action[2], 'scene': scene, 'pcs': pcs,
-                                         'npcs': npcs}
-                    template_id: str = action[1].id if isinstance(action[1], Move) else action[1]
+            try:
+                render_data: dict = {'agent': action[0], 'object': action[2], 'scene': scene, 'pcs': pcs,
+                                     'npcs': npcs}
+                template_id: str = action[1].id if isinstance(action[1], Move) else action[1]
 
-                    rendered_sentence = NLRenderer.get_rendered_nl(template_id, render_data)
-                    rendered_scene += rendered_sentence.__str__() + '\n'
-                else:
-                    rendered_scene += action.__str__() + '\n'
+                rendered_sentence = NLRenderer.get_rendered_nl(template_id, render_data)
+                rendered_scene += rendered_sentence.__str__() + '\n'
+
+            except KeyError:
+                rendered_scene += action.__str__() + '\n'
 
         return rendered_scene
 
@@ -305,9 +306,10 @@ if __name__ == "__main__":
 
         GameManager.new_game(player_names=['Player 1', 'Player 2', 'Player 3', 'Player 4'])
 
-        print("ENTITIES")
+        print("\nENTITIES")
         for e in GameManager.storyworld.entities:
             print(e.print_nice_name())
+        print(('\n'))
 
         while n > 0:
             GameManager.run_scene()
