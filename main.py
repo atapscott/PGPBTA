@@ -28,8 +28,8 @@ class Scene:
         # print("{} in {}?".format((candidate_action[0], candidate_action[1]), [(a[0], a[1]) for a in self.actions]))
         b1 = (candidate_action[0], candidate_action[1]) in [(a[0], a[1]) for a in self.actions]
         b2 = (candidate_action[1], candidate_action[2]) in [(a[1], a[2]) for a in self.actions if a[2]]
-        # print(b)
-        return b1 and b2
+        # print("{} or {}".format(b1, b2))
+        return b1 or b2
 
     def __str__(self):
         return self.name
@@ -248,9 +248,6 @@ class GameManager:
                 if next_mc_action[3] == 'mc_end':
                     break
 
-                if next_scene.has_action(next_mc_action):
-                    break
-
                 next_scene.actions.append(next_mc_action)
 
             initial_pc_scene: bool = True
@@ -304,7 +301,7 @@ if __name__ == "__main__":
 
         print("\n-----------------------\n-----------------------\n-----------------------\nSTORY {}".format(25 - i))
 
-        n: int = random.randint(2,6)
+        n: int = random.randint(2, 6)
 
         GameManager.new_game(player_names=['Player 1', 'Player 2', 'Player 3', 'Player 4'])
 

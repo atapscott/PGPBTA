@@ -33,7 +33,7 @@
 
   "mov_go_aggro": [
     "{{agent}} se pone {{'agresivo'|gender_flex(agent.gender)}} con {{object}}.",
-    "{{agent}} desata su violencia contra {{object}}."
+    "{{agent}} intimida a {{object}} con agresividad."
   ],
 
   "mov_do_battle": [
@@ -89,7 +89,7 @@
   ],
 
   "mov_driver_reputation": [
-    "{{agent}} revela a {{object}} que es {{'_sda'|gender_flex(agent.gender)}} {{'autentico'|gender_flex(agent.gender)}}, {{'_sda'|gender_flex(agent.gender)}} de verdad.",
+    "{{agent}} revela a {{object}} que es {{'_sda'|gender_flex(agent.gender)}} {{'autentico'|gender_flex(agent.gender)}}, la leyenda.",
     "{{agent}} prueba a {{object}} que es {{'_sda'|gender_flex(agent.gender)}} {{'autor'|gender_flex(agent.gender)}} de diversas gestas legendarias, tratando de {{'impresionarlo'|gender_flex(object.gender)}}."
   ],
 
@@ -134,7 +134,7 @@
   ],
 
   "mov_threat_grotesque_display_the_contents_of_its_heart": [
-    "{%set personality='adjectives_person_personality'|generate(False)|gender_flex(agent.gender)%}{{agent}} y {{object}} se cruzan brevemente. {{agent}} es {{personality}}.",
+    "{%set personality='adjectives_person_personality'|generate(False)|gender_flex(agent.gender)%}{{agent}} y {{object}} se comunican brevemente. {{agent}} se muestra {{personality}}.",
     "{%set personality='adjectives_person_personality'|generate(False)|gender_flex(agent.gender)%}{{agent}} cruza {{'_sda'|gender_flex(scene.get_location().gender)}} {{scene.get_location().attributes['base_location'].lower()}} mientras {{object}} le sigue a escondidas, decubriendo que es {{personality|gender_flex(agent.gender)}}."
   ],
 
@@ -150,7 +150,7 @@
 
   "mov_threat_grotesque_insult_affront_offend_or_provoke_someone": [
     "{{agent}} se burla de {{object}} llamándole {{'adjectives_person_personality'|generate(False)|gender_flex(object.gender)}}.",
-    "{{agent}} ofende a {{object}} por ser {{'adjectives_person_personality'|generate(False)|gender_flex(object.gender)}}."
+    "{{agent}} ofende a {{object}} por ser {{'adjectives_person_personality'|generate(False)|gender_flex(agent.gender)}}."
   ],
 
   "mov_threat_grotesque_offer_or_do_something_for_someone_with_strings": [
