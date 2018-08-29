@@ -18,16 +18,8 @@
 
     "id": "mov_open_your_brain",
     "reflexive": "True",
-    "prerequisites": ["agent.is_player_character()", "False"],
+    "prerequisites": ["agent.is_player_character()"],
     "tags": ["pc_initiator", "pc_follow_up", "pc_reply"]
-  },
-  {
-    "name": "Sucker Someone",
-    "id": "mov_sucker_someone",
-    "prerequisites": ["agent.is_player_character()",
-          "not isinstance(object, PlayerCharacter)",
-          "not isinstance(object, Location)"],
-    "tags": ["pc_initiator", "pc_follow_up", "pc_reply", "pc_interference"]
   },
   {
     "name": "Go Aggro",

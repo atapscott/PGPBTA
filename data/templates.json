@@ -31,11 +31,6 @@
     "{{agent}} desplaza su mente para captar ondas mentales en la vorágine psíquica."
   ],
 
-  "mov_sucker_someone": [
-    "{{agent}} ataca inesperadamente a {{object}}.",
-    "Sin previsión alguna, {{agent}} cae sobre {{object}}, atacando sin compasión."
-  ],
-
   "mov_go_aggro": [
     "{{agent}} se pone {{'agresivo'|gender_flex(agent.gender)}} con {{object}}.",
     "{{agent}} desata su violencia contra {{object}}."
@@ -43,7 +38,9 @@
 
   "mov_do_battle": [
     "{{agent}} y {{object}} se enzarzan en una batalla.",
-    "{{agent}} empieza una pelea con {{object}}."
+    "{{agent}} empieza una pelea con {{object}}.",
+    "{{agent}} ataca inesperadamente a {{object}}.",
+    "Sin previsión alguna, {{agent}} cae sobre {{object}}, atacando sin compasión."
   ],
 
   "mov_seduce_or_manipulate": [
@@ -62,7 +59,7 @@
   ],
 
   "mov_angel_healing_touch": [
-    "{{agent}} posa cura a {{object}} con sus conocimientos de medicina ancestrales.",
+    "{{agent}} cura a {{object}} con sus conocimientos de medicina ancestrales.",
     "{{agent}} posa sus manos curativas sobre {{object}}, {{'curándolo'|gender_flex(object.gender)}}."
   ],
 
