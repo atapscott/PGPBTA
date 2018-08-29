@@ -39,7 +39,7 @@ class Scene:
 
 
 class GameManager:
-    scenes: list = []
+    scenes: list = None
     playerworld: Playerworld = None
     storyworld: Storyworld = None
     assert PlayerBehaviorModel.test_sanity()
@@ -65,6 +65,7 @@ class GameManager:
 
     @classmethod
     def new_game(cls, **kwargs):
+        cls.scenes = []
         cls.playerworld: Playerworld = Playerworld()
         cls.storyworld: Storyworld = Storyworld()
         NLRenderer.initialize(storyworld=cls.storyworld)
@@ -269,22 +270,13 @@ class GameManager:
 
         cls.scenes.append(next_scene)
 
+    @classmethod
+    def render_scene(cls, scene: Scene):
 
-if __name__ == "__main__":
-
-    GameManager.new_game(player_names=['Player 1', 'Player 2', 'Player 3', 'Player 4'])
-    i: int = 0
-    while i < 100:
-        GameManager.run_scene()
-        i += 1
-
-    for i, scene in enumerate(GameManager.scenes):
-
-        rendered_sentences: dict = {}
-        print('\n')
+        rendered_scene: str = ''
 
         if scene.entities is None:
-            print(scene.actions)
+            rendered_scene += scene.actions.__str__() + '\n'
         else:
             pcs: list = [e.print_nice_name() for e in scene.entities if e.is_player_character()]
             npcs: list = [e.print_nice_name() for e in scene.entities if
@@ -297,8 +289,36 @@ if __name__ == "__main__":
                     template_id: str = action[1].id if isinstance(action[1], Move) else action[1]
 
                     rendered_sentence = NLRenderer.get_rendered_nl(template_id, render_data)
-                    print(rendered_sentence)
+                    rendered_scene += rendered_sentence.__str__() + '\n'
                 else:
-                    print(action)
+                    rendered_scene += action.__str__() + '\n'
 
-    pass
+        return rendered_scene
+
+
+if __name__ == "__main__":
+
+    i: int = 25
+
+    while i > 0:
+
+        print("\n-----------------------\n-----------------------\n-----------------------\nSTORY {}".format(25 - i))
+
+        n: int = random.randint(2,6)
+
+        GameManager.new_game(player_names=['Player 1', 'Player 2', 'Player 3', 'Player 4'])
+
+        print("ENTITIES")
+        for e in GameManager.storyworld.entities:
+            print(e.print_nice_name())
+
+        while n > 0:
+            GameManager.run_scene()
+            n -= 1
+
+        for scene in GameManager.scenes:
+            print(GameManager.render_scene(scene))
+
+        i -= 1
+
+
