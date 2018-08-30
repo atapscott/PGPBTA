@@ -59,7 +59,9 @@ class MCBehaviorModel:
     @classmethod
     def get_next_behavior_tag(cls, current_behavior_tag: str, accumulated_actions: int = None)->str:
 
-        if 'mc_' not in current_behavior_tag:
+        if 'mc_intro' == current_behavior_tag:
+            return 'mc_scene_conf'
+        elif 'mc_' not in current_behavior_tag:
             return random.choice(['mc_descriptive', 'mc_ominous', 'mc_threat', 'mc_end'])
 
         current_index: int = cls.mc_state_model_row_names.index(current_behavior_tag)

@@ -1,0 +1,9 @@
+[
+  {
+    "name": "journey",
+    "introduction_template":  "journey_intro",
+    "story_elements": {
+      "journey_destination": {"type": "EVAL", "imports": ["from game_manager import GameManager"], "value": "GameManager.storyworld.create_location()"}
+    }
+  }
+]

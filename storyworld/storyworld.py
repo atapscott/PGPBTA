@@ -1,10 +1,10 @@
 from storyworld.entities import Entity, Agent, PlayerCharacter, Threat, Location
 from storyworld.moves import Move
 from storyworld.nl_renderer import NLRenderer
+from storyworld.story_template import StoryTemplate
 import json
 import random
 from utils import utils
-
 
 class Storyworld:
     entities: list = None
@@ -13,6 +13,7 @@ class Storyworld:
     generator_data: dict = {}
     scenes: list = None
     threat_types: list = None
+    story_template = None
 
     def __init__(self, **kwargs):
 
@@ -116,6 +117,12 @@ class Storyworld:
 
     def get_entity_by_name(self, entity_name: str) -> Entity:
         return {e.name: e for e in self.entities}[entity_name]
+
+    def load_story_template_by_name(self, st_name: str):
+        with open('data/story_templates.json', 'r', encoding='utf8') as infile:
+            serialized_story_templates_list: list = json.load(infile)
+
+            self.story_template = StoryTemplate(**{st['name']: st for st in serialized_story_templates_list}[st_name])
 
     @classmethod
     def get_generator_data_item(cls, generator_name: str, delete_result_from_seeder: bool = True):
@@ -281,25 +288,26 @@ class Storyworld:
                                                      sorted_npc_names[:npc_amount]]
         return next_scene_entities
 
-    def create_location(self) -> Location:
+    @classmethod
+    def create_location(cls) -> Location:
         new_location: Location = Location()
-        [base, gender] = self.get_generator_data_item('location_names', True)
+        [base, gender] = cls.get_generator_data_item('location_names', True)
         new_location.attributes['base_location'] = base
         new_location.attributes['elements'] = []
 
         element_amount: int = 6
         while element_amount > 0:
-            element: str = self.get_generator_data_item('location_elements', False)
+            element: str = cls.get_generator_data_item('location_elements', False)
             if element not in new_location.get_elements():
                 new_location.add_element(element)
                 element_amount -= 1
 
         if random.randint(1, 5) < 3:
-            pre_adjective: str = self.get_generator_data_item('adjectives_general', False)
+            pre_adjective: str = cls.get_generator_data_item('adjectives_general', False)
             pre_adjective = NLRenderer.gender_flex(pre_adjective, gender)
             base = "{} {}".format(pre_adjective, base)
 
-        post_adjective: str = self.get_generator_data_item('adjectives_general', False)
+        post_adjective: str = cls.get_generator_data_item('adjectives_general', False)
         post_adjective = NLRenderer.gender_flex(post_adjective, gender)
         base = "{} {}".format(base, post_adjective)
 

@@ -1,5 +1,13 @@
 [
   {
+    "name": "Introduce the story",
+    "id": "mc_intro",
+    "prerequisites": ["False"],
+    "reflexive": "True",
+    "tags": ["mc_intro"]
+  },
+
+  {
     "name": "Configure the scene",
     "id": "mc_scene_conf",
     "prerequisites": ["False"],
