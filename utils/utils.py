@@ -12,6 +12,11 @@ def parse_complex_value(complex_value: dict):
 
     if type == 'RAND':
         return random.choice(complex_value['values'])
+    elif type == 'EVAL':
+        if 'imports' in complex_value.keys():
+            for imp in complex_value['imports']:
+                exec(imp)
+        return eval(complex_value['value'])
     else:
         raise ValueError('Unknown complex value type {}'.format(type))
 
