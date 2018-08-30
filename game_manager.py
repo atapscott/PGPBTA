@@ -236,7 +236,8 @@ class GameManager:
         initial_history_scene: Scene = Scene(name='initial_history')
         initial_history_scene.players = cls.playerworld.players
         initial_history_scene.entities = [e for e in cls.storyworld.entities if e.is_player_character()]
-        initial_history_scene.actions = cls.storyworld.get_initial_history()
+        # TODO check this arbitrary number
+        initial_history_scene.actions = cls.storyworld.get_initial_history(4)
 
         cls.scenes.append(initial_history_scene)
 
