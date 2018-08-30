@@ -8,6 +8,14 @@
   },
 
   {
+    "name": "Conclude the story",
+    "id": "mc_ending",
+    "prerequisites": ["False"],
+    "reflexive": "True",
+    "tags": ["mc_ending"]
+  },
+
+  {
     "name": "Configure the scene",
     "id": "mc_scene_conf",
     "prerequisites": ["False"],

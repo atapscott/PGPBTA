@@ -5,6 +5,7 @@ from storyworld.nl_renderer import NLRenderer
 from storyworld.entities import Entity, Agent, Threat, Location
 import random
 
+
 class Scene:
     name: str = None
     actions: list = None
@@ -35,6 +36,7 @@ class Scene:
 
     def __repr__(self):
         return self.__str__()
+
 
 class GameManager:
     scenes: list = None
@@ -84,13 +86,6 @@ class GameManager:
         cls.storyworld.create_threat(threat_type_name='grotesque')
         cls.storyworld.create_threat(threat_type_name='warlord')
         cls.storyworld.create_threat(threat_type_name='warlord')
-
-        initial_history_scene: Scene = Scene(name='initial_history')
-        initial_history_scene.players = cls.playerworld.players
-        initial_history_scene.entities = [e for e in cls.storyworld.entities if e.is_player_character()]
-        initial_history_scene.actions = cls.storyworld.get_initial_history()
-
-        cls.scenes.append(initial_history_scene)
 
     @classmethod
     def move_has_tags(cls, move: Move, tag_list: list) -> bool:
@@ -237,6 +232,15 @@ class GameManager:
         cls.scenes.append(intro_scene)
 
     @classmethod
+    def run_initial_history_scene(cls):
+        initial_history_scene: Scene = Scene(name='initial_history')
+        initial_history_scene.players = cls.playerworld.players
+        initial_history_scene.entities = [e for e in cls.storyworld.entities if e.is_player_character()]
+        initial_history_scene.actions = cls.storyworld.get_initial_history()
+
+        cls.scenes.append(initial_history_scene)
+
+    @classmethod
     def run_scene(cls):
 
         next_scene: Scene = Scene()
@@ -284,23 +288,44 @@ class GameManager:
         cls.scenes.append(next_scene)
 
     @classmethod
+    def run_story_ending(cls):
+        ending_scene: Scene = Scene()
+        ending_scene.name = "Ending Scene"
+        ending_scene.players = cls.storyworld.get_player_characters()
+        ending_scene.entities = cls.storyworld.entities
+        indexed_mc_moves: dict = {m.id: m for m in GameManager.storyworld.mc_moves}
+        ending_move = indexed_mc_moves['mc_ending']
+
+        ending_scene.actions.append((None, ending_move, None, 'mc_ending'))
+
+        cls.scenes.append(ending_scene)
+
+    @classmethod
     def render_scene(cls, scene: Scene):
 
         rendered_scene: str = ''
 
-        pcs: list = [e.print_nice_name() for e in scene.entities if e.is_player_character()]
+        pcs: list = [e.name for e in scene.entities if e.is_player_character()]
+        pcs_nice: list = [e.print_nice_name() for e in scene.entities if e.is_player_character()]
         npcs: list = [e.print_nice_name() for e in scene.entities if
                       not e.is_player_character() and 'person' in e.attributes.keys()]
         for action in scene.actions:
 
             try:
                 render_data: dict = {'agent': action[0], 'object': action[2], 'scene': scene, 'pcs': pcs,
-                                     'npcs': npcs}
-                template_id: str = action[1].id if isinstance(action[1], Move) else action[1]
+                                     'pcs_nice': pcs_nice, 'npcs': npcs}
 
-                if template_id == 'mc_intro':
-                    template_id = cls.storyworld.story_template.get_introduction_scene_template()
+                # Default action from a generic scene
+                if isinstance(action[1], Move) and \
+                        action[3] not in cls.storyworld.story_template.render_templates.keys():
+                    template_id: str = action[1].id
+                # Need to check if action belongs to the story template
+                elif action[3] in cls.storyworld.story_template.render_templates.keys():
+                    template_id = cls.storyworld.story_template.render_templates[action[3]]
                     render_data = {**render_data, **cls.storyworld.story_template.story_elements}
+                # History actions fall here
+                else:
+                    template_id = action[1]
 
                 rendered_sentence = NLRenderer.get_rendered_nl(template_id, render_data)
                 rendered_scene += rendered_sentence.__str__() + '\n'

@@ -260,7 +260,7 @@ class Storyworld:
                 paired_character.set_attribute('hist_{}'.format(player_character.name), history_link['base'])
                 if 'plot' in history_link.keys():
                     initial_history.append(
-                        (player_character, history_link['plot'], paired_character))
+                        (player_character, history_link['plot'], paired_character, 'initial_history'))
 
                 stored_history_link_value = paired_character.get_attribute('hist_{}'.format(player_character.name))
                 history_link_modded_value: int = self._resolve_hist_value(stored_history_link_value,
@@ -270,7 +270,7 @@ class Storyworld:
                                                history_link_modded_value)
                 if 'plot' in history_link_mod.keys():
                     initial_history.append(
-                        (player_character, history_link_mod['plot'], paired_character))
+                        (player_character, history_link_mod['plot'], paired_character, 'initial_history'))
 
         return initial_history
 
