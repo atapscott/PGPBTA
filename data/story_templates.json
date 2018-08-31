@@ -1,12 +1,24 @@
 [
   {
     "name": "journey",
+    "scene_templates": [
+      {
+        "name": "missing_resource",
+        "render_templates": {
+        "mc_scene_conf":  "journey_missing_resource_scene_conf"
+      },
+        "scene_elements": {
+          "missing_resource": {"type": "EVAL", "imports": ["from storyworld.storyworld import Storyworld"], "value": "Storyworld.get_generator_data_item('needs_resources')"}
+        }
+      }
+    ],
     "render_templates": {
       "mc_intro":  "journey_intro",
       "mc_ending":  "journey_ending"
     },
     "story_elements": {
       "journey_destination": {"type": "EVAL", "imports": ["from game_manager import GameManager"], "value": "GameManager.storyworld.create_location()"}
-    }
+    },
+    "initial_history": []
   }
 ]

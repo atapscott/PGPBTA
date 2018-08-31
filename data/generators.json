@@ -1,4 +1,32 @@
 {
+  "needs": {
+    "resources": [
+      ["carne", "f"],
+      ["sal", "f"],
+      ["grano", "m"],
+      ["alimentos frescos", "mp"],
+      ["alimentos básicos", "mp"],
+      ["alimentos en conserva", "mp"],
+      ["carne", "f"],
+      ["agua potable", "m"],
+      ["agua caliente", "m"],
+      ["combustible", "m"],
+      ["calor", "m"],
+      ["suministros médicos", "mp"],
+      ["información", "f"],
+      ["productos especializados", "mp"],
+      ["productos de lujo", "mp"],
+      ["gasolina", "f"],
+      ["armamento", "m"],
+      ["obreros", "mp"],
+      ["trabajadores cualificados", "mp"],
+      ["drogas", "fp"],
+      ["animales de trabajo", "mp"],
+      ["ganado", "m"],
+      ["muros", "mp"],
+      ["maquinaria", "f"]
+    ]
+  },
   "location": {
     "names": [
       [
@@ -694,58 +722,55 @@
     }
   },
   "threats": {
-      "motivation":
-      {
-        "cannibal": [
-          "para alimentarse",
-          "porque tiene hambre"
-
-        ],
-        "mutant": [
-          "por su temperamento inestable",
-          "para no dejar rastro ni testigos"
-        ],
-        "pain addict": [
-          "buscando el tormento del dolor",
-          "extendiendo la agonía que ama"
-        ],
-        "disease vector": [
-          "extendiendo su enfermedad",
-          "tratando de calmar los síntomas de su aflicción"
-        ],
-        "mindfucker": [
-          "para acallar las voces de su cabeza",
-          "buscando mentes que violar"
-        ],
-        "perversion of birth": [
-          "para saciar su retorcido corazón",
-          "con ánimo perverso"
-        ],
-        "slaver":[
-          "para aumentar su botín de esclavos",
-          "de cara a la próxima venta en el mercado de esclavos"
-        ],
-        "hive queen": [
-          "pensando en aumentar la colmena",
-          "por el bien de la colmena"
-        ],
-        "prophet": [
-          "guiado por la voz de su diosa",
-          "honrando las escrituras"
-        ],
-        "dictator": [
-          "para imponer su autoridad",
-          "tratando de mostrarse como un lider a respetar"
-        ],
-        "collector": [
-          "para aumentar su colección",
-          "buscando una nueva incorporación para llevar a su guarida"
-        ],
-        "alpha wolf": [
-          "para mostrar quien es el que manda",
-          "tratando de eliminar competidores"
-        ]
-      }
-
+    "motivation": {
+      "cannibal": [
+        "para alimentarse",
+        "porque tiene hambre"
+      ],
+      "mutant": [
+        "por su temperamento inestable",
+        "para no dejar rastro ni testigos"
+      ],
+      "pain addict": [
+        "buscando el tormento del dolor",
+        "extendiendo la agonía que ama"
+      ],
+      "disease vector": [
+        "extendiendo su enfermedad",
+        "tratando de calmar los síntomas de su aflicción"
+      ],
+      "mindfucker": [
+        "para acallar las voces de su cabeza",
+        "buscando mentes que violar"
+      ],
+      "perversion of birth": [
+        "para saciar su retorcido corazón",
+        "con ánimo perverso"
+      ],
+      "slaver": [
+        "para aumentar su botín de esclavos",
+        "de cara a la próxima venta en el mercado de esclavos"
+      ],
+      "hive queen": [
+        "pensando en aumentar la colmena",
+        "por el bien de la colmena"
+      ],
+      "prophet": [
+        "guiado por la voz de su diosa",
+        "honrando las escrituras"
+      ],
+      "dictator": [
+        "para imponer su autoridad",
+        "tratando de mostrarse como un lider a respetar"
+      ],
+      "collector": [
+        "para aumentar su colección",
+        "buscando una nueva incorporación para llevar a su guarida"
+      ],
+      "alpha wolf": [
+        "para mostrar quien es el que manda",
+        "tratando de eliminar competidores"
+      ]
     }
+  }
 }

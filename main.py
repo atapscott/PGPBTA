@@ -12,7 +12,6 @@ if __name__ == "__main__":
         GameManager.new_game(player_names=['Player 1', 'Player 2', 'Player 3', 'Player 4'], story_template="journey")
 
         GameManager.run_story_introduction()
-        GameManager.run_initial_history_scene()
         n: int = random.randint(2, 4)
         while n > 0:
             GameManager.run_scene()

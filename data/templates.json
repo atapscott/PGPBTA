@@ -20,6 +20,10 @@
     "Finalmente, {{pcs|utils_filter('pprint_list')}} {%if pcs|length > 1%}llegan{%else%}llega{%endif%} a {{'_sda'|gender_flex(journey_destination.gender)}} {{journey_destination.name}}, su destino."
   ],
 
+  "journey_missing_resource_scene_conf": [
+    "{{pcs_nice|utils_filter('pprint_list')}} {%if pcs|length > 1%}llegan{%else%}llega{%endif%} a {{'_sda'|gender_flex(scene.get_location().gender)}} {{scene.get_location().name}} buscando {{missing_resource[0]}}."
+  ],
+
   "mc_scene_conf": [
     "{{pcs|utils_filter('pprint_list')}} {%if pcs|length > 1%}llegan{%else%}llega{%endif%} a {{'_sda'|gender_flex(scene.get_location().gender)}} {{scene.get_location().name}}.{%if npcs|length > 0%} Allí {%if npcs|length == 1%}está{%else%}están{%endif%} {{npcs|utils_filter('pprint_list')}}.{%endif%}"
   ],
@@ -41,7 +45,7 @@
   ],
 
   "hist_gun_lugger_battle_brother": [
-    "{{agent}} y {{object}} han luchado hombro con hombro."
+    "{{agent}} y {{object}} han luchado hombro con hombro antes."
   ],
 
   "hist_gun_lugger_smart_companion": [

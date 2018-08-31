@@ -3,6 +3,7 @@ from playerworld.playerworld import Playerworld
 from storyworld.behavior import PlayerBehaviorModel, MCBehaviorModel
 from storyworld.nl_renderer import NLRenderer
 from storyworld.entities import Entity, Agent, Threat, Location
+from utils import utils
 import random
 
 
@@ -11,6 +12,7 @@ class Scene:
     actions: list = None
     players: list = None
     entities: list = None
+    template: dict = None
 
     def __init__(self, **kwargs):
         self.__dict__ = kwargs
@@ -76,6 +78,8 @@ class GameManager:
             player = cls.playerworld.get_player_by_name(player_name)
             player.character = cls.storyworld.create_player_character(owner=player.id)
             cls.assign_playbook(player.character)
+
+        cls.storyworld.story_template.initial_history = cls.storyworld.get_initial_history()
 
         n: int = 6
         while n > 0:
@@ -232,20 +236,19 @@ class GameManager:
         cls.scenes.append(intro_scene)
 
     @classmethod
-    def run_initial_history_scene(cls):
-        initial_history_scene: Scene = Scene(name='initial_history')
-        initial_history_scene.players = cls.playerworld.players
-        initial_history_scene.entities = [e for e in cls.storyworld.entities if e.is_player_character()]
-        # TODO check this arbitrary number
-        initial_history_scene.actions = cls.storyworld.get_initial_history(4)
-
-        cls.scenes.append(initial_history_scene)
-
-    @classmethod
     def run_scene(cls):
 
         next_scene: Scene = Scene()
         next_scene.name = 'Scene {}'.format(len(cls.scenes))
+
+        # Assign scene template if applicable
+        if len(cls.storyworld.story_template.scene_templates) > 0:
+            next_scene.template = cls.storyworld.story_template.scene_templates[0]
+            cls.storyworld.story_template.scene_templates.remove(next_scene.template)
+            for se_key, se_value in next_scene.template['scene_elements'].items():
+                next_scene.template['scene_elements'][se_key] = utils.parse_complex_value(se_value)
+            next_scene.name += ' ' + next_scene.template['name']
+
         indexed_pc_spotlight: dict = {pc.name: cls.get_entity_agent_scenes(pc) for pc in
                                       cls.storyworld.get_player_characters()}
         next_scene.players = cls.playerworld.get_next_scene_players(indexed_pc_spotlight)
@@ -302,6 +305,48 @@ class GameManager:
         cls.scenes.append(ending_scene)
 
     @classmethod
+    def render_action(cls, scene: Scene, action, pcs, pcs_nice, npcs) -> str:
+
+        rendered_action: str = ""
+
+        render_data: dict = {'agent': action[0], 'object': action[2], 'scene': scene, 'pcs': pcs,
+                             'pcs_nice': pcs_nice, 'npcs': npcs}
+
+        # Default action from a generic scene
+        if isinstance(action[1], Move) and \
+                action[3] not in cls.storyworld.story_template.render_templates.keys() and \
+                not (scene.template and action[3] in scene.template['render_templates'].keys()):
+            template_id: str = action[1].id
+        # Need to check if action belongs to the story template
+        elif action[3] in cls.storyworld.story_template.render_templates.keys():
+            template_id = cls.storyworld.story_template.render_templates[action[3]]
+            render_data = {**render_data, **cls.storyworld.story_template.story_elements}
+        # Need to check if action belongs to a scene template
+        elif scene.template and action[3] in scene.template['render_templates'].keys():
+            template_id = scene.template['render_templates'][action[3]]
+            render_data = {**render_data, **scene.template["scene_elements"]}
+        # History actions fall here
+        else:
+            template_id = action[1]
+
+        rendered_sentence = NLRenderer.get_rendered_nl(template_id, render_data)
+        rendered_action += rendered_sentence.__str__()
+
+        # Attach relevant initial history
+        if not isinstance(action[1], str) and not action[1].reflexive\
+                and cls.storyworld.story_template.have_initial_history(action[0], action[2]):
+            initial_history_action = cls.storyworld.story_template.get_initial_history_action(action[0],
+                                                                                              action[2])
+            cls.storyworld.story_template.initial_history.remove(initial_history_action)
+            rendered_initial_history = cls.render_action(scene, initial_history_action, pcs, pcs_nice, npcs)
+            if random.randint(0, 1) > 0:
+                rendered_action += ' ' + rendered_initial_history
+            else:
+                rendered_action = rendered_initial_history + ' ' + rendered_action
+
+        return rendered_action
+
+    @classmethod
     def render_scene(cls, scene: Scene):
 
         rendered_scene: str = ''
@@ -313,23 +358,7 @@ class GameManager:
         for action in scene.actions:
 
             try:
-                render_data: dict = {'agent': action[0], 'object': action[2], 'scene': scene, 'pcs': pcs,
-                                     'pcs_nice': pcs_nice, 'npcs': npcs}
-
-                # Default action from a generic scene
-                if isinstance(action[1], Move) and \
-                        action[3] not in cls.storyworld.story_template.render_templates.keys():
-                    template_id: str = action[1].id
-                # Need to check if action belongs to the story template
-                elif action[3] in cls.storyworld.story_template.render_templates.keys():
-                    template_id = cls.storyworld.story_template.render_templates[action[3]]
-                    render_data = {**render_data, **cls.storyworld.story_template.story_elements}
-                # History actions fall here
-                else:
-                    template_id = action[1]
-
-                rendered_sentence = NLRenderer.get_rendered_nl(template_id, render_data)
-                rendered_scene += rendered_sentence.__str__() + '\n'
+                rendered_scene += cls.render_action(scene, action, pcs, pcs_nice, npcs) + '\n'
 
             except KeyError:
                 rendered_scene += action.__str__() + '\n'

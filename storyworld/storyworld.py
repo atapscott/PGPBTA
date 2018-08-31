@@ -190,8 +190,7 @@ class Storyworld:
 
     @classmethod
     def _generate_self_hist_link_list(cls, fellow_player_amount: int, history_links: list, default_value: int) -> list:
-        # link_amount = random.randint(0, len(history_links))
-        # TODO check this manual fix
+
         link_amount = len(history_links)
 
         if link_amount > fellow_player_amount:
@@ -210,8 +209,6 @@ class Storyworld:
     def _generate_self_hist_link_mod_list(cls, fellow_player_amount: int, history_link_mods: list,
                                           default_value: int) -> list:
 
-        # link_mod_amount = random.randint(0, len(history_link_mods))
-        # TODO check this manual fix
         link_mod_amount = len(history_link_mods)
 
         if link_mod_amount > fellow_player_amount:
@@ -226,7 +223,7 @@ class Storyworld:
 
         return history_link_mod_list
 
-    def get_initial_history(self, amount: int) -> list:
+    def get_initial_history(self, amount: int=None) -> list:
 
         initial_history: list = []
 
@@ -276,7 +273,7 @@ class Storyworld:
                     initial_history.append(
                         (player_character, history_link_mod['plot'], paired_character, 'initial_history'))
 
-        if amount > len(initial_history):
+        if not amount or amount > len(initial_history):
             amount = len(initial_history)
 
         return random.sample(initial_history, amount)
