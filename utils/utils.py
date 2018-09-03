@@ -21,12 +21,16 @@ def parse_complex_value(complex_value: dict):
         raise ValueError('Unknown complex value type {}'.format(type))
 
 
-def pprint_list(input_list: list, mode='neutral'):
+def pprint_list(input_list: list, mode='neutral', *args):
     filtered_input_list: list = []
 
     if mode == 'article':
         for i in input_list:
             filtered_input_list.append("{} {}".format(NLRenderer.gender_flex('_sda', i[1]), i[0]))
+
+    elif mode == 'gender':
+        for i in input_list:
+            filtered_input_list.append(NLRenderer.gender_flex(i, args[0]))
 
     else:
         filtered_input_list = input_list

@@ -13,5 +13,10 @@
 
   "adicto al dolor": ["adicto al dolor", "adicta al dolor"],
   "perverso de nacimiento": ["perverso de nacimiento", "perversa de nacimiento"],
-  "paciente cero": ["paciente cero", "paciente cero"]
+  "paciente cero": ["paciente cero", "paciente cero"],
+
+  "menor": ["menor", "menor", "menores", "menores"],
+  "feliz": ["feliz", "feliz", "felizes", "felizes"],
+  "guay": ["guay", "guay", "guais", "guais"],
+  "exterior": ["exterior", "exterior", "exteriores", "exteriores"]
 }

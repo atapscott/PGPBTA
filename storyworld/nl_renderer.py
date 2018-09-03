@@ -14,6 +14,9 @@ class NLRenderer:
 
     @classmethod
     def gender_flex(cls, base, gender):
+
+        base = base.lower()
+
         if gender == 'm':
             index = 0
         elif gender == 'f':
@@ -29,10 +32,67 @@ class NLRenderer:
             return cls._gender_flex_data[base][index]
 
         elif base[-1] == 'o':
-            return base[:-1]+'a' if gender == 'f' else base
+            if gender == 'f':
+                return base[:-1] + 'a'
+            elif gender == 'mp':
+                return base[:-1] + 'os'
+            elif gender == 'fp':
+                return base[:-1] + 'as'
+            else:
+                return base
+
+
 
         elif base[-2:] == 'ón':
-            return base[:-2]+'ona' if gender == 'f' else base
+            if gender == 'f':
+                return base[:-2] + 'ona'
+
+            elif gender == 'mp':
+                return base[:-2] + 'ones'
+
+            elif gender == 'fp':
+                return base[:-2] + 'onas'
+
+            else:
+                return base
+
+
+        elif base[-2:] == 'en':
+            if 'p' in gender:
+                return base[:-2] + 'enes'
+            else:
+                return base
+
+        elif base[-1] in ('e', 'a'):
+            if 'p' in gender:
+                return base + 's'
+            else:
+                return base
+
+        elif base[-2:] in ('il', 'al'):
+            if 'p' in gender:
+                return base + 'es'
+            else:
+                return base
+
+        elif base[-2:] == 'ún':
+            if 'p' in gender:
+                return base[-2:] + 'unes'
+            else:
+                return base
+
+        elif base[-2:] == 'or':
+            if gender == 'f':
+                return base[:-2] + 'ora'
+
+            elif gender == 'mp':
+                return base[:-2] + 'ones'
+
+            elif gender == 'fp':
+                return base[:-2] + 'oras'
+
+            else:
+                return base
 
         elif base[-1] == 'r':
             return base+'a' if gender == 'f' else base
@@ -45,9 +105,17 @@ class NLRenderer:
         return cls._localization_data[input.lower()]
 
     @classmethod
-    def generate(cls, generator_key, delete_result_from_seeder: bool=True):
+    def generate(cls, generator_key, delete_result_from_seeder: bool = True):
         generated_item = cls.storyworld.get_generator_data_item(generator_key, delete_result_from_seeder)
         return generated_item
+
+    @classmethod
+    def generate_list(cls, generator_key, amount: int, delete_result_from_seeder: bool = True):
+        return_list: list = []
+        while amount > 0:
+            return_list.append(cls.storyworld.get_generator_data_item(generator_key, delete_result_from_seeder))
+            amount -= 1
+        return return_list
 
     @classmethod
     def utils_filter(cls, input, filter, *args):
@@ -65,6 +133,7 @@ class NLRenderer:
         cls._env.filters['localize'] = cls.localize
         cls._env.filters['gender_flex'] = cls.gender_flex
         cls._env.filters['generate'] = cls.generate
+        cls._env.filters['generate_list'] = cls.generate_list
         cls._env.filters['utils_filter'] = cls.utils_filter
 
     @classmethod
