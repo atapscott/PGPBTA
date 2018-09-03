@@ -68,6 +68,21 @@ class NLRenderer:
         cls._env.filters['utils_filter'] = cls.utils_filter
 
     @classmethod
+    def embellish(cls, sentence) -> str:
+
+        prep_art: dict = {
+            "de el": "del",
+            "a el": "al"
+        }
+
+        for prep_art_k, prep_art_v in prep_art.items():
+            if prep_art_k in sentence:
+                sentence = sentence.replace(prep_art_k, prep_art_v)
+
+        sentence = sentence.capitalize()
+        return sentence
+
+    @classmethod
     def get_rendered_nl(cls, template_id: str, render_data: dict=None)->str:
         if not render_data:
             render_data = dict()
@@ -75,6 +90,8 @@ class NLRenderer:
         template_string: str = random.choice(cls._template_data[template_id])
 
         rendered_template = cls._render_template(template_string, render_data)
+
+        rendered_template = cls.embellish(rendered_template)
 
         return rendered_template
 

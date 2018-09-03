@@ -4,6 +4,7 @@
   ],
 
   "mc_descriptive": [
+    "{%set random=import('random')%}{% set meta_obj=random.sample(object.get_elements(), 1)|first%}{{'_sda'|gender_flex(meta_obj[1])}} {{meta_obj|first}} de {{'_sda'|gender_flex(object.gender)}} {{object.attributes['base_location'].lower()}} {%if 'p' in meta_obj[1]%}parecen{%else%}parece{%endif%} {{object.get_random_elements(1, [meta_obj[0]])|first|first}}.",
     "{%set random=import('random')%}En {{'_sda'|gender_flex(object.gender)}} {{object.attributes['base_location'].lower()}} hay {{object.generate_elements()|map('first')|list|utils_filter('pprint_list')}}."
   ],
 
@@ -13,7 +14,7 @@
   ],
 
   "journey_intro": [
-    "Nadie recuerda cómo o por qué. Quizás nadie llegó a saberlo. Los supervivientes más viejos conservan recuerdos de su niñez: ciudades en llamas, la sociedad sumida en el caos hasta que se vino abajo, familias enteras obligadas a huir presas del terror, extrañas noches que el cielo incandescente hizo que parecieran pleno día, días teñidos de sangre...\n\n{{pcs_nice|utils_filter('pprint_list')}} {%if pcs|length > 1%}viajan{%else%}viaja{%endif%} a {{'_sda'|gender_flex(journey_destination.gender)}} {{journey_destination.name}}."
+    "Nadie recuerda cómo o por qué. Quizás nadie llegó a saberlo. Los supervivientes más viejos conservan recuerdos de su niñez: ciudades en llamas, la sociedad sumida en el caos hasta que se vino abajo, familias enteras obligadas a huir presas del terror, extrañas noches que el cielo incandescente hizo que parecieran pleno día, días teñidos de sangre...\n\n{{pcs_nice|utils_filter('pprint_list')}} {%if pcs|length > 1%}viajan{%else%}viaja{%endif%} juntos por el yermo. Se dirigen a {{'_sda'|gender_flex(journey_destination.gender)}} {{journey_destination.name}}. Otros habitantes más peligrosos se interponen en su camino, como {{npcs|utils_filter('pprint_list')}}."
   ],
 
   "journey_ending": [
@@ -33,11 +34,11 @@
   ],
 
   "hist_artist_in_love": [
-    "{{object}} está {{'enamorado'|gender_flex(object.gender)}} de {{agent}}."
+    "{{object}} lleva tiempo {{'enamorado'|gender_flex(object.gender)}} de {{agent}}."
   ],
 
   "hist_artist_lover": [
-    "{{agent}} y {{object}} son amantes."
+    "{{agent}} y {{object}} son amantes desde hace tiempo."
   ],
 
   "hist_gun_lugger_attracted": [
@@ -49,15 +50,15 @@
   ],
 
   "hist_gun_lugger_smart_companion": [
-    "{{agent}} cree que {{object}} es {{'_sda'|gender_flex(object.gender)}} más {{'listo'|gender_flex(object.gender)}}."
+    "{{agent}} decidió tiempo atrás que {{object}} es {{'_sda'|gender_flex(object.gender)}} más {{'listo'|gender_flex(object.gender)}}."
   ],
 
   "hist_gun_lugger_battle_traitor": [
-    "{{object}} dejó {{'tirado'|gender_flex(agent.gender)}} a {{agent}} desangrándose."
+    "Una vez, {{object}} dejó {{'tirado'|gender_flex(agent.gender)}} a {{agent}} desangrándose en el peor momento."
   ],
 
   "hist_angel_helped_save_life": [
-    "{{object}} echó una mano a {{agent}} para salvar una vida."
+    "{{object}} echó una mano a {{agent}} para salvar una vida y no lo ha olvidado."
   ],
 
   "hist_angel_companion_witness": [
@@ -65,15 +66,15 @@
   ],
 
   "hist_angel_opinion_self_destruct": [
-    "{{agent}} cree que {{object}} está {{'condenado'|gender_flex(object.gender)}} a autodestruirse."
+    "Ya hace tiempo, {{agent}} decidió que {{object}} está {{'condenado'|gender_flex(object.gender)}} a autodestruirse."
   ],
 
   "hist_angel_not_willing_involve": [
-    "{{agent}} intenta no involucrarse demasiado en la vida de {{object}}."
+    "Como norma personal, {{agent}} intenta no involucrarse demasiado en la vida de {{object}}."
   ],
 
   "hist_driver_helped_once": [
-    "{{object}} sacó a {{agent}} una vez de un marrón muy serio."
+    "{{object}} sacó a {{agent}} una vez de un marrón muy serio y le debe una."
   ],
 
   "hist_driver_travel_together": [

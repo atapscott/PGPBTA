@@ -87,8 +87,6 @@ class GameManager:
             n -= 1
 
         cls.storyworld.create_threat(threat_type_name='grotesque')
-        cls.storyworld.create_threat(threat_type_name='grotesque')
-        cls.storyworld.create_threat(threat_type_name='warlord')
         cls.storyworld.create_threat(threat_type_name='warlord')
 
     @classmethod

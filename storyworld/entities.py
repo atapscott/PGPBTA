@@ -69,13 +69,19 @@ class Location(Entity):
     def get_elements(self):
         return self.attributes['elements']
 
-    def get_random_elements(self, amount: int):
-        return random.sample(self.get_elements(), amount)
+    def get_random_elements(self, amount: int, exclusions:list = None)->list:
+        sample = random.sample(self.get_elements(), amount)
 
-    def generate_elements(self):
+        if exclusions:
+            while not set([s[0] for s in sample]).isdisjoint(exclusions):
+                sample = random.sample(self.get_elements(), amount)
+
+        return sample
+
+    def generate_elements(self, amount: int = None):
         from storyworld.storyworld import Storyworld
         new_elements: list = []
-        n = random.randint(1, 3)
+        n = random.randint(1, 3) if not amount else amount
         while n > 0:
             element: str = Storyworld.get_generator_data_item('location_elements', False)
             if element in self.get_elements():
