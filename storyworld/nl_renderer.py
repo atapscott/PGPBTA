@@ -71,8 +71,8 @@ class NLRenderer:
     def embellish(cls, sentence) -> str:
 
         prep_art: dict = {
-            "de el": "del",
-            "a el": "al"
+            " de el ": " del ",
+            " a el ": " al "
         }
 
         for prep_art_k, prep_art_v in prep_art.items():

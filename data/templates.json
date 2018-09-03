@@ -14,7 +14,7 @@
   ],
 
   "journey_intro": [
-    "Nadie recuerda cómo o por qué. Quizás nadie llegó a saberlo. Los supervivientes más viejos conservan recuerdos de su niñez: ciudades en llamas, la sociedad sumida en el caos hasta que se vino abajo, familias enteras obligadas a huir presas del terror, extrañas noches que el cielo incandescente hizo que parecieran pleno día, días teñidos de sangre...\n\n{{pcs_nice|utils_filter('pprint_list')}} {%if pcs|length > 1%}viajan{%else%}viaja{%endif%} juntos por el yermo. Se dirigen a {{'_sda'|gender_flex(journey_destination.gender)}} {{journey_destination.name}}. Otros habitantes más peligrosos se interponen en su camino, como {{npcs|utils_filter('pprint_list')}}."
+    "Nadie recuerda cómo o por qué. Quizás nadie llegó a saberlo. Los supervivientes más viejos conservan recuerdos de su niñez: ciudades en llamas, la sociedad sumida en el caos hasta que se vino abajo, familias enteras obligadas a huir presas del terror, extrañas noches que el cielo incandescente hizo que parecieran pleno día, días teñidos de sangre...\n\n{{pcs_nice|utils_filter('pprint_list')}} {%if pcs|length > 1%}viajan{%else%}viaja{%endif%} por el yermo. Se dirigen a {{'_sda'|gender_flex(journey_destination.gender)}} {{journey_destination.name}}. Otros habitantes más peligrosos se interponen en su camino, como {{npcs|utils_filter('pprint_list')}}."
   ],
 
   "journey_ending": [
@@ -62,7 +62,7 @@
   ],
 
   "hist_angel_companion_witness": [
-    "{{object}} estado siempre al lado de {{agent}}, viendo lo mismo que {{'_prn3'|gender_flex(agent.gender)}}."
+    "{{object}} ha estado siempre al lado de {{agent}}, viendo lo mismo que {{'_prn3'|gender_flex(agent.gender)}}."
   ],
 
   "hist_angel_opinion_self_destruct": [
