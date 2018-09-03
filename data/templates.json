@@ -4,7 +4,7 @@
   ],
 
   "mc_descriptive": [
-    "{%set random=import('random')%}{% set meta_obj=random.sample(object.get_elements(), 1)|first%}{{'_sda'|gender_flex(meta_obj[1])}} {{meta_obj|first}} de {{'_sda'|gender_flex(object.gender)}} {{object.attributes['base_location'].lower()}} {%if 'p' in meta_obj[1]%}parecen{%else%}parece{%endif%} {{object.get_random_elements(1, [meta_obj[0]])|first|first}}.",
+    "{%set random=import('random')%}{% set meta_obj=random.sample(object.get_elements(), 1)|first%}{{'_sda'|gender_flex(meta_obj[1])|capitalize}} {{meta_obj|first}} de {{'_sda'|gender_flex(object.gender)}} {{object.attributes['base_location'].lower()}} {%if 'p' in meta_obj[1]%}parecen{%else%}parece{%endif%} {{object.get_random_elements(1, [meta_obj[0]])|first|first}}.",
     "{%set random=import('random')%}En {{'_sda'|gender_flex(object.gender)}} {{object.attributes['base_location'].lower()}} hay {{object.generate_elements()|map('first')|list|utils_filter('pprint_list')}}."
   ],
 

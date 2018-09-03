@@ -79,7 +79,6 @@ class NLRenderer:
             if prep_art_k in sentence:
                 sentence = sentence.replace(prep_art_k, prep_art_v)
 
-        sentence = sentence.capitalize()
         return sentence
 
     @classmethod
