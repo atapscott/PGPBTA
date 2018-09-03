@@ -7,7 +7,7 @@ def get_id()->str:
     return str(uuid.uuid4())
 
 
-def parse_complex_value(complex_value: dict):
+def parse_complex_value(complex_value: dict, **kwargs):
     type: str = complex_value['type']
 
     if type == 'RAND':

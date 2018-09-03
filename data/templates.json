@@ -23,7 +23,14 @@
   ],
 
   "journey_missing_resource_scene_conf": [
-    "{{pcs_nice|utils_filter('pprint_list')}} {%if pcs|length > 1%}llegan{%else%}llega{%endif%} a {{'_sda'|gender_flex(scene.get_location().gender)}} {{scene.get_location().name}} buscando {{missing_resource[0]}}."
+    "{{pcs_nice|utils_filter('pprint_list')}} {%if pcs|length > 1%}llegan{%else%}llega{%endif%} a {{'_sda'|gender_flex(scene.get_location().gender)}} {{scene.get_location().name}} buscando {{missing_resource[0]}}. Allí {%if npcs|length == 1%}está{%else%}están{%endif%} {{npcs|utils_filter('pprint_list')}}. {{target_npc}} tiene {{'_sda'|gender_flex(missing_resource[1])}} {{missing_resource[0]}} que buscan."
+  ],
+
+  "journey_missing_resource_resolution": [
+    "{{agent}} consigue {{'_sda'|gender_flex(missing_resource[1])}} {{missing_resource[0]}} de {{target_npc}}.",
+    "Obtiene {{'_sda'|gender_flex(missing_resource[1])}} {{missing_resource[0]}} que necesita de {{target_npc}}.",
+    "{{'_sda'|gender_flex(missing_resource[1])|capitalize}} {{missing_resource[0]}} ya {%if 'p' in missing_resource[1]%}están{%else%}está{%endif%} en manos de {{agent}}. Se {{'_prn_lei'|gender_flex(missing_resource[1])}} ha arrebatado a {{'_sda'|gender_flex(target_npc.gender)}} {{target_npc.attributes['threat_type_name']|localize|gender_flex(target_npc.gender)}}.",
+    "La búsqueda de {{'_sda'|gender_flex(missing_resource[1])}} {{missing_resource[0]}} concluye tras el encuentro entre {{agent}} y {{target_npc}}. {{'_sda'|gender_flex(missing_resource[1])|capitalize}} {{missing_resource[0]}} se {%if 'p' in missing_resource[1]%}van{%else%}va{%endif%} con {{'_sda'|gender_flex(agent.gender)}} {{agent.attributes['playbook_name']|localize|gender_flex(agent.gender)}}."
   ],
 
   "mc_scene_conf": [

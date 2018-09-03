@@ -6,11 +6,14 @@
       {
         "name": "missing_resource",
         "render_templates": {
-        "mc_scene_conf":  "journey_missing_resource_scene_conf"
-      },
+        "mc_scene_conf":  "journey_missing_resource_scene_conf",
+        "resolution": "journey_missing_resource_resolution"
+        },
         "scene_elements": {
-          "missing_resource": {"type": "EVAL", "imports": ["from storyworld.storyworld import Storyworld"], "value": "Storyworld.get_generator_data_item('needs_resources')"}
-        }
+          "missing_resource": {"type": "EVAL", "imports": ["from storyworld.storyworld import Storyworld"], "value": "Storyworld.get_generator_data_item('needs_resources')"},
+          "target_npc": {"type": "EVAL", "imports": ["from storyworld.storyworld import Storyworld"], "value": "random.sample(kwargs['entities'],1)[0]", "arguments": {"entities": "[e for e in cls.storyworld.entities if e.is_non_player_character()]"}}
+        },
+        "resolve_action_condition": "next_pc_action[2].name == next_scene.template['scene_elements']['target_npc'].name"
       }
     ],
     "render_templates": {

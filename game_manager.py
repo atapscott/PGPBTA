@@ -242,10 +242,15 @@ class GameManager:
 
         # Assign scene template if applicable
         if len(cls.storyworld.story_template.scene_templates) > 0:
-            random.shuffle( cls.storyworld.story_template.scene_templates)
+            random.shuffle(cls.storyworld.story_template.scene_templates)
             next_scene.template = deepcopy(cls.storyworld.story_template.scene_templates[0])
+            next_scene.template['template_resolving_action'] = None
             for se_key, se_value in next_scene.template['scene_elements'].items():
-                next_scene.template['scene_elements'][se_key] = utils.parse_complex_value(se_value)
+                arguments: dict = {}
+                if 'arguments' in se_value.keys():
+                    for arg_k, arg_v in se_value['arguments'].items():
+                        arguments[arg_k] = eval(arg_v)
+                next_scene.template['scene_elements'][se_key] = utils.parse_complex_value(se_value, **arguments)
             next_scene.name += ' ' + next_scene.template['name']
 
         indexed_pc_spotlight: dict = {pc.name: cls.get_entity_agent_scenes(pc) for pc in
@@ -256,15 +261,19 @@ class GameManager:
                                           cls.storyworld.get_npc_entities() if isinstance(e, Threat)}
 
         next_scene.entities = cls.storyworld.get_next_scene_entities(next_scene.players, indexed_threat_spotlight)
+
+        if next_scene.template:
+            # Ensure the target from the template is present in the entities
+            if "target_npc" in next_scene.template['scene_elements'].keys() and next_scene.template['scene_elements'][
+                'target_npc'] not in next_scene.entities:
+                next_scene.entities.append(next_scene.template['scene_elements']['target_npc'])
         next_scene.entities.append(
             random.choice([e for e in cls.storyworld.entities if isinstance(e, Location)]))
 
         # Configure the scene
         next_scene.actions.append(cls.get_next_mc_action(next_scene))
 
-        n: int = random.randint(2, 4)
-
-        while n > 0:
+        while next_scene.template['template_resolving_action'] is None:
 
             while True:
                 next_mc_action: tuple = cls.get_next_mc_action(next_scene)
@@ -282,11 +291,14 @@ class GameManager:
                 if next_scene.has_action(next_pc_action):
                     break
 
+                # Check for scene template resolution
+                if next_scene.template and "resolve_action_condition" in next_scene.template.keys():
+                    if eval(next_scene.template["resolve_action_condition"]):
+                        next_scene.template['template_resolving_action'] = next_pc_action
+
                 next_scene.actions.append(next_pc_action)
                 if initial_pc_scene:
                     initial_pc_scene = False
-
-            n -= 1
 
         cls.scenes.append(next_scene)
 
@@ -324,6 +336,7 @@ class GameManager:
         elif scene.template and action[3] in scene.template['render_templates'].keys():
             template_id = scene.template['render_templates'][action[3]]
             render_data = {**render_data, **scene.template["scene_elements"]}
+
         # History actions fall here
         else:
             template_id = action[1]
@@ -342,6 +355,12 @@ class GameManager:
                 rendered_action += ' ' + rendered_initial_history
             else:
                 rendered_action = rendered_initial_history + ' ' + rendered_action
+
+        # Attach relevant scene template resolution
+        elif scene.template and action == scene.template['template_resolving_action']:
+            rendered_resolution = cls.render_action(scene, (action[0], action[1], action[2], 'resolution'), pcs,
+                                                    pcs_nice, npcs)
+            rendered_action += ' '+rendered_resolution
 
         return rendered_action
 
