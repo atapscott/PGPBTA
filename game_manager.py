@@ -4,6 +4,7 @@ from storyworld.behavior import PlayerBehaviorModel, MCBehaviorModel
 from storyworld.nl_renderer import NLRenderer
 from storyworld.entities import Entity, Agent, Threat, Location
 from utils import utils
+from copy import deepcopy
 import random
 
 
@@ -241,8 +242,8 @@ class GameManager:
 
         # Assign scene template if applicable
         if len(cls.storyworld.story_template.scene_templates) > 0:
-            next_scene.template = cls.storyworld.story_template.scene_templates[0]
-            cls.storyworld.story_template.scene_templates.remove(next_scene.template)
+            random.shuffle( cls.storyworld.story_template.scene_templates)
+            next_scene.template = deepcopy(cls.storyworld.story_template.scene_templates[0])
             for se_key, se_value in next_scene.template['scene_elements'].items():
                 next_scene.template['scene_elements'][se_key] = utils.parse_complex_value(se_value)
             next_scene.name += ' ' + next_scene.template['name']
@@ -331,7 +332,7 @@ class GameManager:
         rendered_action += rendered_sentence.__str__()
 
         # Attach relevant initial history
-        if not isinstance(action[1], str) and not action[1].reflexive\
+        if not isinstance(action[1], str) and not action[1].reflexive \
                 and cls.storyworld.story_template.have_initial_history(action[0], action[2]):
             initial_history_action = cls.storyworld.story_template.get_initial_history_action(action[0],
                                                                                               action[2])

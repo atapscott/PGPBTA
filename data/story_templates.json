@@ -1,6 +1,7 @@
 [
   {
     "name": "journey",
+    "scene_length": 3,
     "scene_templates": [
       {
         "name": "missing_resource",
