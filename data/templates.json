@@ -23,7 +23,7 @@
   ],
 
   "journey_missing_resource_scene_conf": [
-    "{{pcs_nice|utils_filter('pprint_list')}} {%if pcs|length > 1%}llegan{%else%}llega{%endif%} a {{'_sda'|gender_flex(scene.get_location().gender)}} {{scene.get_location().name}} buscando {{missing_resource[0]}}. Allí {%if npcs|length == 1%}está{%else%}están{%endif%} {{npcs|utils_filter('pprint_list')}}. {{target_npc}} tiene {{'_sda'|gender_flex(missing_resource[1])}} {{missing_resource[0]}} que buscan."
+    "{{pcs_nice|utils_filter('pprint_list')}} {%if pcs|length > 1%}llegan{%else%}llega{%endif%} a {{'_sda'|gender_flex(scene.get_location().gender)}} {{scene.get_location().name}} buscando {{missing_resource[0]}}. Allí {%if npcs|length == 1%}está{%else%}están{%endif%} {{npcs|utils_filter('pprint_list')}}. {{target_npc}} tiene {{'_sda'|gender_flex(missing_resource[1])}} {{missing_resource[0]}} que busca{%if pcs|length > 1%}n{%endif%}."
   ],
 
   "journey_missing_resource_resolution": [
