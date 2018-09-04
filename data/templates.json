@@ -19,7 +19,7 @@
   ],
 
   "journey_ending": [
-    "Finalmente, {{pcs|utils_filter('pprint_list')}} {%if pcs|length > 1%}llegan{%else%}llega{%endif%} a {{'_sda'|gender_flex(journey_destination.gender)}} {{journey_destination.name}}, su destino."
+    "Finalmente, {{pcs|utils_filter('pprint_list')}} {%if pcs|length > 1%}llegan{%else%}llega{%endif%} a {{'_sda'|gender_flex(journey_destination.gender)}} {{journey_destination.name}}, su destino, con {{missing_resources|map('first')|list|utils_filter('pprint_list')}}."
   ],
 
   "journey_missing_resource_scene_conf": [
@@ -242,7 +242,7 @@
   ],
 
   "mov_threat_grotesque_seize_and_hold_someone": [
-    "{%set elements=scene.get_location().get_random_elements(1)%}{{agent}} captura a {{object}} y le mantiene cautivo entre {{elements|utils_filter('pprint_list', 'article')}}.",
+    "{%set elements=scene.get_location().get_random_elements(1)%}{{agent}} captura a {{object}} y {{'_sda'|gender_flex(object.gender)}} mantiene {{'cautivo'|gender_flex(object.gender)}} entre {{elements|utils_filter('pprint_list', 'article')}}.",
     "{{agent}} se lleva a {{object}} por la fuerza a su guarida en {{'_sda'|gender_flex(scene.get_location().gender)}} {{scene.get_location().attributes['base_location'].lower()}}"
   ],
 

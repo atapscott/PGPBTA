@@ -49,6 +49,18 @@ class GameManager:
     assert MCBehaviorModel.test_sanity()
 
     @classmethod
+    def get_story_template_elements(cls, scene_template_name: str, scene_element_name: str)->list:
+        element_list: list = []
+        for scene in [s for s in cls.scenes if s.template]:
+            if scene.template['name'] == scene_template_name:
+                for se_k, se_v in scene.template['scene_elements'].items():
+                    if se_k == scene_element_name:
+                        element_list.append(se_v)
+
+        return element_list
+
+
+    @classmethod
     def get_entity_agent_scenes(cls, agent_entity: Agent) -> int:
         featured_scenes: int = 0
         for s in [s for s in cls.scenes if s.entities]:
@@ -273,7 +285,9 @@ class GameManager:
         # Configure the scene
         next_scene.actions.append(cls.get_next_mc_action(next_scene))
 
-        while next_scene.template['template_resolving_action'] is None:
+        n: int = 4
+
+        while next_scene.template['template_resolving_action'] is None or n > 0:
 
             while True:
                 next_mc_action: tuple = cls.get_next_mc_action(next_scene)
@@ -299,6 +313,8 @@ class GameManager:
                 next_scene.actions.append(next_pc_action)
                 if initial_pc_scene:
                     initial_pc_scene = False
+
+                n -= 1
 
         cls.scenes.append(next_scene)
 
@@ -330,7 +346,11 @@ class GameManager:
             template_id: str = action[1].id
         # Need to check if action belongs to the story template
         elif action[3] in cls.storyworld.story_template.render_templates.keys():
-            template_id = cls.storyworld.story_template.render_templates[action[3]]
+            template_id = cls.storyworld.story_template.render_templates[action[3]]['template_id']
+
+            for se_key in cls.storyworld.story_template.render_templates[action[3]]['elements']:
+                cls.storyworld.story_template.story_elements[se_key] = utils.parse_complex_value(cls.storyworld.story_template.story_elements[se_key])
+
             render_data = {**render_data, **cls.storyworld.story_template.story_elements}
         # Need to check if action belongs to a scene template
         elif scene.template and action[3] in scene.template['render_templates'].keys():

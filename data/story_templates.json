@@ -17,11 +17,12 @@
       }
     ],
     "render_templates": {
-      "mc_intro":  "journey_intro",
-      "mc_ending":  "journey_ending"
+      "mc_intro":  {"template_id": "journey_intro", "elements":["journey_destination"]},
+      "mc_ending":  {"template_id": "journey_ending", "elements":["missing_resources"]}
     },
     "story_elements": {
-      "journey_destination": {"type": "EVAL", "imports": ["from game_manager import GameManager"], "value": "GameManager.storyworld.create_location()"}
+      "journey_destination": {"type": "EVAL", "imports": ["from game_manager import GameManager"], "value": "GameManager.storyworld.create_location()"},
+      "missing_resources": {"type": "EVAL", "imports": ["from game_manager import GameManager"], "value": "GameManager.get_story_template_elements('missing_resource','missing_resource')"}
     },
     "initial_history": []
   }

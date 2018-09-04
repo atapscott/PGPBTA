@@ -223,7 +223,7 @@ class Storyworld:
 
         return history_link_mod_list
 
-    def get_initial_history(self, amount: int=None) -> list:
+    def get_initial_history(self) -> list:
 
         initial_history: list = []
 
@@ -273,10 +273,7 @@ class Storyworld:
                     initial_history.append(
                         (player_character, history_link_mod['plot'], paired_character, 'initial_history'))
 
-        if not amount or amount > len(initial_history):
-            amount = len(initial_history)
-
-        return random.sample(initial_history, amount)
+        return initial_history
 
     def get_npc_entities(self) -> list:
         return [e for e in self.entities if e.is_non_player_character()]

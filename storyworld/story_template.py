@@ -5,9 +5,6 @@ from storyworld.entities import PlayerCharacter
 class StoryTemplate:
     def __init__(self, **kwargs):
         self.__dict__ = kwargs
-        for se_key, se_value in self.story_elements.items():
-            if not isinstance(se_value, str):
-                self.story_elements[se_key] = utils.parse_complex_value(se_value)
 
     def have_initial_history(self, pc1: PlayerCharacter, pc2: PlayerCharacter)->bool:
         try:
