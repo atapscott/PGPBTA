@@ -45,3 +45,14 @@ def pprint_list(input_list: list, mode='neutral', *args):
             s += ', ' + element
 
     return s
+
+
+def weighted_choice(indexed_choices: dict):
+    if list(indexed_choices.values()).count(list(indexed_choices.values())[0]) == len(indexed_choices.values()):
+        return random.choice(list(indexed_choices.keys()))
+
+    choices = list(indexed_choices.keys())
+    weights = list(indexed_choices.values())
+    weights = [1-(float(i)/max(weights)) if max(weights) > 0 else i for i in weights]
+
+    return random.choices(choices, weights)[0]

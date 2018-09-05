@@ -9,7 +9,11 @@ if __name__ == "__main__":
 
         print("\n-----------------------\n-----------------------\n-----------------------\nSTORY {}\n".format(25 - i))
 
-        GameManager.new_game(player_names=['Player 1', 'Player 2', 'Player 3', 'Player 4'], story_template="journey")
+        GameManager.new_game(player_data=[{"name": 'Player 1', "spotlight_modifier": 4},
+                                          {"name": 'Player 2'},
+                                          {"name": 'Player 3'},
+                                          {"name": 'Player 4'}],
+                             story_template="journey")
 
         GameManager.run_story_introduction()
         n: int = GameManager.storyworld.story_template.scene_length

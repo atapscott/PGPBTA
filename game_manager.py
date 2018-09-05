@@ -2,7 +2,7 @@ from storyworld.storyworld import Storyworld, Move
 from playerworld.playerworld import Playerworld
 from storyworld.behavior import PlayerBehaviorModel, MCBehaviorModel
 from storyworld.nl_renderer import NLRenderer
-from storyworld.entities import Entity, Agent, Threat, Location
+from storyworld.entities import Entity, Agent, Threat, Location, PlayerCharacter
 from utils import utils
 from copy import deepcopy
 import random
@@ -49,7 +49,7 @@ class GameManager:
     assert MCBehaviorModel.test_sanity()
 
     @classmethod
-    def get_story_template_elements(cls, scene_template_name: str, scene_element_name: str)->list:
+    def get_story_template_elements(cls, scene_template_name: str, scene_element_name: str) -> list:
         element_list: list = []
         for scene in [s for s in cls.scenes if s.template]:
             if scene.template['name'] == scene_template_name:
@@ -59,13 +59,26 @@ class GameManager:
 
         return element_list
 
+    @classmethod
+    def get_player_character_spotlight(cls, player_character: PlayerCharacter) -> int:
+        player_character_spotlight: int = 0
+        player_scenes: list = cls.get_entity_agent_scenes(player_character)  # type: List[Scene]
+
+        for scene in player_scenes:
+            for action in scene.actions:
+                if action[0] == player_character:
+                    player_character_spotlight += (2 * 1/player_character.get_player().spotlight_modifier)
+                elif action[2] and action[2] == player_character:
+                    player_character_spotlight += (1 * 1/player_character.get_player().spotlight_modifier)
+
+        return player_character_spotlight
 
     @classmethod
-    def get_entity_agent_scenes(cls, agent_entity: Agent) -> int:
-        featured_scenes: int = 0
+    def get_entity_agent_scenes(cls, agent_entity: Agent) -> list:
+        featured_scenes: list = []
         for s in [s for s in cls.scenes if s.entities]:
             if agent_entity.name in [e.name for e in s.entities if isinstance(e, Agent)]:
-                featured_scenes += 1
+                featured_scenes.append(s)
 
         return featured_scenes
 
@@ -86,10 +99,10 @@ class GameManager:
         NLRenderer.initialize(storyworld=cls.storyworld)
         cls.storyworld.load_story_template_by_name(kwargs['story_template'])
 
-        for player_name in kwargs['player_names']:
-            cls.playerworld.create_player(name=player_name)
-            player = cls.playerworld.get_player_by_name(player_name)
-            player.character = cls.storyworld.create_player_character(owner=player.id)
+        for player_data in kwargs['player_data']:
+            cls.playerworld.create_player(**player_data)
+            player = cls.playerworld.get_player_by_name(player_data['name'])
+            player.character = cls.storyworld.create_player_character(owner=player)
             cls.assign_playbook(player.character)
 
         cls.storyworld.story_template.initial_history = cls.storyworld.get_initial_history()
@@ -111,7 +124,7 @@ class GameManager:
         return eligible
 
     @classmethod
-    def get_next_player_action(cls, scene: Scene, start_chain: bool = False) -> tuple:
+    def get_next_player_action(cls, scene: Scene, pc_spotlight: dict, start_chain: bool = False) -> tuple:
 
         player_characters: list = [e for e in scene.entities if e.is_player_character()]
 
@@ -167,7 +180,10 @@ class GameManager:
 
             filtered_indexed_candidate_agent_moves[agent_candidate.name] = candidate_agent_moves
 
-        agent = random.choice([ac for ac in agent_candidates if ac in agent_candidates])
+        # limit the spotlight to characters present in the scene
+        pc_spotlight = {name: weight for name, weight in pc_spotlight.items() if
+                        name in [ac.name for ac in agent_candidates]}
+        agent = cls.storyworld.get_entity_by_name(utils.weighted_choice(pc_spotlight))
 
         player_move_match = random.choice(filtered_indexed_candidate_agent_moves[agent.name])
 
@@ -177,7 +193,7 @@ class GameManager:
             return agent, player_move_match[0], player_move_match[1], next_behavior_tag
 
     @classmethod
-    def get_next_mc_action(cls, scene: Scene) -> tuple:
+    def get_next_mc_action(cls, scene: Scene, pc_spotlight: dict) -> tuple:
 
         next_move: Move = None
 
@@ -265,11 +281,12 @@ class GameManager:
                 next_scene.template['scene_elements'][se_key] = utils.parse_complex_value(se_value, **arguments)
             next_scene.name += ' ' + next_scene.template['name']
 
-        indexed_pc_spotlight: dict = {pc.name: cls.get_entity_agent_scenes(pc) for pc in
+        indexed_pc_spotlight: dict = {pc.name: cls.get_player_character_spotlight(pc) for pc in
                                       cls.storyworld.get_player_characters()}
+
         next_scene.players = cls.playerworld.get_next_scene_players(indexed_pc_spotlight)
 
-        indexed_threat_spotlight: dict = {e.name: cls.get_entity_agent_scenes(e) for e in
+        indexed_threat_spotlight: dict = {e.name: len(cls.get_entity_agent_scenes(e)) for e in
                                           cls.storyworld.get_npc_entities() if isinstance(e, Threat)}
 
         next_scene.entities = cls.storyworld.get_next_scene_entities(next_scene.players, indexed_threat_spotlight)
@@ -283,14 +300,17 @@ class GameManager:
             random.choice([e for e in cls.storyworld.entities if isinstance(e, Location)]))
 
         # Configure the scene
-        next_scene.actions.append(cls.get_next_mc_action(next_scene))
+        next_scene.actions.append(cls.get_next_mc_action(next_scene, pc_spotlight=indexed_pc_spotlight))
 
         n: int = 4
 
         while next_scene.template['template_resolving_action'] is None or n > 0:
 
+            indexed_pc_spotlight = {pc.name: cls.get_player_character_spotlight(pc) for pc in
+                                    cls.storyworld.get_player_characters()}
+
             while True:
-                next_mc_action: tuple = cls.get_next_mc_action(next_scene)
+                next_mc_action: tuple = cls.get_next_mc_action(next_scene, indexed_pc_spotlight)
                 if next_mc_action[3] == 'mc_end':
                     break
 
@@ -298,7 +318,7 @@ class GameManager:
 
             initial_pc_scene: bool = True
             while True:
-                next_pc_action: tuple = cls.get_next_player_action(next_scene, initial_pc_scene)
+                next_pc_action: tuple = cls.get_next_player_action(next_scene, indexed_pc_spotlight, initial_pc_scene)
                 if next_pc_action[3] == 'pc_end':
                     break
 
@@ -349,7 +369,8 @@ class GameManager:
             template_id = cls.storyworld.story_template.render_templates[action[3]]['template_id']
 
             for se_key in cls.storyworld.story_template.render_templates[action[3]]['elements']:
-                cls.storyworld.story_template.story_elements[se_key] = utils.parse_complex_value(cls.storyworld.story_template.story_elements[se_key])
+                cls.storyworld.story_template.story_elements[se_key] = utils.parse_complex_value(
+                    cls.storyworld.story_template.story_elements[se_key])
 
             render_data = {**render_data, **cls.storyworld.story_template.story_elements}
         # Need to check if action belongs to a scene template
@@ -380,7 +401,7 @@ class GameManager:
         elif scene.template and action == scene.template['template_resolving_action']:
             rendered_resolution = cls.render_action(scene, (action[0], action[1], action[2], 'resolution'), pcs,
                                                     pcs_nice, npcs)
-            rendered_action += ' '+rendered_resolution
+            rendered_action += ' ' + rendered_resolution
 
         return rendered_action
 

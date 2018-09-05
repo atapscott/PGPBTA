@@ -7,6 +7,7 @@ class Player:
     character: PlayerCharacter = None
     name: str = None
     id: str = None
+    spotlight_modifier: float = 1
 
     def __init__(self, **kwargs):
 

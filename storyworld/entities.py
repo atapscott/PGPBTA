@@ -110,6 +110,9 @@ class PlayerCharacter(Agent):
     def __init__(self, **kwargs):
         super(PlayerCharacter, self).__init__(**kwargs)
 
+    def get_player(self):
+        return self.attributes['owner']
+
     def print_nice_name(self):
         return NLRenderer.get_rendered_nl('long_name',
                                           render_data={'entity_type': 'pc', 'name': self.name, 'gender': self.gender,
