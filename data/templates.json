@@ -247,7 +247,7 @@
   ],
 
   "mov_threat_grotesque_ruin_something": [
-    "{%set elements=scene.get_location().get_random_elements(1)%}{{agent}} se ensaña con {{elements|utils_filter('pprint_list', 'article')}} mientras {{object}} le observa {{'oculto'|gender_flex(scene.get_location().gender)}}.",
+    "{%set elements=scene.get_location().get_random_elements(1)%}{{agent}} se ensaña con {{elements|utils_filter('pprint_list', 'article')}} mientras {{object}} le observa {{'oculto'|gender_flex(object.gender)}}.",
     "{%set elements=scene.get_location().get_random_elements(1)%}{{agent}} destroza {{elements|utils_filter('pprint_list', 'article')}} sin importarle la presencia de {{object}}."
   ]
 }

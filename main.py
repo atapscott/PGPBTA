@@ -13,6 +13,7 @@ if __name__ == "__main__":
                                           {"name": 'Player 2'},
                                           {"name": 'Player 3'},
                                           {"name": 'Player 4'}],
+                             mps={"mental": 0, "physical": 0, "social": 1},
                              story_template="journey")
 
         GameManager.run_story_introduction()

@@ -4,14 +4,16 @@
     "id": "mov_read_a_person",
     "prerequisites": ["agent.is_player_character()",
           "object.has_attribute('person')"],
-    "tags": ["pc_initiator", "pc_follow_up", "pc_reply"]
+    "tags": ["pc_initiator", "pc_follow_up", "pc_reply"],
+    "mps": {"mental":4, "physical":1, "social":2}
   },
   {
     "name": "Read a Sitch",
     "id": "mov_read_a_sitch",
     "reflexive": "True",
     "prerequisites": ["agent.is_player_character()"],
-    "tags": ["pc_initiator", "pc_follow_up", "pc_reply"]
+    "tags": ["pc_initiator", "pc_follow_up", "pc_reply"],
+    "mps": {"mental":4, "physical":1, "social":1}
   },
   {
     "name": "Open your Brain",
@@ -19,14 +21,16 @@
     "id": "mov_open_your_brain",
     "reflexive": "True",
     "prerequisites": ["agent.is_player_character()"],
-    "tags": ["pc_initiator", "pc_follow_up", "pc_reply"]
+    "tags": ["pc_initiator", "pc_follow_up", "pc_reply"],
+    "mps": {"mental":4, "physical":1, "social":1}
   },
   {
     "name": "Go Aggro",
     "id": "mov_go_aggro",
     "prerequisites": ["agent.is_player_character()",
           "not isinstance(object, Location)"],
-    "tags": ["pc_initiator", "pc_follow_up", "pc_reply", "pc_interference"]
+    "tags": ["pc_initiator", "pc_follow_up", "pc_reply", "pc_interference"],
+    "mps": {"mental":1, "physical":4, "social":2}
   },
   {
     "name": "Do Battle",
@@ -34,27 +38,31 @@
     "prerequisites": ["agent.is_player_character()",
           "not isinstance(object, PlayerCharacter)",
           "not isinstance(object, Location)"],
-    "tags": ["pc_initiator", "pc_follow_up", "pc_reply", "pc_interference"]
+    "tags": ["pc_initiator", "pc_follow_up", "pc_reply", "pc_interference"],
+    "mps": {"mental":1, "physical":5, "social":1}
   },
   {
     "name": "Seduce of Manipulate",
     "id": "mov_seduce_or_manipulate",
     "prerequisites": ["agent.is_player_character()",
           "object.has_attribute('person')"],
-    "tags": ["pc_initiator", "pc_follow_up", "pc_reply", "pc_interference"]
+    "tags": ["pc_initiator", "pc_follow_up", "pc_reply", "pc_interference"],
+    "mps": {"mental":3, "physical":1, "social":5}
   },
   {
     "name": "Help or Interfere with Someone",
     "id": "mov_help_or_interfere_with_someone",
     "prerequisites": ["agent.is_player_character()",
           "object.has_attribute('person')"],
-    "tags": ["pc_interference"]
+    "tags": ["pc_interference"],
+    "mps": {"mental":2, "physical":2, "social":2}
   },
   {
     "name": "Do Something under Fire",
     "id": "mov_do_something_under_fire",
     "prerequisites": ["agent.is_player_character()"],
-    "tags": ["pc_reply"]
+    "tags": ["pc_reply"],
+    "mps": {"mental":2, "physical":4, "social":1}
   }
 
 ]

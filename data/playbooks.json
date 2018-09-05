@@ -39,7 +39,8 @@
           "agent.has_playbook_type('Angel')",
           "not isinstance(object, Location)"
         ],
-        "tags": ["pc_initiator", "pc_follow_up", "pc_reply"]
+        "tags": ["pc_initiator", "pc_follow_up", "pc_reply"],
+        "mps": {"mental":1, "physical":3, "social":3}
       }
     ],
     "hist": {
@@ -118,7 +119,8 @@
           "not isinstance(object, PlayerCharacter)",
           "object.has_attribute('person')"
         ],
-        "tags": ["pc_initiator", "pc_follow_up", "pc_reply"]
+        "tags": ["pc_initiator", "pc_follow_up", "pc_reply"],
+        "mps": {"mental":2, "physical":3, "social":5}
       },
       {
         "name": "arresting_skinner",
@@ -127,7 +129,8 @@
           "agent.has_playbook_type('Artist')",
           "object.has_attribute('person')"
         ],
-        "tags": ["pc_initiator", "pc_follow_up", "pc_reply", "pc_interference"]
+        "tags": ["pc_initiator", "pc_follow_up", "pc_reply", "pc_interference"],
+        "mps": {"mental":1, "physical":4, "social":5}
       },
       {
         "name": "hypnotic",
@@ -136,7 +139,8 @@
           "agent.has_playbook_type('Artist')",
           "object.has_attribute('person')"
         ],
-        "tags": ["pc_initiator", "pc_follow_up", "pc_reply"]
+        "tags": ["pc_initiator", "pc_follow_up", "pc_reply"],
+        "mps": {"mental":1, "physical":4, "social":5}
       }
     ],
     "hist": {
@@ -209,7 +213,8 @@
         "prerequisites": [
           "agent.has_playbook_type('Gun Lugger')"
         ],
-        "tags": ["pc_follow_up", "pc_reply", "pc_interference"]
+        "tags": ["pc_follow_up", "pc_reply", "pc_interference"],
+        "mps": {"mental":1, "physical":5, "social":1}
       }
     ],
     "hist": {
@@ -281,7 +286,8 @@
         "prerequisites": [
           "agent.has_playbook_type('Driver')"
         ],
-        "tags": ["pc_follow_up", "pc_reply", "pc_interference"]
+        "tags": ["pc_follow_up", "pc_reply", "pc_interference"],
+        "mps": {"mental":4, "physical":4, "social":1}
       },
       {
         "name": "Reputation",
@@ -290,7 +296,8 @@
           "agent.has_playbook_type('Driver')",
           "object.has_attribute('person')"
         ],
-        "tags": ["pc_initiator", "pc_follow_up", "pc_reply"]
+        "tags": ["pc_initiator", "pc_follow_up", "pc_reply"],
+        "mps": {"mental":1, "physical":1, "social":5}
       },
       {
         "name": "Daredevil",
@@ -300,7 +307,8 @@
           "not isinstance(object, PlayerCharacter)",
           "not isinstance(object, Location)"
         ],
-        "tags": ["pc_initiator", "pc_follow_up", "pc_reply", "pc_interference"]
+        "tags": ["pc_initiator", "pc_follow_up", "pc_reply", "pc_interference"],
+        "mps": {"mental":3, "physical":5, "social":1}
       }
     ],
     "hist": {

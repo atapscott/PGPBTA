@@ -45,6 +45,8 @@ class GameManager:
     scenes: list = None
     playerworld: Playerworld = None
     storyworld: Storyworld = None
+    mps: dict = None
+
     assert PlayerBehaviorModel.test_sanity()
     assert MCBehaviorModel.test_sanity()
 
@@ -67,9 +69,9 @@ class GameManager:
         for scene in player_scenes:
             for action in scene.actions:
                 if action[0] == player_character:
-                    player_character_spotlight += (2 * 1/player_character.get_player().spotlight_modifier)
+                    player_character_spotlight += (2 * 1 / player_character.get_player().spotlight_modifier)
                 elif action[2] and action[2] == player_character:
-                    player_character_spotlight += (1 * 1/player_character.get_player().spotlight_modifier)
+                    player_character_spotlight += (1 * 1 / player_character.get_player().spotlight_modifier)
 
         return player_character_spotlight
 
@@ -99,6 +101,9 @@ class GameManager:
         NLRenderer.initialize(storyworld=cls.storyworld)
         cls.storyworld.load_story_template_by_name(kwargs['story_template'])
 
+        if 'mps' in kwargs.keys():
+            cls.mps = kwargs['mps']
+
         for player_data in kwargs['player_data']:
             cls.playerworld.create_player(**player_data)
             player = cls.playerworld.get_player_by_name(player_data['name'])
@@ -122,6 +127,36 @@ class GameManager:
             eligible *= tag in move.tags
 
         return eligible
+
+    @classmethod
+    def choose_move(cls, candidate_agent_moves: list, scene: Scene) -> tuple:
+        """
+        Pick an agent-move pairing with an appropriate mps
+        :param candidate_agent_moves: candidate tuples of move and agent
+        :param scene: current scene
+        :return: the matching of move and agent that goes well with the scene's mps
+        """
+
+        match_weights: list = []
+        # If the scene template has mps, use those values
+        if scene.template and 'mps' in scene.template.keys():
+            [mental_weight, physical_weight, social_weight] = scene.template['mps']['mental'], scene.template['mps'][
+                'physical'], scene.template['mps']['social']
+        # Fall back to general mps from the GameManager constructor
+        elif cls.mps:
+            [mental_weight, physical_weight, social_weight] = cls.mps['mental'], cls.mps['physical'], cls.mps['social']
+        else:
+            return random.choice(candidate_agent_moves)
+
+        for cam in candidate_agent_moves:
+            move_mps = cam[0].mps
+            [move_mental, move_physical, move_social] = move_mps['mental'], move_mps['physical'], move_mps['social']
+            match_weights.append(move_mental*mental_weight+move_physical*physical_weight+move_social*social_weight)
+
+        if match_weights.count(match_weights[0]) == len(match_weights):
+            return random.choice(candidate_agent_moves)
+
+        return random.choices(candidate_agent_moves, match_weights)[0]
 
     @classmethod
     def get_next_player_action(cls, scene: Scene, pc_spotlight: dict, start_chain: bool = False) -> tuple:
@@ -185,7 +220,8 @@ class GameManager:
                         name in [ac.name for ac in agent_candidates]}
         agent = cls.storyworld.get_entity_by_name(utils.weighted_choice(pc_spotlight))
 
-        player_move_match = random.choice(filtered_indexed_candidate_agent_moves[agent.name])
+        # player_move_match = random.choice(filtered_indexed_candidate_agent_moves[agent.name])
+        player_move_match = cls.choose_move(filtered_indexed_candidate_agent_moves[agent.name], scene)
 
         if player_move_match[0].is_reflexive():
             return agent, player_move_match[0], scene, next_behavior_tag
@@ -223,7 +259,8 @@ class GameManager:
                 indexed_candidate_threat_moves: dict = cls.storyworld.get_candidate_moves(
                     threats, pcs)
                 candidate_threat = random.choice(threats)
-                threat_move_match = random.choice(indexed_candidate_threat_moves[candidate_threat.name])
+
+                threat_move_match = cls.choose_move(indexed_candidate_threat_moves[candidate_threat.name], scene)
                 candidate_actions.append((candidate_threat, threat_move_match[0], threat_move_match[1], 'mc_threat'))
 
                 return random.choice(candidate_actions)
