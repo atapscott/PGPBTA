@@ -3,3 +3,4 @@ env/
 playerworld/__pycache__/
 storyworld/__pycache__/
 utils/__pycache__/
+__pycache__/
